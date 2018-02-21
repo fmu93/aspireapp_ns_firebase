@@ -1,0 +1,15 @@
+<!--
+This is the component view that represents the 'Search' tab.
+Feel free to customize layouts and components to change how the tab view looks.
+-->
+<StackLayout class="page-content" loaded="onLoaded">
+    <Label class="page-icon fa" text="&#xf002;" verticalAlignment="center"></Label>
+    <Label class="page-placeholder" text="List from collection" verticalAlignment="center"></Label>
+    <ListView items="{{ memberList }}" class="listViewStyle">
+        <ListView.itemTemplate>
+            <GridLayout class="listStyle" columns="*,*">
+                <Label text="{{ member }}" col="0"/>
+            </GridLayout>
+        </ListView.itemTemplate>
+    </ListView>
+</StackLayout>

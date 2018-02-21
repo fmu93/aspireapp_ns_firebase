@@ -1,0 +1,37 @@
+<Page loaded="onLoaded"
+    cssFile="~/views/login/login.css"
+    tap="onPageTapped">
+
+    <Page.actionBar>
+        <ActionBar title="User profile" automationText="ActionBar">
+            <NavigationButton icon="res://ic_back" tap="goBack" automationText="GoBack" />
+        </ActionBar>
+    </Page.actionBar>
+
+    <GridLayout id="example-background" loaded="onBackgroundLoaded">
+        <GridLayout id="form-content" class="form-content" rows="auto,*,auto, auto" loaded="onContentLoaded">
+            <StackLayout class="top-border" row="0"/>
+            <ScrollView row="1" class="fields-section">
+                <StackLayout>
+                    
+                    <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
+                        <Label text="Email" class="field-title" />
+                        <TextField id="email" text="{{ email }}" keyboardType="email" class="field" ios:col="1" android:row="1" tap="onTextInputTapped" />
+                    </GridLayout>
+                    <StackLayout class="line"/>    
+                   
+                    <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
+                        <Label text="Password" class="field-title" />
+                        <TextField id="password" text="{{ password }}" secure="true" class="field"  ios:col="1" android:row="1" tap="onTextInputTapped" />
+                    </GridLayout>
+                    <StackLayout class="line"/>
+
+                </StackLayout>
+            </ScrollView>
+            <Button text="Log in &#xf101;" class="update fa" tap="signIn" row="2"/>
+            <Button text="Sign up for AspireApp!" tap="register" row="3" />
+        </GridLayout>
+        
+        <Image src="res://logo" id="image" class="logo-picture" stretch="none" horizontalAlignment="center" tap="onProfilePictureTapped"/>
+    </GridLayout>
+</Page>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "399039150173",
+    "firebase_url": "https://aspireapp-2dff5.firebaseio.com",
+    "project_id": "aspireapp-2dff5",
+    "storage_bucket": "aspireapp-2dff5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399039150173:android:cc0eccf578267417",
+        "android_client_info": {
+          "package_name": "org.nativescript.aspire2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399039150173-22bpa7s08e1helds60aqogo99mjja4cv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAskKAynU09hAUyCMfjAxvDGfKgdqgb9yM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

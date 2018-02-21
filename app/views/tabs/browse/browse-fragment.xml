@@ -1,0 +1,18 @@
+<!--
+This is the component view that represents the 'Browse' tab.
+Feel free to customize layouts and components to change how the tab view looks.
+-->
+<StackLayout class="page-content" loaded="onLoaded">
+    <Label class="page-icon fa" text="&#xf1ea;"></Label>
+    <Label class="page-placeholder" text="<!-- user explore -->"></Label>
+    <Button text="lookUp" tap="lookUp" class="button1"  horizontalAlignment="center"/>
+    <ListView id="userList" items="{{ users }}" class="listViewStyle">
+        <ListView.itemTemplate>
+            <GridLayout class="listStyle" columns="*,*,3*">
+                <Label text="{{ username }}" col="0" />
+                <Label text="{{ bio }}" col="1" />
+                <Label text="{{ _id }}" col="2" />
+            </GridLayout>
+        </ListView.itemTemplate>
+    </ListView>
+</StackLayout>

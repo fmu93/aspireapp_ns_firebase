@@ -1,0 +1,63 @@
+// Place any CSS rules you want to apply on both iOS and Android here.
+// This is where the vast majority of your CSS code goes.
+// Font icon class
+.fa {
+   font-family: "FontAwesome";
+}
+// Common page class
+.page-content {
+    background-color: #455B66;
+
+    .page-placeholder {
+        color: $page-icon-color;
+        margin: 5%;
+        font-size: $page-content-placeholder-font-size;
+        vertical-align: center;
+        horizontal-align: center;
+    }
+
+    .page-icon {
+        font-size: 72;
+        vertical-align: top;
+        horizontal-align: center;
+        color: $page-icon-color;
+        margin-top: 20;
+    }
+}
+
+//Action bar
+ActionBar {
+    background-color: #151F2F;
+    color: white;
+}
+
+.action-bar-title {
+    margin: 5;
+    // width: fit-content; // TODO not finding "fit-content"
+    text-align: center;
+    vertical-align: center;
+    horizontal-align: center;
+    display: inline-block;
+}
+
+.content-background {
+    background-color: #E5E5E8;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+
+.listStyle {
+    padding: 5;
+    horizontal-align: left;
+    vertical-align: center;
+}
+
+.listViewStyle {
+    margin: 10;
+    background-color: #E5E5E8;
+}
+
+Page, ExamplePage, DrawerPage {
+    background-color: rgb(44, 49, 58);
+}
+

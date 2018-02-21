@@ -1,0 +1,59 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" class="page"
+  xmlns:home="views/tabs/home"
+  xmlns:search="views/tabs/search"
+  xmlns:browse="views/tabs/browse">
+    <Page.actionBar>
+        <ActionBar class="action-bar">
+
+          <GridLayout columns="*, auto, *">
+            <Label text="{{ title }}" col="1" class="action-bar-title" />
+            <Label id="username" text="{{ username }}" col="2" class="action-bar-title fa" horizontalAlignment="right" />
+          </GridLayout>
+          
+          <ActionItem tap="refreshTabsPage" ios.systemIcon="16" ios.position="right"
+          text="Refresh" android.position="popup"></ActionItem>
+          <ActionItem tap="logOut" ios.systemIcon="16" ios.position="right"
+          text="Log out" android.position="popup"></ActionItem>
+          <ActionItem tap="deleteUser" ios.systemIcon="16" ios.position="right"
+          text="Delete user" android.position="popup"></ActionItem>
+        </ActionBar>
+    </Page.actionBar>
+
+    <!--
+    The TabView component provides a simple way to navigate between different views by
+    tapping on some of the tabs or by swiping between the views.
+    Learn more about the TabView component in this documentation article:
+    http://docs.nativescript.org/cookbook/ui/tab-view
+    -->
+    <TabView selectedIndexChanged="onSelectedIndexChanged">
+      <TabView.items>
+        <!--
+        To add a new TabView item, simply add a new <TabViewItem> component to the <TabView.items> collection.
+        Assign the <TabViewItem> component a "title" that will be displayed as the text of the tab item button.
+        -->
+        <TabViewItem title="Home" ios:iconSource="res://tabIcons/home">
+          <TabViewItem.view>
+            <!--
+            You can declare the layout and components of each view inside the <TabViewItem.view> directly.
+            In this case the view contents and back end logic are separated in custom components.
+            You can find these components in their respective folders /home, /browse etc.
+            -->
+            <home:home-fragment/>
+          </TabViewItem.view>
+        </TabViewItem>
+
+        <TabViewItem title="Browse" ios:iconSource="res://tabIcons/browse">
+          <TabViewItem.view>
+             <browse:browse-fragment/>
+          </TabViewItem.view>
+        </TabViewItem>
+
+        <TabViewItem title="Search" ios:iconSource="res://tabIcons/search">
+          <TabViewItem.view>
+             <search:search-fragment/>
+          </TabViewItem.view>
+        </TabViewItem>
+
+      </TabView.items>
+    </TabView> 
+</Page>
