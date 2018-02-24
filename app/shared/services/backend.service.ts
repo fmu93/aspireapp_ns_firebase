@@ -70,25 +70,42 @@ export class BackendService {
 	return firebase.logout();
 	}
 
+	static doDeleteUser(): void {
+		firebase.deleteUser().then(
+			() => {
+			  alert({
+				title: "User deleted",
+				okButtonText: "Nice!"
+			  });
+			},
+			errorMessage => {
+			  alert({
+				title: "User not deleted",
+				message: errorMessage,
+				okButtonText: "OK, got it"
+			  });
+			}
+		);
+	  }
+
 	static uploadFile(remoteFullPath: string, localPath: string): Promise<any> {
 		const appPath = fs.knownFolders.currentApp();
-		const localFullPath = fs.path.join(appPath.path, localPath);
-		if (!fs.File.exists(localFullPath)) {
-			console.log("File does not exist");
-			return null
+		// const localFullPath = fs.path.join(appPath.path, localPath); // seems like whould be localPath
+		if (!fs.File.exists(localPath)) {
+			console.log("File does not exist: " + localPath);
+			return null;
 		}
-		console.log("localFullPath: " + localFullPath);
 		
 		return firebase.uploadFile({
 			remoteFullPath,
-			localFullPath,
+			localFullPath: localPath,
 			onProgress: status => {
 				console.log("Uploaded fraction: " + status.fractionCompleted);
 				console.log("Percentage complete: " + status.percentageCompleted);
 			}	
 		}).then((uploadedFile) => {
 				console.log("File uploaded: " + JSON.stringify(uploadedFile));
-				return uploadedFile
+				return uploadedFile;
 		},
 		(error) => {
 			console.log("File upload error: " + error);
@@ -123,5 +140,18 @@ export class BackendService {
 			console.log(errorMessage);
 		});
 	}
+
+	static deleteFile(): void {
+		firebase.deleteFile({
+			remoteFullPath: 'uploads/images/telerik-logo-uploaded.png' // TODO
+		}).then(
+			function () {
+				console.log("File deleted.");
+			},
+			function (error) {
+				console.log("File deletion Error: " + error);
+			}
+		);
+	}  
 
 }

@@ -58,7 +58,7 @@ export function logOut() {
 }
 
 export function deleteUser() {
-    BackendService.removeUser();
+    BackendService.doDeleteUser();
 }
 
 export function refreshTabsPage() {

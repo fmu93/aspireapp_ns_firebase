@@ -37,7 +37,9 @@ export function imgSelect() {
         return context.present();
     }).then((selection) => {
         selection.forEach((element) => {
-            homeViewModel.img.src = element.fileUri;
+            console.log(element.fileUri);
+            const remotePath = "/users/" + BackendService.token + "/public/" + milliseconds + "." + element.fileUri.split(".").pop();
+            BackendService.uploadFile(remotePath, element.fileUri);
         });
     });
 }
