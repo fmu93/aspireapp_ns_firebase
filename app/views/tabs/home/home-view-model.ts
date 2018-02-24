@@ -10,7 +10,7 @@ import view = require("ui/core/view");
 import * as frameModule from "ui/frame";
 import { StackLayout } from "ui/layouts/stack-layout";
 import { BackendService } from "../../../shared/services/backend.service";
-const user = require("./../../../shared/user.model");
+import { User } from "./../../../shared/user.model";
 
 export class HomeViewModel extends Observable {
     @ObservableProperty()
@@ -59,7 +59,7 @@ export class HomeViewModel extends Observable {
     }
     
     public storeByPush(){
-        BackendService.doUserStoreByPush(user);
+        BackendService.doUserStoreByPush(new User());
     }
     
 }

@@ -53,7 +53,7 @@ export class BackendService {
 		).catch((error) => {
 			console.log(error);
 		});
-		}
+	}
 
 	static updateUser(user: User) {
 		firebase.updateProfile({
@@ -76,14 +76,14 @@ export class BackendService {
 			}
 		}).then((response) => {
 			console.log(JSON.stringify(response));
-			BackendService.token = response.uid;
+			this.token = response.uid;
 
 			return response;
 			});
 	}
 
 	static logout() {
-	BackendService.token = "";
+	this.token = "";
 
 	return firebase.logout();
 	}
@@ -91,7 +91,7 @@ export class BackendService {
 	static doDeleteUser(): Promise<any> {
 		return firebase.deleteUser().then(
 			() => {
-				BackendService.token = "";
+				this.token = "";
 			  	alert({
 					title: "User deleted",
 					okButtonText: "Nice!"
@@ -177,6 +177,7 @@ export class BackendService {
 	// database stuff
 
 	static doUserStoreByPush(user: User): Promise<any> {
+		console.log(JSON.stringify(user));
 		return firebase.push(
 			'/users/' + this.token,
 			{
@@ -196,6 +197,30 @@ export class BackendService {
 			}
 		);
 	}
+
+	// static getAllUsers() {
+	// 	const usersCollection = firebase.firestore().collection("users");
+
+	// 	usersCollection.get().then(querySnapshot => {
+	// 	querySnapshot.forEach(doc => {
+	// 		console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+	// 	});
+	// 	});
+	// }
+
+	// static addUser(user: User) {
+	// 	const usersCollection = firebase.firestore().collection("users");
+	// 	usersCollection.set(this.token).add({
+	// 		username: user.username,
+	// 		email: user.email,
+	// 		bio: user.bio,
+	// 		birthYear: user.birthYear,
+	// 		gender: user.gender,
+	// 		imageList: user.imageList
+	// 	  }).then(documentRef => {
+	// 		console.log(`San Francisco added with auto-generated ID: ${documentRef.id}`);
+	// 	  });
+	// }
 
 	// Storage stuff
 
