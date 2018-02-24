@@ -1,14 +1,13 @@
 import { EventData, fromObject, Observable } from "data/observable";
-// import { Kinvey } from "kinvey-nativescript-sdk";
 import { View } from "ui/core/view";
 import * as dialogs from "ui/dialogs";
 import { EditableTextBase } from "ui/editable-text-base";
 import * as frameModule from "ui/frame";
 import { Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
-import { User } from "./../../shared/user.model";
+// import { User } from "./../../shared/user.model";
 
-const user = new User();
+const user = require("./../../shared/user.model");
 
 export function onLoaded(args) {
     const page = args.object;
@@ -17,7 +16,6 @@ export function onLoaded(args) {
 
 export function signUp() {
     if (BackendService.isLoggedIn()) {
-        const oldUser = user.username;
         const promise1 = BackendService.logout()
         .then(() => {
             dialogs.alert("user logged off").then(() => {
@@ -42,7 +40,6 @@ export function completeRegistration() {
     .then(() => {
     // trying to save user into local storage on first singup
     user.storeUser();
-    console.log(user.username + " pass: " + user.password);
     })
     .then(() => {
         dialogs.alert("User registered and stored: " + user.username);

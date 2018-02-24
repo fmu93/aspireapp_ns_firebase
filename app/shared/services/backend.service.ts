@@ -9,6 +9,8 @@ const tokenKey = "token";
 
 export class BackendService {
 
+	// User auth stuff
+
 	static isLoggedIn(): boolean {
 		return !!getString("token");
 	}
@@ -27,7 +29,7 @@ export class BackendService {
 			password: user.password
 		}).then((response) => {
 			console.log(JSON.stringify(response));
-
+			this.doUserStoreByPush(user);
 			return response;
 			}
 		).catch((error) => {
@@ -35,7 +37,7 @@ export class BackendService {
 		});
 		}
 
-		static updateUser(user: User) {
+	static updateUser(user: User) {
 		firebase.updateProfile({
 			displayName: user.username
 		}).then(() => {
@@ -70,23 +72,117 @@ export class BackendService {
 	return firebase.logout();
 	}
 
-	static doDeleteUser(): void {
-		firebase.deleteUser().then(
+	static doDeleteUser(): Promise<any> {
+		return firebase.deleteUser().then(
 			() => {
+				Config.token = "";
+				BackendService.token = "";
+			  	alert({
+					title: "User deleted",
+					okButtonText: "Nice!"
+			  	});
+			},
+			errorMessage => {
+			  	alert({
+					title: "User not deleted",
+					message: errorMessage,
+					okButtonText: "OK, got it"
+			  	});
+			}
+		);
+	  }
+
+	static doGetCurrentUser(): firebase.User {
+		firebase.getCurrentUser().then(
+			result => {
+			alert({
+				title: "Current user",
+				message: JSON.stringify(result),
+				okButtonText: "Nice!"
+			});
+			return result
+			},
+			errorMessage => {
+			  	alert({
+					title: "No current user",
+					message: errorMessage,
+					okButtonText: "OK, thanks"
+			  	});	
+			}
+		);
+		return null
+	}
+
+	// Other auth methods
+
+	static doLoginByFacebook(): void {
+		firebase.login({
+		  // note that you need to enable Facebook auth in your firebase instance
+		  type: firebase.LoginType.FACEBOOK
+		}).then(
+			result => {
 			  alert({
-				title: "User deleted",
+				title: "Login OK",
+				message: JSON.stringify(result),
 				okButtonText: "Nice!"
 			  });
 			},
 			errorMessage => {
 			  alert({
-				title: "User not deleted",
+				title: "Login error",
 				message: errorMessage,
-				okButtonText: "OK, got it"
+				okButtonText: "OK, pity"
 			  });
 			}
 		);
-	  }
+	}
+
+	static doLoginByGoogle(): void {
+		firebase.login({
+		  // note that you need to enable Google auth in your firebase instance
+		type: firebase.LoginType.GOOGLE
+		}).then(
+			result => {
+			  alert({
+				title: "Login OK",
+				message: JSON.stringify(result),
+				okButtonText: "Nice!"
+			  });
+			},
+			errorMessage => {
+			  alert({
+				title: "Login error",
+				message: errorMessage,
+				okButtonText: "OK, pity"
+			  });
+			}
+		);
+	}
+
+	// database stuff
+
+	static doUserStoreByPush(user: User): void {
+		firebase.push(
+			'/users/' + this.token,
+			{
+			  'username': user.username,
+			  'email': user.email,
+			  'bio': user.bio,
+			  'birthYear': user.birthYear,
+			  'gender': user.gender,
+			  'imageList': user.imageList
+			}
+		).then(
+			result => {
+			  console.log("firebase.push done, created key: " + result.key);
+			},
+			error => {
+			  console.log("firebase.push error: " + error);
+			}
+		);
+	}
+
+	// Storage stuff
 
 	static uploadFile(remoteFullPath: string, localPath: string): Promise<any> {
 		const appPath = fs.knownFolders.currentApp();
@@ -141,9 +237,9 @@ export class BackendService {
 		});
 	}
 
-	static deleteFile(): void {
+	static deleteFile(remoteFullPath: string): void {
 		firebase.deleteFile({
-			remoteFullPath: 'uploads/images/telerik-logo-uploaded.png' // TODO
+			remoteFullPath
 		}).then(
 			function () {
 				console.log("File deleted.");
@@ -153,5 +249,11 @@ export class BackendService {
 			}
 		);
 	}  
+
+	// Tools/utils
+
+	static makeImgRemotePath(fileName: string, extension: string): string {
+		return "/users/" + BackendService.token + "/public/" + fileName + "." + extension.replace(".", "");
+	}
 
 }

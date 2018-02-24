@@ -6,7 +6,6 @@ import * as frameModule from "ui/frame";
 import label = require("ui/label");
 import { NavigatedData, Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
-import { User } from "./../../shared/user.model";
 import { TabsViewModel } from "./tabs-view-model";
 
 /* ***********************************************************
@@ -58,7 +57,9 @@ export function logOut() {
 }
 
 export function deleteUser() {
-    BackendService.doDeleteUser();
+    BackendService.doDeleteUser().then(() => {
+        frameModule.topmost().navigate("views/login/login");
+    });
 }
 
 export function refreshTabsPage() {
