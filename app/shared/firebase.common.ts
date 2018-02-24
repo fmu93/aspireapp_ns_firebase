@@ -2,8 +2,10 @@ import firebase = require("nativescript-plugin-firebase");
 import { Config } from "./config";
 import { BackendService } from "./services/backend.service";
 
+console.log(Config.storageBucket)
+
 firebase.init({
-    storageBucket: Config.storageBucket,
+    storageBucket: "gs://aspireapp-2dff5.appspot.com",
     onAuthStateChanged(data) { // optional but useful to immediately re-logon the user when he re-visits your app
         console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
         if (data.loggedIn) {

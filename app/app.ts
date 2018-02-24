@@ -6,6 +6,8 @@ purpose of the file is to pass control to the app’s first module.
 
 import * as app from "application";
 import "./bundle-config";
+// added this here so we can do some wiring
+require("nativescript-plugin-firebase");
 import "./shared/firebase.common";
 
 app.start({ moduleName: "views/tabs/tabs-page" });
