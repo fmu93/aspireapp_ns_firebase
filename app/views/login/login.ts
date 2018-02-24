@@ -5,9 +5,9 @@ import { EditableTextBase } from "ui/editable-text-base";
 import * as frameModule from "ui/frame";
 import { Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
-// import { User } from "./../../shared/user.model";
+import { User } from "./../../shared/user.model";
 
-const user = require("./../../shared/user.model");
+const user = new User();
 
 export function onLoaded(args) {
     // check if existing user on local storage

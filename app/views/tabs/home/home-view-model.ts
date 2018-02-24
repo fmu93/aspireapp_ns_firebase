@@ -13,6 +13,7 @@ import { BackendService } from "../../../shared/services/backend.service";
 const user = require("./../../../shared/user.model");
 
 export class HomeViewModel extends Observable {
+    @ObservableProperty()
     public imgSrc: string;
 
     constructor() {

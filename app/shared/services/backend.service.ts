@@ -3,11 +3,29 @@ import * as fs from "tns-core-modules/file-system";
 import firebase = require("nativescript-plugin-firebase");
 import { Observable } from "tns-core-modules/ui/page/page";
 import { User } from "./../../shared/user.model";
-import { Config } from "./../config";
 
 const tokenKey = "token";
 
 export class BackendService {
+
+	// init
+	static init(): Promise<any> {
+		return firebase.init({
+			storageBucket: "gs://aspireapp-2dff5.appspot.com",
+			persist: true,
+			onAuthStateChanged(data) { // optional but useful to immediately re-logon the user when he re-visits your app
+				console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
+				if (data.loggedIn) {
+					this.token = data.user.uid;
+					console.log("user's email address: " + (data.user.email ? data.user.email : "N/A"));
+				} else {
+					this.token = "";
+				}
+			}
+		})
+		.then((instance) => console.log("firebase.init done"),
+		(error) => console.log("firebase.init error: " + error));
+	}
 
 	// User auth stuff
 
@@ -58,7 +76,6 @@ export class BackendService {
 			}
 		}).then((response) => {
 			console.log(JSON.stringify(response));
-			Config.token = response.uid;
 			BackendService.token = response.uid;
 
 			return response;
@@ -66,7 +83,6 @@ export class BackendService {
 	}
 
 	static logout() {
-	Config.token = "";
 	BackendService.token = "";
 
 	return firebase.logout();
@@ -75,7 +91,6 @@ export class BackendService {
 	static doDeleteUser(): Promise<any> {
 		return firebase.deleteUser().then(
 			() => {
-				Config.token = "";
 				BackendService.token = "";
 			  	alert({
 					title: "User deleted",
@@ -161,23 +176,23 @@ export class BackendService {
 
 	// database stuff
 
-	static doUserStoreByPush(user: User): void {
-		firebase.push(
+	static doUserStoreByPush(user: User): Promise<any> {
+		return firebase.push(
 			'/users/' + this.token,
 			{
-			  'username': user.username,
-			  'email': user.email,
-			  'bio': user.bio,
-			  'birthYear': user.birthYear,
-			  'gender': user.gender,
-			  'imageList': user.imageList
+			'username': user.username,
+			'email': user.email,
+			'bio': user.bio,
+			'birthYear': user.birthYear,
+			'gender': user.gender,
+			'imageList': user.imageList
 			}
 		).then(
 			result => {
-			  console.log("firebase.push done, created key: " + result.key);
+			console.log("firebase.push done, created key: " + result.key);
 			},
 			error => {
-			  console.log("firebase.push error: " + error);
+			console.log("firebase.push error: " + error);
 			}
 		);
 	}

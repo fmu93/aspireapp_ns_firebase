@@ -9,5 +9,5 @@ Feel free to customize layouts and components to change how the tab view looks.
     <Button text="StoreByPush" tap="{{ storeByPush }}" class="button1"  horizontalAlignment="center"/>
     <Label class="page-icon fa" text="&#xf015;"></Label>
     <Label class="page-placeholder" text="<-- Get image from files -->"></Label>
-    <Image margin="10" src="{{ imgSrc }}" tap="imgTap"></Image>
+    <Image src="{{ imgSrc }}" tap="{{ imgTap }}" stretch="none" ></Image>
 </StackLayout>
