@@ -19,19 +19,6 @@ export function onLoaded(args: EventData) {
 }
 
 export function lookUp() {
-    // isLoading = true;
-    // BackendService.customEndPoint("look-up", {})
-    // .then((response: Array<User>) => {
-    //     users = new ObservableArray(response);
-    //     tmobservable.set("users", users);
-    //     component.bindingContext = tmobservable;
-    //     isLoading = false;
-    //     console.log("Finished lookup");
-    //     Toast.makeText("Other users loaded").show();
-    // })
-    // .catch((error) => {
-    //     console.log(error);
-    //     isLoading = false;
-    // });
+    BackendService.getUsersCollection();
 
 }

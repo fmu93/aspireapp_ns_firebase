@@ -11,7 +11,7 @@ const user = new User();
 
 export function onLoaded(args) {
     // check if existing user on local storage
-    user.retrieveUser();
+    user.loadLocalUser();
 
     const page = <Page>args.object;
     page.bindingContext = user;

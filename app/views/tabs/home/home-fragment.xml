@@ -6,7 +6,9 @@ Feel free to customize layouts and components to change how the tab view looks.
     <Button text="Select images" tap="{{ imgSelect }}" class="button1"  horizontalAlignment="center"/>
     <Button text="Upload images" tap="{{ imgUpload }}" class="button1"  horizontalAlignment="center"/>
     <Button text="Download images" tap="{{ imgDownload }}" class="button1"  horizontalAlignment="center"/>
-    <Button text="StoreByPush" tap="{{ storeByPush }}" class="button1"  horizontalAlignment="center"/>
+    <Button text="Store2collection" tap="{{ storeByPush }}" class="button1"  horizontalAlignment="center"/>
+    <Button text="Show user model" tap="{{ showUserModel }}" class="button1"  horizontalAlignment="center"/>
+
     <Label class="page-icon fa" text="&#xf015;"></Label>
     <Label class="page-placeholder" text="<-- Get image from files -->"></Label>
     <Image src="{{ imgSrc }}" tap="{{ imgTap }}" stretch="none" ></Image>

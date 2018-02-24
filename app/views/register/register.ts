@@ -8,7 +8,6 @@ import { BackendService } from "./../../shared/services/backend.service";
 import { User } from "./../../shared/user.model";
 
 const user = new User();
-// const user = require("./../../shared/user.model");
 
 export function onLoaded(args) {
     const page = args.object;
@@ -37,12 +36,10 @@ export function signUp() {
 }
 
 export function completeRegistration() {
-    const promise = BackendService.register(user)
+    BackendService.register(user)
     .then(() => {
-    // trying to save user into local storage on first singup
-    user.storeUser();
-    })
-    .then(() => {
+        // trying to save user into local storage on first singup
+        user.storeUser();
         dialogs.alert("User registered and stored: " + user.username);
         BackendService.logout();
         frameModule.topmost().navigate("views/login/login");

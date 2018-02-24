@@ -57,8 +57,8 @@ export function logOut() {
 }
 
 export function deleteUser() {
-    BackendService.doDeleteUser().then(() => {
-        frameModule.topmost().navigate("views/login/login");
+    BackendService.doDeleteUser().then((deleted: boolean) => {
+        if (deleted) {frameModule.topmost().navigate("views/login/login");}
     });
 }
 

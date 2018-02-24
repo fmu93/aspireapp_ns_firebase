@@ -58,8 +58,12 @@ export class HomeViewModel extends Observable {
         });
     }
     
-    public storeByPush(){
-        BackendService.doUserStoreByPush(new User());
+    public storeByPush() {
+        BackendService.doUserStore();
+    }
+
+    public showUserModel() {
+        BackendService.printUser();
     }
     
 }

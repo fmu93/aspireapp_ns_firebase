@@ -5,8 +5,10 @@ import { Observable } from "tns-core-modules/ui/page/page";
 import { User } from "./../../shared/user.model";
 
 const tokenKey = "token";
+const user = new User();
 
 export class BackendService {
+	// public static user: User;
 
 	// init
 	static init(): Promise<any> {
@@ -17,6 +19,7 @@ export class BackendService {
 				console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
 				if (data.loggedIn) {
 					this.token = data.user.uid;
+					user.loadFirebaseUser(data.user);
 					console.log("user's email address: " + (data.user.email ? data.user.email : "N/A"));
 				} else {
 					this.token = "";
@@ -28,6 +31,11 @@ export class BackendService {
 	}
 
 	// User auth stuff
+
+	static printUser() {
+		console.dir(user);
+		user.printUser();
+	}
 
 	static isLoggedIn(): boolean {
 		return !!getString("token");
@@ -46,8 +54,10 @@ export class BackendService {
 			email: user.email,
 			password: user.password
 		}).then((response) => {
-			console.log(JSON.stringify(response));
-			this.doUserStoreByPush(user);
+			console.log("New user created: " + response.key);
+			this.token = response.key;
+			user.uid = response.key;
+			this.doUserStore();
 			return response;
 			}
 		).catch((error) => {
@@ -77,15 +87,14 @@ export class BackendService {
 		}).then((response) => {
 			console.log(JSON.stringify(response));
 			this.token = response.uid;
+			user.loadFirebaseUser(response);
 
 			return response;
 			});
 	}
 
 	static logout() {
-	this.token = "";
-
-	return firebase.logout();
+	return firebase.logout().then(() => this.token = "");
 	}
 
 	static doDeleteUser(): Promise<any> {
@@ -95,14 +104,16 @@ export class BackendService {
 			  	alert({
 					title: "User deleted",
 					okButtonText: "Nice!"
-			  	});
+				});
+				return true
 			},
 			errorMessage => {
 			  	alert({
 					title: "User not deleted",
 					message: errorMessage,
 					okButtonText: "OK, got it"
-			  	});
+				  });
+				  return false
 			}
 		);
 	  }
@@ -176,10 +187,35 @@ export class BackendService {
 
 	// database stuff
 
+	static doUserStore() {
+		return firebase.setValue(
+			'/users/' + user.uid,
+			{
+			'username': user.username,
+			'email': user.email,
+			'bio': user.bio,
+			'birthYear': user.birthYear,
+			'gender': "user.gender",
+			'imageList': user.imageList
+			}
+		);
+	}
+
+	static getUsersCollection() {
+		firebase.getValue('/users')
+		.then(result => console.log(JSON.stringify(result)))
+		.catch(error => console.log("Error: " + error));
+	}
+
+	static getThisUserCollection(): Promise<any> {
+		return firebase.getValue('/users/' + this.token)
+		.then(result => {return console.log(JSON.stringify(result))})
+		.catch(error => console.log("Error: " + error));
+	}
+
 	static doUserStoreByPush(user: User): Promise<any> {
-		console.log(JSON.stringify(user));
 		return firebase.push(
-			'/users/' + this.token,
+			'/users/',
 			{
 			'username': user.username,
 			'email': user.email,
@@ -241,6 +277,13 @@ export class BackendService {
 			}	
 		}).then((uploadedFile) => {
 				console.log("File uploaded: " + JSON.stringify(uploadedFile));
+				// make reference in database
+				firebase.setValue('/users/' + this.token + "/imageList",
+				{
+					"filename": localPath.split("/").pop(),
+					"public": true // for now
+				})
+
 				return uploadedFile;
 		},
 		(error) => {
