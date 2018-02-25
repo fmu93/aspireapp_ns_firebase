@@ -6,12 +6,12 @@ require("nativescript-localstorage");
 const validator = require("email-validator");
 
 export class User extends Observable {
-  @ObservableProperty()
+  @ObservableProperty() 
   public username: string;
   public uid: string;
   public email: string;
   public password: string;
-  public gender: string;
+  public gender: string = "user.gender";
   public birthYear: number;
   public bio: string;
   public imageList: {};
@@ -39,10 +39,6 @@ export class User extends Observable {
     }
 
     return this;
-  }
-
-  public printUser() {
-    return console.log(this.username + " pass: " + this.password);
   }
 
   public isValidEmail() {

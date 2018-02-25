@@ -8,17 +8,7 @@ import { BackendService } from "../../../shared/services/backend.service";
 import { User } from "../../../shared/user.model";
 import { BrowseViewModel } from "./browse-view-model";
 
-let users = new ObservableArray<User>();
-let isLoading: boolean = false;
-const tmobservable = new Observable();
-let component;
-
 export function onLoaded(args: EventData) {
-    component = <StackLayout>args.object;
+    const component = <StackLayout>args.object;
     component.bindingContext = new BrowseViewModel();
-}
-
-export function lookUp() {
-    BackendService.getUsersCollection();
-
 }

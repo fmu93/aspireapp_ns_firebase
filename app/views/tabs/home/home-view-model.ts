@@ -25,7 +25,7 @@ export class HomeViewModel extends Observable {
     }
     
     public imgSelect() {
-        const milliseconds = (new Date()).getTime();
+        const filename = String((new Date()).getTime());
         const context = imagepicker.create({
             mode: "single"
         });
@@ -34,8 +34,10 @@ export class HomeViewModel extends Observable {
         }).then((selection) => {
             selection.forEach((element) => {    
                 this.imgSrc = element.fileUri;
-                const remotePath = BackendService.makeImgRemotePath(String(milliseconds), element.fileUri.split(".").pop());
-                BackendService.uploadFile(remotePath, element.fileUri);
+                const remotePath = BackendService.makeImgRemotePath(filename, element.fileUri.split(".").pop());
+                BackendService.uploadFile(remotePath, element.fileUri).then(() => {
+                    BackendService.addToImageList(remotePath, filename);
+                });
             });
         });
     }
@@ -58,8 +60,8 @@ export class HomeViewModel extends Observable {
         });
     }
     
-    public storeByPush() {
-        BackendService.doUserStore();
+    public getThisUser() {
+        BackendService.getThisUserCollection();
     }
 
     public showUserModel() {

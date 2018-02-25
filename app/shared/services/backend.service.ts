@@ -5,7 +5,7 @@ import { Observable } from "tns-core-modules/ui/page/page";
 import { User } from "./../../shared/user.model";
 
 const tokenKey = "token";
-const user = new User();
+let user = new User();
 
 export class BackendService {
 	// public static user: User;
@@ -19,7 +19,7 @@ export class BackendService {
 				console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
 				if (data.loggedIn) {
 					this.token = data.user.uid;
-					user.loadFirebaseUser(data.user);
+					BackendService.getThisUserCollection();
 					console.log("user's email address: " + (data.user.email ? data.user.email : "N/A"));
 				} else {
 					this.token = "";
@@ -34,7 +34,6 @@ export class BackendService {
 
 	static printUser() {
 		console.dir(user);
-		user.printUser();
 	}
 
 	static isLoggedIn(): boolean {
@@ -57,7 +56,7 @@ export class BackendService {
 			console.log("New user created: " + response.key);
 			this.token = response.key;
 			user.uid = response.key;
-			this.doUserStore();
+			this.doUserStore(user);
 			return response;
 			}
 		).catch((error) => {
@@ -87,7 +86,7 @@ export class BackendService {
 		}).then((response) => {
 			console.log(JSON.stringify(response));
 			this.token = response.uid;
-			user.loadFirebaseUser(response);
+			BackendService.getThisUserCollection();
 
 			return response;
 			});
@@ -100,6 +99,7 @@ export class BackendService {
 	static doDeleteUser(): Promise<any> {
 		return firebase.deleteUser().then(
 			() => {
+				this.deleteThisUserCollection();
 				this.token = "";
 			  	alert({
 					title: "User deleted",
@@ -187,30 +187,103 @@ export class BackendService {
 
 	// database stuff
 
-	static doUserStore() {
+	static doUserStore(user: User) {
 		return firebase.setValue(
 			'/users/' + user.uid,
 			{
 			'username': user.username,
+			'uid': user.uid,
 			'email': user.email,
 			'bio': user.bio,
 			'birthYear': user.birthYear,
-			'gender': "user.gender",
+			'gender': user.gender,
 			'imageList': user.imageList
 			}
 		);
 	}
 
-	static getUsersCollection() {
-		firebase.getValue('/users')
-		.then(result => console.log(JSON.stringify(result)))
-		.catch(error => console.log("Error: " + error));
+	static deleteThisUserCollection(): Promise<any> {
+		return firebase.remove("/users/" + this.token).then(
+			() => {
+			  console.log("firebase.remove done");
+			},
+			error => {
+			  console.log("firebase.remove error: " + error);
+			}
+		);
 	}
 
-	static getThisUserCollection(): Promise<any> {
+	static getUsersCollection(): Promise<User[]> {
+		return firebase.getValue('/users')
+		.then(result => {
+			const users = new Array<User>();
+			for (var key in result.value) {
+				console.log("Key: " + key);
+				console.log("Value: " + result.value[key]);
+				users.push(result.value[key]);
+			}
+			return users
+		})
+		.catch(error => {
+			console.log("Error: " + error)
+			return null
+		});
+	}
+
+	static doQueryUsers() {
+		const path = "/users";
+		const onValueEvent = result => {
+			// note that the query returns 1 match at a time,
+			// in the order specified in the query
+			console.log("Query result: " + JSON.stringify(result));
+			if (!result.error) {
+				console.log("Event type: " + result.type);
+				console.log("Key: " + result.key);
+				console.log("Value: " + JSON.stringify(result.value));
+			}
+		};
+		firebase.query(
+			onValueEvent,
+			path,
+			{
+				singleEvent: true,
+				orderBy: {
+					type: firebase.QueryOrderByType.KEY
+				}
+			}
+		).then(
+			result => {
+			  console.log("This 'result' should be available since singleEvent is true: " + JSON.stringify(result));
+			  return result;
+			},
+			errorMessage => {
+				alert({
+					title: "Query error",
+					message: errorMessage,
+					okButtonText: "OK, pity!"
+				});
+			}
+		);
+	  }
+
+	static getThisUserCollection(): Promise<User> {
 		return firebase.getValue('/users/' + this.token)
-		.then(result => {return console.log(JSON.stringify(result))})
-		.catch(error => console.log("Error: " + error));
+		.then(result => {
+			return <User> result.value
+		})
+		.catch(error => {
+			console.log("Error: " + error)
+			return null
+		});
+	}
+
+	static addToImageList(remoteLocation: string, filename: string): Promise<User> {
+		return firebase.setValue(
+			'/users/' + this.token + "/imageList/" + filename,
+			{
+			'remoteLocation': remoteLocation,
+			'public': true
+			})
 	}
 
 	static doUserStoreByPush(user: User): Promise<any> {
@@ -260,7 +333,7 @@ export class BackendService {
 
 	// Storage stuff
 
-	static uploadFile(remoteFullPath: string, localPath: string): Promise<any> {
+	static uploadFile(remoteFullPath: string, localPath: string): Promise<firebase.UploadFileResult> {
 		const appPath = fs.knownFolders.currentApp();
 		// const localFullPath = fs.path.join(appPath.path, localPath); // seems like whould be localPath
 		if (!fs.File.exists(localPath)) {
@@ -277,17 +350,18 @@ export class BackendService {
 			}	
 		}).then((uploadedFile) => {
 				console.log("File uploaded: " + JSON.stringify(uploadedFile));
-				// make reference in database
-				firebase.setValue('/users/' + this.token + "/imageList",
-				{
-					"filename": localPath.split("/").pop(),
-					"public": true // for now
-				})
+				// // make reference in database
+				// firebase.setValue('/users/' + this.token + "/imageList",
+				// {
+				// 	"filename": localPath.split("/").pop(),
+				// 	"public": true // for now
+				// })
 
 				return uploadedFile;
 		},
 		(error) => {
 			console.log("File upload error: " + error);
+			return null;
 		});
 	}
 
