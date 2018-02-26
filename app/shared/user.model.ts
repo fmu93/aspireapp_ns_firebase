@@ -14,7 +14,10 @@ export class User extends Observable {
   public gender: string = "user.gender";
   public birthYear: number;
   public bio: string;
-  public imageList: {};
+  public imageList: [{
+    "public": boolean, 
+    "remoteLocation": string,
+  }];
 
   // constructor() {
   //   super();
@@ -44,4 +47,13 @@ export class User extends Observable {
   public isValidEmail() {
     return validator.validate(this.email);
   }
+}
+
+class ImageList {
+  public imageKeys: {
+    "public": boolean, 
+    "remoteLocation": string,
+  };
+
+
 }

@@ -218,15 +218,13 @@ export class BackendService {
 		.then(result => {
 			const users = new Array<User>();
 			for (var key in result.value) {
-				console.log("Key: " + key);
-				console.log("Value: " + result.value[key]);
 				users.push(result.value[key]);
 			}
 			return users
 		})
 		.catch(error => {
 			console.log("Error: " + error)
-			return null
+			return error
 		});
 	}
 
@@ -382,7 +380,7 @@ export class BackendService {
 		);
 	}
 
-	static getDownloadUrl(remoteFullPath: string): Promise<any> {
+	static getDownloadUrl(remoteFullPath: string): Promise<string> {
 		return firebase.getDownloadUrl({
 		remoteFullPath
 		})
@@ -391,6 +389,7 @@ export class BackendService {
 		},
 		(errorMessage: any) => {
 			console.log(errorMessage);
+			return errorMessage;
 		});
 	}
 
