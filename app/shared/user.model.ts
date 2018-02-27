@@ -54,7 +54,7 @@ export class ImageCustom extends Observable {
   remoteLocation: string;
   url: string;
   name: string;
-  caption: string; // "lovely weather!"
+  caption: string = "caption this"; // "lovely weather!"
   contentType: string; //image/jpeg
   created: string; // 2018-02-27T12:08:43.752Z
   updated: string; //2018-02-27T12:08:43.752Z

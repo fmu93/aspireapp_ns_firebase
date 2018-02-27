@@ -18,26 +18,28 @@ export class SearchViewModel extends Observable {
 
     constructor() {
         super();
+        this.loadedImgList.push(new ImageCustom("", "", ""));
         this.loadGuest();
     }
 
     public loadGuest() {
-        BackendService.getUsersCollection().then(users => {
+        BackendService.getUsersCollection().then((users: User[]) => {
             this.userSize = users.length;
             const guest = users[this.userIndex];
             this.guestName = guest._username;
 
             // empty current loadedImageList
-            for (var img in this.loadedImgList) {
-                this.loadedImgList.pop();
+            for (var i = 1; i < this.loadedImgList.length; i++) {
+                this.loadedImgList.splice(i);
             };
             // load with images from current user
             for (var key in guest.imageList) {
                 this.loadedImgList.push(guest.imageList[key]);
             }
+            this.loadedImgList.shift();
             // sort assuming all images are milliseconds as filename
             this.loadedImgList.sort(function(a, b) {
-                return parseFloat(a.filename) - parseFloat(b.filename);
+                return parseFloat(b.filename) - parseFloat(a.filename);
             });          
         }).catch((error) => {
             console.log(error);

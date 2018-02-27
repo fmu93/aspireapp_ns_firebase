@@ -5,8 +5,8 @@
     <Page.actionBar>
         <ActionBar class="action-bar">
 
-          <GridLayout columns="*, auto, *">
-            <Label text="{{ title }}" col="1" class="action-bar-title" />
+          <GridLayout columns="*, 2*, *">
+            <Label text="{{ title }}" col="1" class="action-bar-title" width="200" horizontalAlignment="center"/>
             <Label id="username" text="{{ username }}" col="2" class="action-bar-title fa" horizontalAlignment="right" />
           </GridLayout>
           

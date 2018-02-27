@@ -1,4 +1,4 @@
-<StackLayout class="page-content" loaded="onLoaded" xmlns:lv="nativescript-pro-ui/listview">
+<StackLayout class="page-content" loaded="onLoaded" xmlns:lv="nativescript-pro-ui/listview" xmlns:f="nativescript-fresco">
     <GridLayout id="form-content" class="form-content" rows="auto, *" loaded="onContentLoaded">
         <ScrollView row="0" class="fields-section">
             <StackLayout>
@@ -32,10 +32,19 @@
                 <lv:ListViewGridLayout scrollDirection="Vertical" spanCount="2"/>
             </lv:RadListView.listViewLayout>
             <lv:RadListView.itemTemplate>
-                <StackLayout class="list-group-item">
-                    <Label text="{{ filename }}" marginLeft="10" /> 
-                    <Image src="{{ url }}" margin="10" horizontalAlignment="center" />
-                </StackLayout>
+                <GridLayout rows="*" backgroundColor="White">
+                    <GridLayout rows="*" columns="*" marginBottom="2" marginRight="2">
+                        <f:FrescoDrawee
+                        horizontalAlignment="stretch"
+                        height="250"
+                        imageUri="{{ url }}"/>
+                        <GridLayout verticalAlignment="bottom">
+                            <StackLayout backgroundColor="#AAFFFFFF" paddingTop="4" paddingBottom="4" paddingLeft="16" paddingRight="16">
+                                <Label text="{{ caption }}"/>
+                            </StackLayout>
+                        </GridLayout>
+                    </GridLayout>
+                </GridLayout>
             </lv:RadListView.itemTemplate>
         </lv:RadListView>
 

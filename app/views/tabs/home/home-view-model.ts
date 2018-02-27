@@ -35,16 +35,17 @@ export class HomeViewModel extends Observable {
         BackendService.getThisUserCollection().then((user: User) => {
             this.user = user;
             // empty current loadedImageList
-            // for (var img in this.loadedImgList) {
-            //     this.loadedImgList.pop();
-            // };
+            for (var i = 1; i < this.loadedImgList.length; i++) {
+                this.loadedImgList.splice(i);
+            };
             // load with images from current user
             for (var key in user.imageList) {
                 this.loadedImgList.push(user.imageList[key]);
             }
+            this.loadedImgList.shift();
             // sort assuming all images are milliseconds as filename
             this.loadedImgList.sort(function(a, b) {
-                return parseFloat(a.filename) - parseFloat(b.filename);
+                return parseFloat(b.filename) - parseFloat(a.filename);
             });
         }).catch(error => console.log(error));
     }
@@ -102,7 +103,9 @@ export class HomeViewModel extends Observable {
             "birthYear": Number.parseInt(this.birthYear),
             "bio": this.bio
         }
-        BackendService.updateUserProperties(properties);
+        BackendService.updateUserProperties(properties).then(() => {
+            Toast.makeText("Updated user properties").show();
+        });
     }
   
 }

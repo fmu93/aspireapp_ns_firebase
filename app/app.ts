@@ -7,7 +7,29 @@ purpose of the file is to pass control to the app’s first module.
 import * as app from "application";
 import "./bundle-config";
 import { BackendService } from "./shared/services/backend.service";
-// import * as strings from "./shared/strings";
+import fresco = require("nativescript-fresco");
+app.setCssFileName("./app.css");
+
+//partial declaration of Fresco native android class
+declare module com {
+    module facebook {
+        module drawee {
+            module backends {
+                module pipeline {
+                    class Fresco {
+                        static initialize(context: any): any;
+                    }
+                }
+            }
+        }
+    }
+}
+
+if (app.android) {
+    app.on("launch", (intent) => {
+        fresco.initialize();
+    });
+}
 
 BackendService.init();
 
