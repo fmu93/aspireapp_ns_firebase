@@ -3,12 +3,13 @@ import * as fs from "tns-core-modules/file-system";
 import firebase = require("nativescript-plugin-firebase");
 import { Observable } from "tns-core-modules/ui/page/page";
 import { User, ImageCustom} from "./../../shared/user.model";
+import { AddEventListenerResult } from "nativescript-plugin-firebase";
 
 const tokenKey = "token";
 let user = new User();
 
 export class BackendService {
-	// public static user: User;
+	private static userListenerWrapper: AddEventListenerResult;
 
 	// init
 	static init(): Promise<any> {
@@ -190,12 +191,19 @@ export class BackendService {
 
 	// database stuff
 
-	static doUserStore(user: User) {
+	static doUserStore(user: User): Promise<any>  {
 		const userDeletePassword = Object.assign({}, user); 
 		userDeletePassword.password = "<overwritten>";
 		return firebase.setValue(
 			'/users/' + user.uid,
 			userDeletePassword
+		);
+	}
+
+	static updateUserProperties(userProperties: {}): Promise<any> {
+		return firebase.update(
+			'/users/' + this.token,
+			userProperties
 		);
 	}
 
@@ -285,50 +293,35 @@ export class BackendService {
 		return firebase.remove('/users/' + this.token + "/imageList/" + filename);
 	}
 
-	static doUserStoreByPush(user: User): Promise<any> {
-		return firebase.push(
-			'/users/',
-			{
-			'username': user.username,
-			'email': user.email,
-			'bio': user.bio,
-			'birthYear': user.birthYear,
-			'gender': user.gender,
-			'imageList': user.imageList
-			}
-		).then(
-			result => {
-			console.log("firebase.push done, created key: " + result.key);
+	static addDatabseListener(onChildEvent: any, path: string) {
+	  	// listen to changes in the /users path
+		firebase.addChildEventListener(onChildEvent, path).then(
+			listenerWrapper => {
+				this.userListenerWrapper = listenerWrapper;
+				var path = listenerWrapper.path;
+				var listeners = listenerWrapper.listeners; // an Array of listeners added
+				// you can store the wrapper somewhere to later call 'removeEventListeners'
+				console.log("firebase.addChildEventListener added");
 			},
 			error => {
-			console.log("firebase.push error: " + error);
+			  console.log("firebase.addChildEventListener error: " + error);
 			}
 		);
 	}
 
-	// static getAllUsers() {
-	// 	const usersCollection = firebase.firestore().collection("users");
-
-	// 	usersCollection.get().then(querySnapshot => {
-	// 	querySnapshot.forEach(doc => {
-	// 		console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-	// 	});
-	// 	});
-	// }
-
-	// static addUser(user: User) {
-	// 	const usersCollection = firebase.firestore().collection("users");
-	// 	usersCollection.set(this.token).add({
-	// 		username: user.username,
-	// 		email: user.email,
-	// 		bio: user.bio,
-	// 		birthYear: user.birthYear,
-	// 		gender: user.gender,
-	// 		imageList: user.imageList
-	// 	  }).then(documentRef => {
-	// 		console.log(`San Francisco added with auto-generated ID: ${documentRef.id}`);
-	// 	  });
-	// }
+	static enableUsersSync() {
+		firebase.keepInSync(
+			"/users", // which path in your Firebase needs to be kept in sync?
+			true      // set to false to disable this feature again
+		).then(
+			function () {
+			  console.log("firebase.keepInSync is ON for /users");
+			},
+			function (error) {
+			  console.log("firebase.keepInSync error: " + error);
+			}
+		);
+	}
 
 	// Storage stuff
 

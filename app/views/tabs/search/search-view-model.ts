@@ -2,8 +2,9 @@ import { Observable } from "data/observable";
 import { ObservableProperty } from "../../../shared/observable-property-decorator";
 import { BackendService } from "../../../shared/services/backend.service";
 import { Image } from "tns-core-modules/ui/image/image";
-import * as observableArray from "tns-core-modules/data/observable-array";
+import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { User, ImageCustom } from "./../../../shared/user.model";
+import * as Toast from "nativescript-toast";
 
 
 export class SearchViewModel extends Observable {
@@ -13,7 +14,7 @@ export class SearchViewModel extends Observable {
     public imgB: string;
     private userIndex = 0;
     private userSize = 1;
-    public loadedImgList = new observableArray.ObservableArray(new Array<ImageCustom>());
+    public loadedImgList = new ObservableArray<ImageCustom>();
 
     constructor() {
         super();
@@ -38,7 +39,6 @@ export class SearchViewModel extends Observable {
             this.loadedImgList.sort(function(a, b) {
                 return parseFloat(a.filename) - parseFloat(b.filename);
             });          
-            console.log(this.loadedImgList);
         }).catch((error) => {
             console.log(error);
         });
@@ -56,5 +56,9 @@ export class SearchViewModel extends Observable {
 
     public passImg(img: Image) {
         img.src = this.imgA;
+    }
+
+    public imgTap(args) {
+        Toast.makeText("Filename: " + this.loadedImgList.getItem(args.index).filename).show();
     }
 }

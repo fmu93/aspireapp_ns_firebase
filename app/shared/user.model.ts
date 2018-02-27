@@ -13,7 +13,7 @@ export class User extends Observable {
   public email: string;
   public password: string;
   public gender: string = " ";
-  public birthYear: number;
+  public birthYear: number = 1969;
   public bio: string = " ";
   public type: string = " ";
   public imageList: Array<ImageCustom> = new Array<ImageCustom>();
@@ -61,7 +61,7 @@ export class ImageCustom extends Observable {
   bucket: string; //aspireapp-2dff5.appspot.com
   size: number; // 22393
 
-  constructor(filename?: string, remoteLocation?: string, url?: string) {
+  constructor(filename: string, remoteLocation: string, url: string) {
     super();
     this.filename = filename;
     this.remoteLocation = remoteLocation;

@@ -2,7 +2,7 @@
 This is the component view that represents the 'Search' tab.
 Feel free to customize layouts and components to change how the tab view looks.
 -->
-<StackLayout class="page-content" loaded="onLoaded">
+<StackLayout class="page-content" loaded="onLoaded" xmlns:lv="nativescript-pro-ui/listview">
     <GridLayout id="form-content" class="form-content" rows="auto,*,auto" loaded="onContentLoaded">
         <ScrollView row="0" class="fields-section">
             <GridLayout columns="3*, *" verticalAlignment="top">
@@ -12,11 +12,16 @@ Feel free to customize layouts and components to change how the tab view looks.
         </ScrollView>
         <ScrollView row="1">
 
-            <ListView id="imageList" items="{{ loadedImgList }}">
-                <ListView.itemTemplate>
-                    <Image src="{{ url }}" margin="10" horizontalAlignment="center"/>
-                </ListView.itemTemplate>
-            </ListView>
+        <lv:RadListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ imgTap }}" marginBottom="4" class="list-group"> 
+            <lv:RadListView.listViewLayout>
+                <lv:ListViewGridLayout scrollDirection="Vertical" spanCount="2"/>
+            </lv:RadListView.listViewLayout>
+            <lv:RadListView.itemTemplate>
+                <StackLayout class="list-group-item">
+                    <Image src="{{ url }}" margin="10" horizontalAlignment="center" />
+                </StackLayout>
+            </lv:RadListView.itemTemplate>
+        </lv:RadListView>
 
         </ScrollView>
         <Button text="Next user &#xf101;" class="update fa" tap="{{ nextUser }}" row="2"/>

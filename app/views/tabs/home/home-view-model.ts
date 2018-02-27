@@ -11,36 +11,33 @@ import * as frameModule from "ui/frame";
 import { StackLayout } from "ui/layouts/stack-layout";
 import { BackendService } from "../../../shared/services/backend.service";
 import { User, ImageCustom } from "./../../../shared/user.model";
-import * as observableArray from "tns-core-modules/data/observable-array";
+import { ObservableArray } from "tns-core-modules/data/observable-array";
 import * as dialogs from "ui/dialogs";
 
 export class HomeViewModel extends Observable {
     @ObservableProperty()
-    public username: string;
+    public _username: string;
     public type: string;
     public gender: string;
     public birthYear: string;
     public bio: string;
-    public loadedImgList = new observableArray.ObservableArray(new Array<ImageCustom>());
+    public loadedImgList = new ObservableArray<ImageCustom>();
     public user: User;
 
     constructor() {
         super();
+        this.loadedImgList.push(new ImageCustom("", "", ""));
         this.loadThisUser();
-    }
+        this.doAddChildEventListenerUser();
+        }
 
     public loadThisUser() {
         BackendService.getThisUserCollection().then((user: User) => {
             this.user = user;
-            this.username = user._username;
-            this.gender = user.gender;
-            this.type = user.type;
-            this.birthYear = String(user.birthYear);
-            this.bio = user.bio;
             // empty current loadedImageList
-            for (var img in this.loadedImgList) {
-                this.loadedImgList.pop();
-            };
+            // for (var img in this.loadedImgList) {
+            //     this.loadedImgList.pop();
+            // };
             // load with images from current user
             for (var key in user.imageList) {
                 this.loadedImgList.push(user.imageList[key]);
@@ -89,6 +86,23 @@ export class HomeViewModel extends Observable {
                 });
             }
         });
+    }
+
+    public doAddChildEventListenerUser(): void {
+        const onChildEvent = result => {
+            this.set(result.key,  result.value);
+        };
+        BackendService.addDatabseListener(onChildEvent, "/users/" + BackendService.token);
+    }
+
+    public updateProperties() {
+        const properties = {
+            "type": this.type,
+            "gender": this.gender,
+            "birthYear": Number.parseInt(this.birthYear),
+            "bio": this.bio
+        }
+        BackendService.updateUserProperties(properties);
     }
   
 }
