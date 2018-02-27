@@ -56,14 +56,15 @@ export function navigateLogin() {
 
 let closeTimeout = 0;
 export function onPageTapped(args: EventData) {
-    const page = <Page>args.object;
-    if (!closeTimeout) {
-        closeTimeout = setTimeout(() => {
-            page.getViewById<EditableTextBase>("username").dismissSoftInput();
-            page.getViewById<EditableTextBase>("email").dismissSoftInput();
-            page.getViewById<EditableTextBase>("password").dismissSoftInput();
-            page.getViewById<EditableTextBase>("bio").dismissSoftInput();
-            closeTimeout = 0;
-        }, 20);
-    }
+    // const page = <Page>args.object;
+    // if (!closeTimeout) {
+    //     closeTimeout = setTimeout(() => {
+    //         page.getViewById<EditableTextBase>("username").dismissSoftInput();
+    //         page.getViewById<EditableTextBase>("email").dismissSoftInput();
+    //         page.getViewById<EditableTextBase>("password").dismissSoftInput();
+    //         page.getViewById<EditableTextBase>("bio").dismissSoftInput();
+    //         closeTimeout = 0;
+    //     }, 20);
+    // }
+    // TODO
 }

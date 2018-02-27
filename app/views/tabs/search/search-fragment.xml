@@ -4,13 +4,10 @@ Feel free to customize layouts and components to change how the tab view looks.
 -->
 <StackLayout class="page-content" loaded="onLoaded">
     <GridLayout id="form-content" class="form-content" rows="auto,*,auto" loaded="onContentLoaded">
-        <Label row="0" text="{{ guestName }}" width="500" margin="10" horizontalAlignment="center" class="page-placeholder"/> 
+        <Label row="0" text="{{ guestName }}" class="username" width="500" margin="10"/> 
         <ScrollView row="1">
-            <!-- <Image src="{{ imgA }}" margin="10" id="imageA" row="1" horizontalAlignment="center" tap="{{ imgAtap }}"/>
-            <StackLayout class="top-border" row="2"/>
-            <Image src="{{ imgB }}" margin="10" id="imageB" row="3" horizontalAlignment="center" tap="{{ imgBtap }}"/> -->
 
-            <ListView id="imageList" items="{{ imgUrls }}">
+            <ListView id="imageList" items="{{ loadedImgList }}">
                 <ListView.itemTemplate>
                     <Image src="{{ url }}" margin="10" horizontalAlignment="center"/>
                 </ListView.itemTemplate>

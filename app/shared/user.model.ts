@@ -14,10 +14,8 @@ export class User extends Observable {
   public gender: string = "user.gender";
   public birthYear: number;
   public bio: string;
-  public imageList: [{
-    "public": boolean, 
-    "remoteLocation": string,
-  }];
+  public type: string;
+  public imageList: [ImageCustom];
 
   // constructor() {
   //   super();
@@ -49,11 +47,22 @@ export class User extends Observable {
   }
 }
 
-class ImageList {
-  public imageKeys: {
-    "public": boolean, 
-    "remoteLocation": string,
+export class ImageCustom extends Observable {
+  filename: string;
+  public: boolean = true;
+  remoteLocation: string;
+  url: string;
+  name: string;
+  contentType: string; //image/jpeg
+  created: string; // 2018-02-27T12:08:43.752Z
+  updated: string; //2018-02-27T12:08:43.752Z
+  bucket: string; //aspireapp-2dff5.appspot.com
+  size: number; // 22393
+
+  constructor(filename?: string, remoteLocation?: string, url?: string) {
+    super();
+    this.filename = filename;
+    this.remoteLocation = remoteLocation;
+    this.url = url;
   };
-
-
 }

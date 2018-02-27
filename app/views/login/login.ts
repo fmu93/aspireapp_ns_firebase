@@ -44,12 +44,13 @@ export function register(args) {
 
 let closeTimeout = 0;
 export function onPageTapped(args: EventData) {
-    const page = <Page>args.object;
-    if (!closeTimeout) {
-        closeTimeout = setTimeout(() => {
-            page.getViewById<EditableTextBase>("username").dismissSoftInput();
-            page.getViewById<EditableTextBase>("password").dismissSoftInput();
-            closeTimeout = 0;
-        }, 20);
-    }
+    // TODO
+    // const page = <Page>args.object;
+    // if (!closeTimeout) {
+    //     closeTimeout = setTimeout(() => {
+    //         page.getViewById<EditableTextBase>("username").dismissSoftInput();
+    //         page.getViewById<EditableTextBase>("password").dismissSoftInput();
+    //         closeTimeout = 0;
+    //     }, 20);
+    // }
 }

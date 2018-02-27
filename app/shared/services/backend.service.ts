@@ -2,7 +2,7 @@ import { getString, setString } from "application-settings";
 import * as fs from "tns-core-modules/file-system";
 import firebase = require("nativescript-plugin-firebase");
 import { Observable } from "tns-core-modules/ui/page/page";
-import { User } from "./../../shared/user.model";
+import { User, ImageCustom} from "./../../shared/user.model";
 
 const tokenKey = "token";
 let user = new User();
@@ -97,15 +97,17 @@ export class BackendService {
 	}
 
 	static doDeleteUser(): Promise<any> {
-		return firebase.deleteUser().then(
-			() => {
-				this.deleteThisUserCollection();
-				this.token = "";
-			  	alert({
-					title: "User deleted",
-					okButtonText: "Nice!"
+		return firebase.deleteUser().then(() => {
+				this.deleteThisUserCollection().then(() => {
+					this.deleteFile("users/" + this.token).then(() => {
+						this.token = "";
+						alert({
+							title: "User deleted",
+							okButtonText: "Nice!"
+						});
+						return true
+					});
 				});
-				return true
 			},
 			errorMessage => {
 			  	alert({
@@ -197,6 +199,7 @@ export class BackendService {
 			'bio': user.bio,
 			'birthYear': user.birthYear,
 			'gender': user.gender,
+			'type': user.type,
 			'imageList': user.imageList
 			}
 		);
@@ -275,13 +278,17 @@ export class BackendService {
 		});
 	}
 
-	static addToImageList(remoteLocation: string, filename: string): Promise<User> {
+	static addToImageList(filename: string, remoteLocation: string, url: string): Promise<User> {
+		const newImage = new ImageCustom(filename, remoteLocation, url);
 		return firebase.setValue(
 			'/users/' + this.token + "/imageList/" + filename,
-			{
-			'remoteLocation': remoteLocation,
-			'public': true
-			})
+			newImage
+		)
+	}
+
+	static removeImageFromList(filename: string): Promise<any> {
+		filename = filename.split(".").shift();
+		return firebase.remove('/users/' + this.token + "/imageList/" + filename);
 	}
 
 	static doUserStoreByPush(user: User): Promise<any> {
@@ -346,16 +353,9 @@ export class BackendService {
 				console.log("Uploaded fraction: " + status.fractionCompleted);
 				console.log("Percentage complete: " + status.percentageCompleted);
 			}	
-		}).then((uploadedFile) => {
-				console.log("File uploaded: " + JSON.stringify(uploadedFile));
-				// // make reference in database
-				// firebase.setValue('/users/' + this.token + "/imageList",
-				// {
-				// 	"filename": localPath.split("/").pop(),
-				// 	"public": true // for now
-				// })
-
-				return uploadedFile;
+		}).then((uploadFileResult) => {
+				console.log("File uploaded: " + JSON.stringify(uploadFileResult));
+				return uploadFileResult;
 		},
 		(error) => {
 			console.log("File upload error: " + error);
@@ -393,14 +393,14 @@ export class BackendService {
 		});
 	}
 
-	static deleteFile(remoteFullPath: string): void {
-		firebase.deleteFile({
+	static deleteFile(remoteFullPath: string): Promise<any> {
+		return firebase.deleteFile({
 			remoteFullPath
-		}).then(
-			function () {
+		}).then(result => {
 				console.log("File deleted.");
+				return result
 			},
-			function (error) {
+			error => {
 				console.log("File deletion Error: " + error);
 			}
 		);

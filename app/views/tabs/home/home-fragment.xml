@@ -1,15 +1,38 @@
-<!--
-This is the component view that represents the 'Home' tab.
-Feel free to customize layouts and components to change how the tab view looks.
--->
 <StackLayout class="page-content" loaded="onLoaded">
-    <Button text="Select images" tap="{{ imgSelect }}" class="button2"  horizontalAlignment="center"/>
-    <Button text="Upload images" tap="{{ imgUpload }}" class="button2"  horizontalAlignment="center"/>
-    <Button text="Download images" tap="{{ imgDownload }}" class="button2"  horizontalAlignment="center"/>
-    <Button text="getThisUser" tap="{{ getThisUser }}" class="button2"  horizontalAlignment="center"/>
-    <Button text="Show user model" tap="{{ showUserModel }}" class="button2"  horizontalAlignment="center"/>
+    <GridLayout id="form-content" class="form-content" rows="auto, *" loaded="onContentLoaded">
+        <ScrollView row="0" class="fields-section">
+            <StackLayout>
+                <GridLayout columns="3*, *" verticalAlignment="top">
+                    <Label col="0" text="{{ username }}" class="username" id="lblUsername"/>
+                    <!-- <Image col="1" src="res://logo" id="image" class="logo-picture" stretch="none" horizontalAlignment="center" tap="onProfilePictureTapped"/> -->
+                </GridLayout>
+                <GridLayout columns="*, *, *" verticalAlignment="top">
+                    <TextField id="txtType" text="{{ type }}" hint="type" class="field" col="0" tap="onTextInputTapped" />
+                    <TextField id="txtGender" text="{{ gender }}" hint="gender" class="field" col="1" tap="onTextInputTapped" />
+                    <TextField id="txtYear" text="{{ birthYear }}" hint="birthYear" class="field" col="2" tap="onTextInputTapped" />
+                </GridLayout>
+                <StackLayout class="line"/>               
+                <GridLayout rows="auto, auto" verticalAlignment="top">
+                    <Label text="Bio:" class="field-title" row="0" />
+                    <TextField id="txtBio" text="{{ bio }}" class="field-multiline" row="1" tap="onTextInputTapped" />
+                </GridLayout>
+                <StackLayout class="line"/>
+                <GridLayout columns="3*, *" verticalAlignment="top">
+                    <Label text="Public images:" class="field-title" col="0" />
+                    <Button text="ADD &#xf101;" class="update fa" tap="{{ imgAdd }}" col="1"/>
+                </GridLayout>
+                <!-- <StackLayout class="top-border" /> -->
+            </StackLayout>
+        </ScrollView>
 
-    <Label class="page-icon fa" text="&#xf015;"></Label>
-    <Label class="page-placeholder" text="<-- Get image from files -->"></Label>
-    <Image src="{{ imgSrc }}" tap="{{ imgTap }}" stretch="none" ></Image>
+        <ListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ imgTap }}">
+            <ListView.itemTemplate>
+            <StackLayout>
+                <Label text="{{ filename }}" /> 
+                <Image src="{{ url }}" margin="10" horizontalAlignment="center" />
+            </StackLayout>
+            </ListView.itemTemplate>
+        </ListView>
+
+    </GridLayout>
 </StackLayout>

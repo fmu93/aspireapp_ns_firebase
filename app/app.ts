@@ -7,6 +7,7 @@ purpose of the file is to pass control to the app’s first module.
 import * as app from "application";
 import "./bundle-config";
 import { BackendService } from "./shared/services/backend.service";
+// import * as strings from "./shared/strings";
 
 BackendService.init();
 

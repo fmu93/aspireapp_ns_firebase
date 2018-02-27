@@ -1,0 +1,4 @@
+const strings = {
+    home: "home",
+    
+}

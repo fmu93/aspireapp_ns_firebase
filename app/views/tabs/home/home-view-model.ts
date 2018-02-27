@@ -10,21 +10,49 @@ import view = require("ui/core/view");
 import * as frameModule from "ui/frame";
 import { StackLayout } from "ui/layouts/stack-layout";
 import { BackendService } from "../../../shared/services/backend.service";
-import { User } from "./../../../shared/user.model";
+import { User, ImageCustom } from "./../../../shared/user.model";
+import * as observableArray from "tns-core-modules/data/observable-array";
+import * as dialogs from "ui/dialogs";
 
 export class HomeViewModel extends Observable {
     @ObservableProperty()
-    public imgSrc: string;
+    public username: string;
+    public type: string;
+    public gender: string;
+    public birthYear: string;
+    public bio: string;
+    public loadedImgList = new observableArray.ObservableArray(new Array<ImageCustom>());
+    public user: User;
 
     constructor() {
         super();
+        this.loadThisUser();
     }
 
-    public imgTap() {
-        Toast.makeText(String(this.imgSrc)).show();
+    public loadThisUser() {
+        BackendService.getThisUserCollection().then(user => {
+            this.user = user;
+            this.username = user.username;
+            this.gender = user.gender;
+            this.type = user.type;
+            this.birthYear = String(user.birthYear);
+            this.bio = user.bio;
+            // empty current loadedImageList
+            for (var img in this.loadedImgList) {
+                this.loadedImgList.pop();
+            };
+            // load with images from current user
+            for (var key in user.imageList) {
+                this.loadedImgList.push(user.imageList[key]);
+            }
+            // sort assuming all images are milliseconds as filename
+            this.loadedImgList.sort(function(a, b) {
+                return parseFloat(a.filename) - parseFloat(b.filename);
+            });
+        }).catch(error => console.log(error));
     }
     
-    public imgSelect() {
+    public imgAdd() {
         const filename = String((new Date()).getTime());
         const context = imagepicker.create({
             mode: "single"
@@ -33,39 +61,34 @@ export class HomeViewModel extends Observable {
             return context.present();
         }).then((selection) => {
             selection.forEach((element) => {    
-                this.imgSrc = element.fileUri;
                 const remotePath = BackendService.makeImgRemotePath(filename, element.fileUri.split(".").pop());
-                BackendService.uploadFile(remotePath, element.fileUri).then(() => {
-                    BackendService.addToImageList(remotePath, filename);
+                BackendService.uploadFile(remotePath, element.fileUri).then((uploadFileResult) => {
+                    BackendService.addToImageList(filename, remotePath, uploadFileResult.url).then(() => {
+                        Toast.makeText("Added: " + filename).show();
+                        this.loadThisUser();
+                    });
                 });
             });
         });
     }
-    
-    public imgUpload() {
-        const appPath = fs.knownFolders.currentApp();
-        const localPath = "/res/pengbrew.png";
-        const localFullPath = fs.path.join(appPath.path, localPath);
-        const remotePath = BackendService.makeImgRemotePath("pengbrew", "png");
-        BackendService.uploadFile(remotePath, localFullPath);
-    }
-    
-    public imgDownload() {
-        const promise = BackendService.getDownloadUrl("arctic.png")
-        .then((url: string) => {
-            this.imgSrc = url;
-            console.log("Downloaded: " + this.imgSrc);
-        }).catch((error) => {
-            console.log(error);
+
+    public imgTap(args) {
+        dialogs.confirm({
+            title: "Delete this pic?",
+            message: this.loadedImgList.getItem(args.index).filename,
+            okButtonText: "Delete",
+            cancelButtonText: "Cancel"
+        }).then(result => {
+            if (result) {
+                BackendService.deleteFile(this.loadedImgList.getItem(args.index).remoteLocation)
+                .then((result) => {
+                    BackendService.removeImageFromList(this.loadedImgList.getItem(args.index).filename).then(() => {
+                        Toast.makeText("Deleted: " + this.loadedImgList.getItem(args.index).filename).show();
+                        this.loadThisUser();
+                    });
+                });
+            }
         });
     }
-    
-    public getThisUser() {
-        BackendService.getThisUserCollection();
-    }
-
-    public showUserModel() {
-        BackendService.printUser();
-    }
-    
+  
 }
