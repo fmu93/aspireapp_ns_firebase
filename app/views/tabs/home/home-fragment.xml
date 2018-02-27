@@ -3,7 +3,7 @@
         <ScrollView row="0" class="fields-section">
             <StackLayout>
                 <GridLayout columns="3*, *" verticalAlignment="top">
-                    <Label col="0" text="{{ _username }}" class="username" id="lblUsername"/>
+                    <Label col="0" text="{{ username }}" class="username" id="lblUsername"/>
                     <!-- <Image col="1" src="res://logo" id="image" class="logo-picture" stretch="none" horizontalAlignment="center" tap="onProfilePictureTapped"/> -->
                 </GridLayout>
                 <StackLayout class="line"/>

@@ -7,7 +7,6 @@ const validator = require("email-validator");
 
 export class User extends Observable {
   @ObservableProperty() 
-  public _username: string;  // so it shows when returned from firebase...
   public username: string;
   public uid: string;
   public email: string;

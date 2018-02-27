@@ -8,10 +8,9 @@ import * as Toast from "nativescript-toast";
 
 
 export class SearchViewModel extends Observable {
-    @ObservableProperty()
-    public guestName: string;
-    public imgA: string;
-    public imgB: string;
+    @ObservableProperty() public guestName: string;
+    @ObservableProperty() public guestType: string;
+    @ObservableProperty() public guestBio: string;
     private userIndex = 0;
     private userSize = 1;
     public loadedImgList = new ObservableArray<ImageCustom>();
@@ -26,7 +25,9 @@ export class SearchViewModel extends Observable {
         BackendService.getUsersCollection().then((users: User[]) => {
             this.userSize = users.length;
             const guest = users[this.userIndex];
-            this.guestName = guest._username;
+            this.guestName = guest.username;
+            this.guestType = guest.type;
+            this.guestBio = guest.bio;
 
             // empty current loadedImageList
             for (var i = 1; i < this.loadedImgList.length; i++) {
@@ -54,10 +55,6 @@ export class SearchViewModel extends Observable {
     public prevUser() {
         this.userIndex = (this.userIndex - 1 ) % this.userSize;
         this.loadGuest();
-    }
-
-    public passImg(img: Image) {
-        img.src = this.imgA;
     }
 
     public imgTap(args) {

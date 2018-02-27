@@ -55,10 +55,10 @@
 .update{horizontal-align:stretch;text-align:center;color:white;background-color:#30BCFF;font-size:16;text-transform:uppercase}
 
 .username {
-    margin: 5;
+    margin-right: 16;
     font-size:32;
     color:black;
-    margin-left:8;
+    margin-left:16;
     text-align: center;
     vertical-align: center;
     horizontal-align: left;
@@ -74,7 +74,6 @@
     horizontal-align: center;
     display: inline-block;
 }
-
 
 /* From ui examples */
 

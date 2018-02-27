@@ -16,7 +16,7 @@ import * as dialogs from "ui/dialogs";
 
 export class HomeViewModel extends Observable {
     @ObservableProperty()
-    public _username: string;
+    public username: string;
     public type: string;
     public gender: string;
     public birthYear: string;
