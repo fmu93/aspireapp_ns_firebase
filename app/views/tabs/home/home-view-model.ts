@@ -30,9 +30,9 @@ export class HomeViewModel extends Observable {
     }
 
     public loadThisUser() {
-        BackendService.getThisUserCollection().then(user => {
+        BackendService.getThisUserCollection().then((user: User) => {
             this.user = user;
-            this.username = user.username;
+            this.username = user._username;
             this.gender = user.gender;
             this.type = user.type;
             this.birthYear = String(user.birthYear);

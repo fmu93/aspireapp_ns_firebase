@@ -7,15 +7,16 @@ const validator = require("email-validator");
 
 export class User extends Observable {
   @ObservableProperty() 
+  public _username: string;  // so it shows when returned from firebase...
   public username: string;
   public uid: string;
   public email: string;
   public password: string;
-  public gender: string = "user.gender";
+  public gender: string = " ";
   public birthYear: number;
-  public bio: string;
-  public type: string;
-  public imageList: [ImageCustom];
+  public bio: string = " ";
+  public type: string = " ";
+  public imageList: Array<ImageCustom> = new Array<ImageCustom>();
 
   // constructor() {
   //   super();
@@ -34,7 +35,7 @@ export class User extends Observable {
   public loadLocalUser() {
     const prevUser = JSON.parse(localStorage.getItem("newUser")); // TODO string index
     if (prevUser) {
-      this.username = prevUser.username;
+      this.username = prevUser._username;
       this.email = prevUser.email;
       this.password = prevUser.password;
     }
@@ -53,6 +54,7 @@ export class ImageCustom extends Observable {
   remoteLocation: string;
   url: string;
   name: string;
+  caption: string; // "lovely weather!"
   contentType: string; //image/jpeg
   created: string; // 2018-02-27T12:08:43.752Z
   updated: string; //2018-02-27T12:08:43.752Z

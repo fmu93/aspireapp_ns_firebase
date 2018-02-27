@@ -77,6 +77,7 @@ export class BackendService {
 	}
 
 	static login(user: User) {
+		console.log(user.password);
 		return firebase.login({
 			type: firebase.LoginType.PASSWORD,
 			passwordOptions: {
@@ -115,7 +116,7 @@ export class BackendService {
 					message: errorMessage,
 					okButtonText: "OK, got it"
 				  });
-				  return false
+				  return true // TODO, check when error on deleting databse and files
 			}
 		);
 	  }
@@ -190,18 +191,11 @@ export class BackendService {
 	// database stuff
 
 	static doUserStore(user: User) {
+		const userDeletePassword = Object.assign({}, user); 
+		userDeletePassword.password = "<overwritten>";
 		return firebase.setValue(
 			'/users/' + user.uid,
-			{
-			'username': user.username,
-			'uid': user.uid,
-			'email': user.email,
-			'bio': user.bio,
-			'birthYear': user.birthYear,
-			'gender': user.gender,
-			'type': user.type,
-			'imageList': user.imageList
-			}
+			userDeletePassword
 		);
 	}
 

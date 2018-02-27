@@ -4,7 +4,12 @@ Feel free to customize layouts and components to change how the tab view looks.
 -->
 <StackLayout class="page-content" loaded="onLoaded">
     <GridLayout id="form-content" class="form-content" rows="auto,*,auto" loaded="onContentLoaded">
-        <Label row="0" text="{{ guestName }}" class="username" width="500" margin="10"/> 
+        <ScrollView row="0" class="fields-section">
+            <GridLayout columns="3*, *" verticalAlignment="top">
+                <Label col="0" text="{{ guestName }}" class="username" /> 
+                <!-- <Image col="1" src="res://logo" id="image" class="logo-picture" stretch="none" horizontalAlignment="center" tap="onProfilePictureTapped"/> -->
+            </GridLayout>
+        </ScrollView>
         <ScrollView row="1">
 
             <ListView id="imageList" items="{{ loadedImgList }}">

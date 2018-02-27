@@ -24,7 +24,7 @@ export class SearchViewModel extends Observable {
         BackendService.getUsersCollection().then(users => {
             this.userSize = users.length;
             const guest = users[this.userIndex];
-            this.guestName = guest.username;
+            this.guestName = guest._username;
 
             // empty current loadedImageList
             for (var img in this.loadedImgList) {
