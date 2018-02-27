@@ -9,7 +9,7 @@ Feel free to customize layouts and components to change how the tab view looks.
     <ListView id="userList" items="{{ users }}" class="listViewStyle">
         <ListView.itemTemplate>
             <GridLayout class="listStyle" columns="*,*,3*">
-                <Label text="{{ _username }}" col="0" />
+                <Label text="{{ username }}" col="0" />
                 <Label text="{{ bio }}" col="1" />
                 <Label text="{{ uid }}" col="2" />
             </GridLayout>

@@ -15,7 +15,6 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 import * as dialogs from "ui/dialogs";
 
 export class HomeViewModel extends Observable {
-    @ObservableProperty()
     public username: string;
     public type: string;
     public gender: string;

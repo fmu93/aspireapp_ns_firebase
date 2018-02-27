@@ -6,15 +6,14 @@ require("nativescript-localstorage");
 const validator = require("email-validator");
 
 export class User extends Observable {
-  @ObservableProperty() 
   public username: string;
   public uid: string;
   public email: string;
   public password: string;
-  public gender: string = " ";
-  public birthYear: number = 1969;
-  public bio: string = " ";
-  public type: string = " ";
+  public gender: string;
+  public birthYear: number;
+  public bio: string;
+  public type: string;
   public imageList: Array<ImageCustom> = new Array<ImageCustom>();
 
   // constructor() {

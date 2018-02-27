@@ -1,18 +1,24 @@
 import { Observable } from "data/observable";
 
 export function ObservableProperty() {
-    return (target: Observable, propertyKey: string) => {
-        Object.defineProperty(target, propertyKey, {
-            get() {
-                return this["_" + propertyKey];
+    return (obj: Observable, key: string) => {
+        let storedValue = obj[key];
+
+        Object.defineProperty(obj, key, {
+            get: function () {
+                return storedValue;
             },
-            set(value) {
-                if (this["_" + propertyKey] === value) {
+            set: function (value) {
+                if (storedValue === value) {
                     return;
                 }
-
-                this["_" + propertyKey] = value;
-                this.notifyPropertyChange(propertyKey, value);
+                storedValue = value;
+                this.notify({
+                    eventName: Observable.propertyChangeEvent,
+                    propertyName: key,
+                    object: this,
+                    value,
+                });
             },
             enumerable: true,
             configurable: true

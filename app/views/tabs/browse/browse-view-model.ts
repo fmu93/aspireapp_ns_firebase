@@ -8,7 +8,7 @@ const tmobservable = new Observable();
 
 export class BrowseViewModel extends Observable {
     @ObservableProperty()
-    users: Array<User>;
+    public users: Array<User>;
 
     constructor() {
         super();
