@@ -16,29 +16,14 @@ export class User extends Observable {
   public type: string;
   public imageList: Array<ImageCustom> = new Array<ImageCustom>();
 
-  // constructor() {
-  //   super();
-  // }
+  constructor() {
+    super();
+  }
 
   public loadFirebaseUser(fu: firebase.User) {
     this.username = fu.name;
     this.email = fu.email;
     this.uid = fu.uid;
-  }
-
-  public storeUser() {
-    localStorage.setItem("newUser", JSON.stringify(this));  // TODO strings index
-  }
-
-  public loadLocalUser() {
-    const prevUser = JSON.parse(localStorage.getItem("newUser")); // TODO string index
-    if (prevUser) {
-      this.username = prevUser._username;
-      this.email = prevUser.email;
-      this.password = prevUser.password;
-    }
-
-    return this;
   }
 
   public isValidEmail() {

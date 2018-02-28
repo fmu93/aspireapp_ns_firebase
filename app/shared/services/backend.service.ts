@@ -49,7 +49,7 @@ export class BackendService {
 		setString("token", theToken);
 	}
 
-	static register(user: User) {
+	static register(user: User): Promise<any> {
 		return firebase.createUser({
 			email: user.email,
 			password: user.password
@@ -62,6 +62,7 @@ export class BackendService {
 			}
 		).catch((error) => {
 			console.log(error);
+			return null
 		});
 	}
 
@@ -77,8 +78,7 @@ export class BackendService {
 		);
 	}
 
-	static login(user: User) {
-		console.log(user.password);
+	static login(user: User): Promise<any> {
 		return firebase.login({
 			type: firebase.LoginType.PASSWORD,
 			passwordOptions: {
@@ -89,13 +89,14 @@ export class BackendService {
 			console.log(JSON.stringify(response));
 			this.token = response.uid;
 			BackendService.getThisUserCollection();
-
 			return response;
-			});
+		}).catch(error => console.log(error));
 	}
 
 	static logout() {
-	return firebase.logout().then(() => this.token = "");
+	return firebase.logout().then(() => {
+		this.token = ""
+	});
 	}
 
 	static doDeleteUser(): Promise<any> {

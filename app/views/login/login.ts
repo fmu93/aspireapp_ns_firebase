@@ -6,16 +6,21 @@ import * as frameModule from "ui/frame";
 import { Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
 import { User } from "./../../shared/user.model";
+import * as utils from "utils/utils";
 
 const user = new User();
 
 export function onLoaded(args) {
-    // check if existing user on local storage
-    user.loadLocalUser();
 
     const page = <Page>args.object;
     page.bindingContext = user;
- }
+}
+
+export function pageNavigatedTo(args: EventData): void {
+    const page: Page = <Page>args.object;
+    const userRegistered = page.navigationContext;
+    // page.bindingContext = userRegistered; // TODO get user from register page when success
+}
 
 export function signIn(args) {
     // Actually, the only way to be logged in at this point is after successful registration
@@ -30,11 +35,14 @@ export function signIn(args) {
                 dialogs.alert("user not logged in: " + user.username);
             }
         }).catch((error) => {
-            dialogs.alert("Error logging in: " + user.username);
-            // console.log(error);
-    }).catch((error) => {
-        console.log(error);
-    });
+            dialogs.alert({
+                title: "Error loggin in",
+                message: error,
+                okButtonText: "Back"
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
     });
 }
 
@@ -42,15 +50,10 @@ export function register(args) {
     frameModule.topmost().navigate("views/register/register");
 }
 
-let closeTimeout = 0;
 export function onPageTapped(args: EventData) {
-    // TODO
-    // const page = <Page>args.object;
-    // if (!closeTimeout) {
-    //     closeTimeout = setTimeout(() => {
-    //         page.getViewById<EditableTextBase>("username").dismissSoftInput();
-    //         page.getViewById<EditableTextBase>("password").dismissSoftInput();
-    //         closeTimeout = 0;
-    //     }, 20);
-    // }
+    utils.ad.dismissSoftInput();
+}
+
+export function onReturnPress(args) {
+    signIn(args);
 }

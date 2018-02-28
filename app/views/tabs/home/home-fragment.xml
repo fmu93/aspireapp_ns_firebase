@@ -11,13 +11,13 @@
                     <Label text="Type:" class="field-title" row="0" col="0" />
                     <Label text="Gender:" class="field-title" row="0" col="1" />
                     <Label text="Birth year:" class="field-title" row="0" col="2" />
-                    <TextField id="txtType" text="{{ type }}" hint="type" class="field" row="1" col="0" tap="onTextInputTapped" />
-                    <TextField id="txtGender" text="{{ gender }}" hint="gender" class="field" row="1" col="1" tap="onTextInputTapped" />
-                    <TextField id="txtYear" text="{{ birthYear }}" hint="birthYear" class="field" row="1" col="2" tap="onTextInputTapped" />
+                    <TextField id="txtType" text="{{ type }}" hint="type" class="field" row="1" col="0" />
+                    <TextField id="txtGender" text="{{ gender }}" hint="gender" class="field" row="1" col="1" />
+                    <TextField id="txtYear" text="{{ birthYear }}" hint="birthYear" class="field" row="1" col="2" />
                 </GridLayout>              
                 <GridLayout rows="auto, auto" verticalAlignment="top">
                     <Label text="Bio:" class="field-title" row="0" />
-                    <TextField id="txtBio" text="{{ bio }}" textWrap="true" class="field-multiline" row="1" tap="onTextInputTapped" />
+                    <TextField id="txtBio" text="{{ bio }}" textWrap="true" class="field-multiline" row="1" />
                 </GridLayout>
                 <GridLayout columns="auto,*, auto" verticalAlignment="top">
                     <Button text="Update &#xf044;" class="update fa" tap="{{ updateProperties }}" col="0"/>

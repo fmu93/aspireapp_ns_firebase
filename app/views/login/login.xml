@@ -1,4 +1,5 @@
 <Page loaded="onLoaded"
+    navigatedTo="pageNavigatedTo"
     cssFile="~/views/login/login.css"
     tap="onPageTapped">
 
@@ -22,7 +23,7 @@
                    
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Password" class="field-title" />
-                        <TextField id="password" text="{{ password }}" secure="true" class="field"  ios:col="1" android:row="1" tap="onTextInputTapped" />
+                        <TextField id="password" text="{{ password }}" secure="true" class="field"  ios:col="1" android:row="1" tap="onTextInputTapped" returnPress="onReturnPress" />
                     </GridLayout>
                     <StackLayout class="line"/>
 

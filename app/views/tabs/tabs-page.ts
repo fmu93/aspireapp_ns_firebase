@@ -7,11 +7,13 @@ import label = require("ui/label");
 import { NavigatedData, Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
 import { TabsViewModel } from "./tabs-view-model";
+import * as utils from "utils/utils";
 
-/* ***********************************************************
-* Use the "onNavigatingTo" handler to initialize data for the whole tab
-* navigation layout as a whole.
-*************************************************************/
+
+export function onLoaded(args) {
+    
+}
+
 export function onNavigatingTo(args: NavigatedData) {
     /* ***********************************************************
     * The "onNavigatingTo" event handler lets you detect if the user navigated with a back button.
@@ -28,6 +30,7 @@ export function onNavigatingTo(args: NavigatedData) {
     if (!BackendService.isLoggedIn()) {
         return frameModule.topmost().navigate("views/login/login");
     } else {
+        utils.ad.dismissSoftInput();
         const charCode = 0xf2bd;
         const usernameLabel = <label.Label>view.getViewById(page, "username");
         BackendService.getThisUserCollection().then((user) => {
@@ -47,6 +50,7 @@ export function onSelectedIndexChanged(args: SelectedIndexChangedEventData) {
     const selectedTabViewItem = tabView.items[args.newIndex];
 
     bindingContext.title = selectedTabViewItem.title;
+    utils.ad.dismissSoftInput();
 }
 
 export function logOut() {

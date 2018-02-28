@@ -6,6 +6,7 @@ import * as frameModule from "ui/frame";
 import { Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
 import { User } from "./../../shared/user.model";
+import * as utils from "utils/utils";
 
 const user = new User();
 
@@ -37,12 +38,22 @@ export function signUp() {
 
 export function completeRegistration() {
     BackendService.register(user)
-    .then(() => {
-        // trying to save user into local storage on first singup
-        user.storeUser();
-        dialogs.alert("User registered and stored: " + user.username);
-        BackendService.logout();
-        frameModule.topmost().navigate("views/login/login");
+    .then((result) => {
+        if (result) {
+            BackendService.logout();
+            dialogs.alert({
+                title: user.email,
+                message: "you are now registered",
+                okButtonText: "Back to login"
+            })
+            return navigateLogin();
+        } else {
+            dialogs.alert({
+                title: "Error",
+                message: "Perhaps try a different email",
+                okButtonText: "Back"
+            });
+        }
     })
     .catch((error) => {
         dialogs.alert("Error in registration");
@@ -51,20 +62,16 @@ export function completeRegistration() {
 }
 
 export function navigateLogin() {
-    return frameModule.topmost().navigate("views/login/login");
+    const navigationEntry = {
+        moduleName: "views/login/login",
+        context: {"user": user},
+        animated: false,
+        clearHistory: true
+    };
+    return frameModule.topmost().navigate(navigationEntry);
 }
 
-let closeTimeout = 0;
+
 export function onPageTapped(args: EventData) {
-    // const page = <Page>args.object;
-    // if (!closeTimeout) {
-    //     closeTimeout = setTimeout(() => {
-    //         page.getViewById<EditableTextBase>("username").dismissSoftInput();
-    //         page.getViewById<EditableTextBase>("email").dismissSoftInput();
-    //         page.getViewById<EditableTextBase>("password").dismissSoftInput();
-    //         page.getViewById<EditableTextBase>("bio").dismissSoftInput();
-    //         closeTimeout = 0;
-    //     }, 20);
-    // }
-    // TODO
+    utils.ad.dismissSoftInput();
 }

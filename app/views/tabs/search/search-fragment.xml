@@ -5,12 +5,12 @@ Feel free to customize layouts and components to change how the tab view looks.
 <StackLayout class="page-content" loaded="onLoaded" xmlns:lv="nativescript-pro-ui/listview" xmlns:f="nativescript-fresco" xmlns="http://www.nativescript.org/tns.xsd">
     <GridLayout id="form-content" class="form-content" rows="auto, auto,*,auto" loaded="onContentLoaded">
         <ScrollView row="0" class="fields-section">
-            <GridLayout columns="auto, 80, *" verticalAlignment="top">
-                <Label col="0" text="{{ guestName }}" class="username" verticalAlignment="bottom"/> 
-                <Label col="1" text="{{ guestType }}" class="example-title" verticalAlignment="bottom"/> 
-                <Label col="2" text="{{ guestBio }}" class="example-title" verticalAlignment="bottom"/> 
+            <StackLayout orientation="horizontal" verticalAlignment="top">
+                <Label text="{{ guestName }}" class="username" verticalAlignment="bottom"/> 
+                <Label text="{{ guestType }}" class="example-title" verticalAlignment="bottom"/> 
+                <Label text="{{ guestBio }}" class="example-title" verticalAlignment="bottom"/> 
                 <!-- <Image col="1" src="res://logo" id="image" class="logo-picture" stretch="none" horizontalAlignment="center" tap="onProfilePictureTapped"/> -->
-            </GridLayout>
+            </StackLayout>
         </ScrollView>
         <StackLayout row="1" class="line"/>
         <lv:RadListView row="2" id="imageList" items="{{ loadedImgList }}" itemTap="{{ imgTap }}" marginBottom="4" class="list-group"> 
