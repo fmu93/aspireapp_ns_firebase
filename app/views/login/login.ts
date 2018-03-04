@@ -35,7 +35,7 @@ export function signIn(args) {
         const promise2 = BackendService.login(user)
         .then(() => {
             if (BackendService.isLoggedIn()) {
-                frameModule.topmost().navigate("views/tabs/tabs-page");
+                frameModule.topmost().navigate("views/home/home-page");
             } else {
                 dialogs.alert("user not logged in: " + user.username);
             }

@@ -1,0 +1,127 @@
+<Page
+    class="page"
+    navigatingTo="onNavigatingTo"  
+    xmlns:nsDrawer="nativescript-pro-ui/sidedrawer"
+    xmlns:drawer="shared/drawer"
+    xmlns="http://schemas.nativescript.org/tns.xsd">
+    
+    <ActionBar class="action-bar">
+        <!-- 
+        Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+        -->
+        <NavigationButton ios:visibility="collapsed" icon="res://menu" tap="onDrawerButtonTap"></NavigationButton>
+        <!-- 
+        Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+        -->
+        <ActionItem icon="res://navigation/menu" 
+            android:visibility="collapsed" 
+            tap="onDrawerButtonTap"
+            ios.position="left">
+        </ActionItem>
+        <Label class="action-bar-title" text="Home"></Label>
+    </ActionBar>
+
+    <!--
+    RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+    Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+    http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawer/getting-started
+    The RadSideDrawer component is designed to be used as a root element to the <Page> and
+    it shouldn't have any other siblings other than the <ActionBar> component.
+    -->
+    <nsDrawer:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+        <!--
+        Use the RadSideDrawer.drawerTransition component to change the open/close animation of the drawer.
+        -->
+        <nsDrawer:RadSideDrawer.drawerTransition>
+            <nsDrawer:SlideInOnTopTransition/>
+        </nsDrawer:RadSideDrawer.drawerTransition>
+
+        <!--
+        Use the RadSideDrawer.drawerContent component to display the content of the app drawer on this page.
+        Always wrap content in a layout component.
+        -->
+        <nsDrawer:RadSideDrawer.drawerContent>
+            <StackLayout>
+                <!--
+                Use {N} custom components to reuse UI across your mobile app.
+                The drawer custom component defined in "/shared/drawer" holds the contents of the app drawer.
+                Learn more about custom components and how they can be used in this documentation article:
+                http://docs.nativescript.org/ui/basics#custom-components
+                -->
+                <drawer:drawer-fragment selectedPage="Home"/>
+            </StackLayout>
+        </nsDrawer:RadSideDrawer.drawerContent>
+
+        <!--
+        Use the RadSideDrawer.mainContent component to display the content of the page when you have an app drawer.
+        Always wrap content in a layout component.
+        -->
+        <nsDrawer:RadSideDrawer.mainContent>
+            <StackLayout class="page-content" loaded="onLoaded" xmlns:lv="nativescript-pro-ui/listview" xmlns:f="nativescript-fresco">
+                <GridLayout id="form-content" class="form-content" rows="auto, *" loaded="onContentLoaded">
+                    <ScrollView row="0" class="fields-section">
+                        <StackLayout>
+                            <GridLayout columns="auto, *" verticalAlignment="top">                    
+                                <Image col="0" src="{{ profile_picture }}" id="image" class="logo-picture" horizontalAlignment="center" tap="onProfilePictureTapped"/>
+                                <Label col="1" text="{{ username }}" class="username" id="lblUsername"/>
+                            </GridLayout>
+                            <GridLayout columns="*, *, *, *, *, *" rows="auto" verticalAlignment="top">
+                                <Label text="Followed: " class="field-title"  col="0" />
+                                <Label text="{{ followed_by }}" class="field-title" col="1" />
+                                <Label text="Following: " class="field-title" col="2" />
+                                <Label text="{{ follows }}" class="field-title" col="3" />
+                                <Label text="Media: " class="field-title" col="4" />
+                                <Label text="{{ media }}" class="field-title" col="5" />
+                            </GridLayout>
+                            <StackLayout class="line"/>
+                            <GridLayout columns="*, *, *" rows="auto, auto" verticalAlignment="top">
+                                <Label text="Type:" class="field-title" row="0" col="0" />
+                                <Label text="Gender:" class="field-title" row="0" col="1" />
+                                <Label text="Birth year:" class="field-title" row="0" col="2" />
+                                <TextField id="txtType" text="{{ type }}" hint="type" class="field" row="1" col="0" />
+                                <TextField id="txtGender" text="{{ gender }}" hint="gender" class="field" row="1" col="1" />
+                                <TextField id="txtYear" text="{{ birthYear }}" hint="birthYear" class="field" row="1" col="2" />
+                            </GridLayout>              
+                            <GridLayout rows="auto, auto" verticalAlignment="top">
+                                <Label text="Bio:" class="field-title" row="0" />
+                                <TextField id="txtBio" text="{{ bio }}" textWrap="true" class="field-multiline" row="1" />
+                            </GridLayout>
+                            <GridLayout columns="auto,*, auto" verticalAlignment="top">
+                                <Button text="Update &#xf044;" class="update fa" tap="{{ updateProperties }}" col="0"/>
+                                <Button text="ADD &#xf03e;" class="update fa" tap="{{ imgAdd }}" col="2"/>
+                            </GridLayout>
+                            <StackLayout class="line"/>
+                        </StackLayout>
+                    </ScrollView>
+
+                    <lv:RadListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ imgTap }}" marginBottom="4" class="list-group"> 
+                        <lv:RadListView.listViewLayout>
+                            <lv:ListViewGridLayout scrollDirection="Vertical" spanCount="2"/>
+                        </lv:RadListView.listViewLayout>
+                        <lv:RadListView.itemTemplate>
+                            <GridLayout rows="*" backgroundColor="White">
+                                <GridLayout rows="*" columns="*" marginBottom="2" >
+                                    <f:FrescoDrawee
+                                    horizontalAlignment="stretch"
+                                    height="250"
+                                    imageUri="{{ images.low_resolution.url }}"/>
+                                    <GridLayout verticalAlignment="bottom">
+                                        <StackLayout backgroundColor="#AAFFFFFF" paddingTop="4" paddingBottom="4" paddingLeft="16" paddingRight="16">
+                                            <Label text="{{ caption.text }}"/>
+                                        </StackLayout>
+                                    </GridLayout>
+                                </GridLayout>
+                            </GridLayout>
+                        </lv:RadListView.itemTemplate>
+                    </lv:RadListView>
+
+                </GridLayout>
+            </StackLayout>
+        </nsDrawer:RadSideDrawer.mainContent>
+    </nsDrawer:RadSideDrawer>
+</Page>
+
+
+
+
+

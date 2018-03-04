@@ -2,7 +2,7 @@ import { EventData, Observable } from "data/observable";
 import { ObservableArray } from "data/observable-array";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layout";
 import * as frameModule from "ui/frame";
-import { BackendService } from "../../../shared/services/backend.service";
+import { BackendService } from "../../shared/services/backend.service";
 import { SearchViewModel } from "./search-view-model";
 import view = require("ui/core/view");
 import { Image } from "tns-core-modules/ui/image/image";

@@ -1,9 +1,9 @@
 import { Observable } from "data/observable";
-import { ObservableProperty } from "../../../shared/observable-property-decorator";
-import { BackendService } from "../../../shared/services/backend.service";
+import { ObservableProperty } from "../../shared/observable-property-decorator";
+import { BackendService } from "../../shared/services/backend.service";
 import { Image } from "tns-core-modules/ui/image/image";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
-import { User, ImageCustom } from "./../../../shared/user.model";
+import { User, ImageCustom } from "./../../shared/user.model";
 import * as Toast from "nativescript-toast";
 
 

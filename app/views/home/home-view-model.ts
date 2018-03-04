@@ -1,5 +1,5 @@
 import { Image } from "ui/image";
-import { ObservableProperty } from "../../../shared/observable-property-decorator";
+import { ObservableProperty } from "../../shared/observable-property-decorator";
 import { EventData, Observable } from "data/observable";
 import fs = require("file-system");
 import * as imageSourceModule from "image-source";
@@ -9,10 +9,10 @@ import { ImageSource } from "tns-core-modules/image-source/image-source";
 import view = require("ui/core/view");
 import * as frameModule from "ui/frame";
 import { StackLayout } from "ui/layouts/stack-layout";
-import { BackendService } from "../../../shared/services/backend.service";
-import { User, ImageCustom } from "./../../../shared/user.model";
+import { BackendService } from "../../shared/services/backend.service";
+import { User, ImageCustom } from "./../../shared/user.model";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
-import { InstagramService, InstaMediaList, InstaImage } from "../../../shared/services/instagram.service";
+import { InstagramService, InstaMediaList, InstaImage } from "../../shared/services/instagram.service";
 import * as dialogs from "ui/dialogs";
 
 export class HomeViewModel extends Observable {

@@ -33,7 +33,7 @@ if (app.android) {
 
 BackendService.init();
 
-app.start({ moduleName: "views/tabs/tabs-page" });
+app.start({ moduleName: "views/home/home-page" });
 
 /*
 Do not place any code after the application has been started as it will not

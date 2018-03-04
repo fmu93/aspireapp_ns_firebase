@@ -1,8 +1,8 @@
 import { Observable } from "data/observable";
-import { ObservableProperty } from "../../../shared/observable-property-decorator";
+import { ObservableProperty } from "../../shared/observable-property-decorator";
 import { ObservableArray } from "data/observable-array";
-import { BackendService } from "../../../shared/services/backend.service";
-import { User } from "../../../shared/user.model";
+import { BackendService } from "../../shared/services/backend.service";
+import { User } from "../../shared/user.model";
 
 const tmobservable = new Observable();
 
