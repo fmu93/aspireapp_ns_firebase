@@ -10,10 +10,6 @@ import { TabsViewModel } from "./tabs-view-model";
 import * as utils from "utils/utils";
 
 
-export function onLoaded(args) {
-    
-}
-
 export function onNavigatingTo(args: NavigatedData) {
     /* ***********************************************************
     * The "onNavigatingTo" event handler lets you detect if the user navigated with a back button.
@@ -28,6 +24,7 @@ export function onNavigatingTo(args: NavigatedData) {
     page.bindingContext = new TabsViewModel();
 
     if (!BackendService.isLoggedIn()) {
+        console.log(BackendService.isLoggedIn());
         return frameModule.topmost().navigate("views/login/login");
     } else {
         utils.ad.dismissSoftInput();
@@ -68,6 +65,9 @@ export function deleteUser() {
 
 export function refreshTabsPage() {
     console.log("Refresh");
-
     return frameModule.topmost().navigate("views/tabs/tabs-page");
+}
+
+export function bindInstagram() {
+    frameModule.topmost().navigate("views/instagramLogin/instagramLogin");
 }

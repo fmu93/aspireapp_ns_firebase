@@ -2,9 +2,17 @@
     <GridLayout id="form-content" class="form-content" rows="auto, *" loaded="onContentLoaded">
         <ScrollView row="0" class="fields-section">
             <StackLayout>
-                <GridLayout columns="3*, *" verticalAlignment="top">
-                    <Label col="0" text="{{ username }}" class="username" id="lblUsername"/>
-                    <!-- <Image col="1" src="res://logo" id="image" class="logo-picture" stretch="none" horizontalAlignment="center" tap="onProfilePictureTapped"/> -->
+                <GridLayout columns="auto, *" verticalAlignment="top">                    
+                    <Image col="0" src="{{ profile_picture }}" id="image" class="logo-picture" horizontalAlignment="center" tap="onProfilePictureTapped"/>
+                    <Label col="1" text="{{ username }}" class="username" id="lblUsername"/>
+                </GridLayout>
+                <GridLayout columns="*, *, *, *, *, *" rows="auto" verticalAlignment="top">
+                    <Label text="Followed: " class="field-title"  col="0" />
+                    <Label text="{{ followed_by }}" class="field-title" col="1" />
+                    <Label text="Following: " class="field-title" col="2" />
+                    <Label text="{{ follows }}" class="field-title" col="3" />
+                    <Label text="Media: " class="field-title" col="4" />
+                    <Label text="{{ media }}" class="field-title" col="5" />
                 </GridLayout>
                 <StackLayout class="line"/>
                 <GridLayout columns="*, *, *" rows="auto, auto" verticalAlignment="top">

@@ -16,9 +16,10 @@ export class User extends Observable {
   public bio: string;
   public type: string;
   public imageList: Array<ImageCustom> = new Array<ImageCustom>();
+  
   // instagram model
   public id: string;
-  public full_name:string;
+  public full_name: string;
   public profile_picture: string;
   public website: string;
   public is_business: boolean;

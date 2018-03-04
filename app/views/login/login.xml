@@ -10,7 +10,7 @@
     </Page.actionBar>
 
     <GridLayout id="example-background" loaded="onBackgroundLoaded">
-        <GridLayout id="form-content" class="form-content" rows="auto,*,auto, auto, auto" loaded="onContentLoaded">
+        <GridLayout id="form-content" class="form-content" rows="auto,*,auto, auto" loaded="onContentLoaded">
             <StackLayout class="top-border" row="0"/>
             <ScrollView row="1" class="fields-section">
                 <StackLayout>
@@ -30,8 +30,7 @@
                 </StackLayout>
             </ScrollView>
             <Button text="Log in &#xf101;" class="update fa" tap="signIn" row="2"/>
-            <Button text="Instagram log in &#xf101;" class="update fa" tap="instagramAuth" row="3"/>
-            <Button text="Sign up for AspireApp!" tap="register" row="4" />
+            <Button text="Sign up for AspireApp!" tap="register" row="3" />
         </GridLayout>
         
         <Image src="res://logo" id="image" class="logo-picture" stretch="none" horizontalAlignment="center" tap="onProfilePictureTapped"/>

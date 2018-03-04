@@ -1,15 +1,17 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="onLoaded" navigatingTo="onNavigatingTo" class="page"
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" class="page"
   xmlns:home="views/tabs/home"
   xmlns:search="views/tabs/search"
   xmlns:browse="views/tabs/browse">
     <Page.actionBar>
         <ActionBar class="action-bar">
 
-          <GridLayout columns="*, 2*, *">
+          <GridLayout columns="*, *, 2*">
             <Label text="{{ title }}" col="1" class="action-bar-title" width="200" horizontalAlignment="center"/>
             <Label id="username" text="{{ username }}" col="2" class="action-bar-title fa" horizontalAlignment="right" />
           </GridLayout>
           
+          <ActionItem tap="bindInstagram" ios.systemIcon="16" ios.position="right"
+          text="Bind Instagram" android.position="popup"></ActionItem>
           <ActionItem tap="refreshTabsPage" ios.systemIcon="16" ios.position="right"
           text="Refresh" android.position="popup"></ActionItem>
           <ActionItem tap="logOut" ios.systemIcon="16" ios.position="right"

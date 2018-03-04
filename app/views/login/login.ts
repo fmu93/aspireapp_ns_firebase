@@ -63,8 +63,3 @@ export function onReturnPress(args) {
     signIn(args);
 }
 
-export function instagramAuth() {
-    frameModule.topmost().navigate("views/instagramLogin/instagramLogin");
-
-    
-}

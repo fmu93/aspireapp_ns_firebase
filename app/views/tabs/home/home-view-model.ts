@@ -15,13 +15,17 @@ import { ObservableArray } from "tns-core-modules/data/observable-array";
 import * as dialogs from "ui/dialogs";
 
 export class HomeViewModel extends Observable {
-    public username: string;
+    // public username: string;
     public type: string;
     public gender: string;
     public birthYear: string;
     public bio: string;
     public loadedImgList = new ObservableArray<ImageCustom>();
     public user: User;
+    // instagram counts
+    public follows: string;
+    public followed_by: string;
+    public media: string;
 
     constructor() {
         super();
@@ -46,6 +50,10 @@ export class HomeViewModel extends Observable {
             this.loadedImgList.sort(function(a, b) {
                 return parseFloat(b.filename) - parseFloat(a.filename);
             });
+            // loading instagram counts
+            this.followed_by = String(user.counts.followed_by);
+            this.follows = String(user.counts.follows);
+            this.media = String(user.counts.media);
         }).catch(error => console.log(error));
     }
     

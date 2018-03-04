@@ -26,9 +26,13 @@ export function loadUrl() {
     webView.on(webViewModule.WebView.loadFinishedEvent, function (args: webViewModule.LoadEventData) {
         if (args.url && args.url.includes("access_token=")) {
             // update instagram token for user
-            InstagramService.token = args.url.split("access_token=").pop();
+            InstagramService.instaToken = args.url.split("access_token=").pop();
+            InstagramService.updateFirebaseUser();
             webView.off(webViewModule.WebView.loadFinishedEvent);
-            logged();
+            dialogs.alert({
+                title: "Sucess",
+                message: "Aspire and Instagram now binded"
+            })
             return
             
         } else if (!args.error) {
@@ -48,13 +52,13 @@ export function logged() {
         animated: false,
         clearHistory: true
         };
-    return frameModule.topmost().navigate("views/tabs/home/home-fragment");
+    return frameModule.topmost().navigate(navigationEntry);
 }
 
 export function back() {
     instagramToken = "";
     const navigationEntry = {
-        moduleName: "views/login/login",
+        moduleName: "views/tabs/tabs-page",
         context: {"token": instagramToken},
         animated: false,
         clearHistory: true

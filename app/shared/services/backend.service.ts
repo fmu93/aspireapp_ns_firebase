@@ -5,8 +5,7 @@ import { Observable } from "tns-core-modules/ui/page/page";
 import { User, ImageCustom} from "./../../shared/user.model";
 import { AddEventListenerResult } from "nativescript-plugin-firebase";
 
-const token = "token";
-let user = new User();
+const token = "";
 
 export class BackendService {
 	private static userListenerWrapper: AddEventListenerResult;
@@ -32,10 +31,6 @@ export class BackendService {
 	}
 
 	// User auth stuff
-
-	static printUser() {
-		console.dir(user);
-	}
 
 	static isLoggedIn(): boolean {
 		return !!getString("token");
@@ -123,14 +118,8 @@ export class BackendService {
 		);
 	  }
 
-	static doGetCurrentUser(): firebase.User {
-		firebase.getCurrentUser().then(
-			result => {
-			alert({
-				title: "Current user",
-				message: JSON.stringify(result),
-				okButtonText: "Nice!"
-			});
+	static getCurrentUser(): Promise<firebase.User> {
+		return firebase.getCurrentUser().then(result => {
 			return result
 			},
 			errorMessage => {
@@ -138,10 +127,10 @@ export class BackendService {
 					title: "No current user",
 					message: errorMessage,
 					okButtonText: "OK, thanks"
-			  	});	
+				  });	
+				return null
 			}
 		);
-		return null
 	}
 
 	// Other auth methods
@@ -152,9 +141,9 @@ export class BackendService {
 		customOptions: {
 			token: customToken
 		}
-		}).then(
-			function (result) {
+		}).then(result => {
 				JSON.stringify(result);
+				this.token = result.uid;
 				return result
 			},
 			function (errorMessage) {
@@ -211,11 +200,11 @@ export class BackendService {
 	// database stuff
 
 	static doUserStore(user: User): Promise<any>  {
-		const userDeletePassword = Object.assign({}, user); 
-		userDeletePassword.password = "<overwritten>";
+		const userDeletedPassword = Object.assign({}, user); 
+		userDeletedPassword.password = "<overwritten>";
 		return firebase.setValue(
 			'/users/' + user.uid,
-			userDeletePassword
+			userDeletedPassword
 		);
 	}
 
