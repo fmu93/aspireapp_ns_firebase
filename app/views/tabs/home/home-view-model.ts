@@ -22,7 +22,7 @@ export class HomeViewModel extends Observable {
     public bio: string;
     public loadedImgList = new ObservableArray<ImageCustom>();
     public user: User;
-    // instagram counts
+    // instagram counts TODO
     public follows: string;
     public followed_by: string;
     public media: string;
@@ -42,7 +42,7 @@ export class HomeViewModel extends Observable {
                 this.loadedImgList.splice(i);
             };
             // load with images from current user
-            for (var key in user.imageList) {
+            for (var key in user.instaImageList) {
                 this.loadedImgList.push(user.imageList[key]);
             }
             this.loadedImgList.shift();

@@ -2,6 +2,7 @@ import { Observable } from "tns-core-modules/ui/page/page";
 import { ObservableProperty } from "./observable-property-decorator";
 import firebase = require("nativescript-plugin-firebase");
 import { BackendService } from "./services/backend.service";
+import { InstagramService, InstaMediaList, InstaImage } from "./services/instagram.service";
 require("nativescript-localstorage");
 const validator = require("email-validator");
 
@@ -16,6 +17,7 @@ export class User extends Observable {
   public bio: string;
   public type: string;
   public imageList: Array<ImageCustom> = new Array<ImageCustom>();
+  public instaImageList: Array<InstaImage> = new Array<InstaImage>();
   
   // instagram model
   public id: string;

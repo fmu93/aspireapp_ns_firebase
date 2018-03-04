@@ -81,7 +81,6 @@ export class BackendService {
 			password: user.password
 			}
 		}).then((response) => {
-			console.log(JSON.stringify(response));
 			this.token = response.uid;
 			BackendService.getThisUserCollection();
 			return response;
