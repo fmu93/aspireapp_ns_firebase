@@ -8,6 +8,7 @@ const validator = require("email-validator");
 export class User extends Observable {
   public username: string;
   public uid: string;
+  public instagramToken: string;
   public email: string;
   public password: string;
   public gender: string;
@@ -15,6 +16,17 @@ export class User extends Observable {
   public bio: string;
   public type: string;
   public imageList: Array<ImageCustom> = new Array<ImageCustom>();
+  // instagram model
+  public id: string;
+  public full_name:string;
+  public profile_picture: string;
+  public website: string;
+  public is_business: boolean;
+  public counts: {
+    "media": number, 
+    "follows": number, 
+    "followed_by": number
+  }
 
   constructor() {
     super();

@@ -1,0 +1,9 @@
+<Page loaded="onLoaded"
+    cssFile="~/views/login/login.css"
+    tap="onPageTapped">
+    
+    <GridLayout loaded="onBackgroundLoaded" rows="*, auto">
+        <WebView row="0" id="webView" src="{{ url }}" />
+        <Button text="Back" class="update fa" tap="back" row="1"/>
+    </GridLayout>
+</Page>

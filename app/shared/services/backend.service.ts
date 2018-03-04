@@ -5,7 +5,7 @@ import { Observable } from "tns-core-modules/ui/page/page";
 import { User, ImageCustom} from "./../../shared/user.model";
 import { AddEventListenerResult } from "nativescript-plugin-firebase";
 
-const tokenKey = "token";
+const token = "token";
 let user = new User();
 
 export class BackendService {
@@ -45,8 +45,8 @@ export class BackendService {
 		return getString("token");
 	}
 
-	static set token(theToken: string) {
-		setString("token", theToken);
+	static set token(token: string) {
+		setString("token", token);
 	}
 
 	static register(user: User): Promise<any> {
@@ -145,6 +145,24 @@ export class BackendService {
 	}
 
 	// Other auth methods
+
+	static customLogin(customToken: string): Promise<any> {
+		return firebase.login({
+		type: firebase.LoginType.CUSTOM,
+		customOptions: {
+			token: customToken
+		}
+		}).then(
+			function (result) {
+				JSON.stringify(result);
+				return result
+			},
+			function (errorMessage) {
+				console.log(errorMessage);
+				return null
+			}
+		);
+	}
 
 	static doLoginByFacebook(): void {
 		firebase.login({

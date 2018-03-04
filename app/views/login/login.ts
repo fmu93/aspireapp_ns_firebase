@@ -7,13 +7,18 @@ import { Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
 import { User } from "./../../shared/user.model";
 import * as utils from "utils/utils";
+import * as webViewModule from "tns-core-modules/ui/web-view";
+import view = require("ui/core/view");
 
 const user = new User();
+// let webView = new webViewModule.WebView();
 
 export function onLoaded(args) {
 
     const page = <Page>args.object;
     page.bindingContext = user;
+
+    // webView = <webViewModule.WebView>view.getViewById(page, "webView");
 }
 
 export function pageNavigatedTo(args: EventData): void {
@@ -56,4 +61,10 @@ export function onPageTapped(args: EventData) {
 
 export function onReturnPress(args) {
     signIn(args);
+}
+
+export function instagramAuth() {
+    frameModule.topmost().navigate("views/instagramLogin/instagramLogin");
+
+    
 }
