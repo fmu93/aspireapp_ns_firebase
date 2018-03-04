@@ -9,7 +9,7 @@
         <!-- 
         Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
         -->
-        <NavigationButton ios:visibility="collapsed" icon="res://menu" tap="onDrawerButtonTap"></NavigationButton>
+        <NavigationButton ios:visibility="collapsed" android.systemIcon="ic_menu_more" tap="onDrawerButtonTap"></NavigationButton>
         <!-- 
         Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
         -->
@@ -67,11 +67,11 @@
                             </GridLayout>
                             <GridLayout columns="*, *, *, *, *, *" rows="auto" verticalAlignment="top">
                                 <Label text="Followed: " class="field-title"  col="0" />
-                                <Label text="{{ followed_by }}" class="field-title" col="1" />
+                                <Label text="{{ followed_by }}" class="field-title" col="1" horizontalAlignment="left"/>
                                 <Label text="Following: " class="field-title" col="2" />
-                                <Label text="{{ follows }}" class="field-title" col="3" />
+                                <Label text="{{ follows }}" class="field-title" col="3" horizontalAlignment="left"/>
                                 <Label text="Media: " class="field-title" col="4" />
-                                <Label text="{{ media }}" class="field-title" col="5" />
+                                <Label text="{{ media }}" class="field-title" col="5" horizontalAlignment="left"/>
                             </GridLayout>
                             <StackLayout class="line"/>
                             <GridLayout columns="*, *, *" rows="auto, auto" verticalAlignment="top">

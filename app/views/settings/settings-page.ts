@@ -2,8 +2,9 @@ import { EventData } from "data/observable";
 import { RadSideDrawer } from "nativescript-pro-ui/sidedrawer";
 import { topmost } from "ui/frame";
 import { NavigatedData, Page } from "ui/page";
+import { BackendService } from "./../../shared/services/backend.service";
 
-import { SearchViewModel } from "./search-view-model";
+import { SettingsViewModel } from "./settings-view-model";
 
 /* ***********************************************************
 * Use the "onNavigatingTo" handler to initialize the page binding context.
@@ -19,7 +20,7 @@ export function onNavigatingTo(args: NavigatedData) {
     }
 
     const page = <Page>args.object;
-    page.bindingContext = new SearchViewModel();
+    page.bindingContext = new SettingsViewModel();
 }
 
 /* ***********************************************************
@@ -30,4 +31,21 @@ export function onNavigatingTo(args: NavigatedData) {
 export function onDrawerButtonTap(args: EventData) {
     const sideDrawer = <RadSideDrawer>topmost().getViewById("sideDrawer");
     sideDrawer.showDrawer();
+}
+
+export function logOut() {
+    BackendService.logout()
+    .then(() => {
+        topmost().navigate("views/login/login");
+    });
+}
+
+export function deleteUser() {
+    BackendService.doDeleteUser().then((deleted: boolean) => {
+        if (deleted) {topmost().navigate("views/login/login");}
+    });
+}
+
+export function bindInstagram() {
+    topmost().navigate("views/instagramLogin/instagramLogin");
 }

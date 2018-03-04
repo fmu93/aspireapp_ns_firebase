@@ -24,9 +24,9 @@ export class HomeViewModel extends Observable {
     public loadedImgList = new ObservableArray<InstaImage>();
     public user: User;
     // instagram counts TODO
-    public follows: string;
-    public followed_by: string;
-    public media: string;
+    @ObservableProperty() follows: string;
+    @ObservableProperty() followed_by: string;
+    @ObservableProperty() media: string;
 
     constructor() {
         super();

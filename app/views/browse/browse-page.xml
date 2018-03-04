@@ -1,5 +1,6 @@
 <Page
     class="page"
+    cssFile="~/views/home/home-page.css"
     navigatingTo="onNavigatingTo"  
     xmlns:nsDrawer="nativescript-pro-ui/sidedrawer"
     xmlns:drawer="shared/drawer"
@@ -9,7 +10,7 @@
         <!-- 
         Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
         -->
-        <NavigationButton ios:visibility="collapsed" icon="res://menu" tap="onDrawerButtonTap"></NavigationButton>
+        <NavigationButton ios:visibility="collapsed" android.systemIcon="ic_menu_more" tap="onDrawerButtonTap"></NavigationButton>
         <!-- 
         Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
         -->

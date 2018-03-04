@@ -50,24 +50,4 @@ export function onSelectedIndexChanged(args: SelectedIndexChangedEventData) {
     utils.ad.dismissSoftInput();
 }
 
-export function logOut() {
-    BackendService.logout()
-    .then(() => {
-        frameModule.topmost().navigate("views/login/login");
-    });
-}
 
-export function deleteUser() {
-    BackendService.doDeleteUser().then((deleted: boolean) => {
-        if (deleted) {frameModule.topmost().navigate("views/login/login");}
-    });
-}
-
-export function refreshTabsPage() {
-    console.log("Refresh");
-    return frameModule.topmost().navigate("views/tabs/tabs-page");
-}
-
-export function bindInstagram() {
-    frameModule.topmost().navigate("views/instagramLogin/instagramLogin");
-}
