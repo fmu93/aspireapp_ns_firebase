@@ -41,14 +41,14 @@
             </lv:RadListView.listViewLayout>
             <lv:RadListView.itemTemplate>
                 <GridLayout rows="*" backgroundColor="White">
-                    <GridLayout rows="*" columns="*" marginBottom="2" marginRight="2">
+                    <GridLayout rows="*" columns="*" marginBottom="2" >
                         <f:FrescoDrawee
                         horizontalAlignment="stretch"
                         height="250"
-                        imageUri="{{ url }}"/>
+                        imageUri="{{ images.low_resolution.url }}"/>
                         <GridLayout verticalAlignment="bottom">
                             <StackLayout backgroundColor="#AAFFFFFF" paddingTop="4" paddingBottom="4" paddingLeft="16" paddingRight="16">
-                                <Label text="{{ caption }}"/>
+                                <Label text="{{ caption.text }}"/>
                             </StackLayout>
                         </GridLayout>
                     </GridLayout>

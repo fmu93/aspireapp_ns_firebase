@@ -12,6 +12,7 @@ import { StackLayout } from "ui/layouts/stack-layout";
 import { BackendService } from "../../../shared/services/backend.service";
 import { User, ImageCustom } from "./../../../shared/user.model";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
+import { InstagramService, InstaMediaList, InstaImage } from "../../../shared/services/instagram.service";
 import * as dialogs from "ui/dialogs";
 
 export class HomeViewModel extends Observable {
@@ -20,7 +21,7 @@ export class HomeViewModel extends Observable {
     public gender: string;
     public birthYear: string;
     public bio: string;
-    public loadedImgList = new ObservableArray<ImageCustom>();
+    public loadedImgList = new ObservableArray<InstaImage>();
     public user: User;
     // instagram counts TODO
     public follows: string;
@@ -29,7 +30,7 @@ export class HomeViewModel extends Observable {
 
     constructor() {
         super();
-        this.loadedImgList.push(new ImageCustom("", "", ""));
+        this.loadedImgList.push(new InstaImage());
         this.loadThisUser();
         this.doAddChildEventListenerUser();
         }
@@ -43,12 +44,12 @@ export class HomeViewModel extends Observable {
             };
             // load with images from current user
             for (var key in user.instaImageList) {
-                this.loadedImgList.push(user.imageList[key]);
+                this.loadedImgList.push(user.instaImageList[key]);
             }
             this.loadedImgList.shift();
             // sort assuming all images are milliseconds as filename
             this.loadedImgList.sort(function(a, b) {
-                return parseFloat(b.filename) - parseFloat(a.filename);
+                return parseFloat(b.created_time) - parseFloat(a.created_time);
             });
             // loading instagram counts
             this.followed_by = String(user.counts.followed_by);
@@ -80,20 +81,21 @@ export class HomeViewModel extends Observable {
     public imgTap(args) {
         dialogs.confirm({
             title: "Delete this pic?",
-            message: this.loadedImgList.getItem(args.index).filename,
+            message: this.loadedImgList.getItem(args.index).caption.text,
             okButtonText: "Delete",
             cancelButtonText: "Cancel"
-        }).then(result => {
-            if (result) {
-                BackendService.deleteFile(this.loadedImgList.getItem(args.index).remoteLocation)
-                .then((result) => {
-                    BackendService.removeImageFromList(this.loadedImgList.getItem(args.index).filename).then(() => {
-                        Toast.makeText("Deleted: " + this.loadedImgList.getItem(args.index).filename).show();
-                        this.loadThisUser();
-                    });
-                });
-            }
-        });
+        })
+        // .then(result => {
+        //     if (result) {
+        //         BackendService.deleteFile(this.loadedImgList.getItem(args.index).remoteLocation)
+        //         .then((result) => {
+        //             BackendService.removeImageFromList(this.loadedImgList.getItem(args.index).filename).then(() => {
+        //                 Toast.makeText("Deleted: " + this.loadedImgList.getItem(args.index).filename).show();
+        //                 this.loadThisUser();
+        //             });
+        //         });
+        //     }
+        // });
     }
 
     public doAddChildEventListenerUser(): void {
