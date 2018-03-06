@@ -3,7 +3,6 @@ import { ObservableProperty } from "./observable-property-decorator";
 import firebase = require("nativescript-plugin-firebase");
 import { BackendService } from "./services/backend.service";
 import { InstagramService, InstaMediaList, InstaImage } from "./services/instagram.service";
-require("nativescript-localstorage");
 const validator = require("email-validator");
 
 export class BaseUser extends Observable {
@@ -15,9 +14,9 @@ export class BaseUser extends Observable {
   public birthYear: number;
   public birthDate: string;
   public type: string;
-  public imageList: Array<ImageCustom> = new Array<ImageCustom>();
-  public instaImageList: Array<InstaImage> = new Array<InstaImage>();
-  
+  public imageList: Array<ImageCustom>;
+  public instaImageList: Array<InstaImage>;
+
   constructor() {
     super();
   }
@@ -39,7 +38,7 @@ export class ImageCustom extends Observable {
   remoteLocation: string;
   url: string;
   name: string;
-  caption: string = "caption this"; // "lovely weather!"
+  caption: string; // "lovely weather!"
   contentType: string; //image/jpeg
   created: string; // 2018-02-27T12:08:43.752Z
   updated: string; //2018-02-27T12:08:43.752Z

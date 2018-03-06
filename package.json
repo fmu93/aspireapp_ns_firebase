@@ -6,7 +6,7 @@
   "nativescript": {
     "id": "org.nativescript.aspire2",
     "tns-android": {
-      "version": "3.4.1"
+      "version": "3.4.2"
     }
   },
   "dependencies": {
@@ -18,7 +18,6 @@
     "nativescript-pro-ui": "3.4.0",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-toast": "1.4.6",
-    "nativescript-ui-dataform": "^3.5.0",
     "tns-core-modules": "~3.4.0"
   },
   "devDependencies": {

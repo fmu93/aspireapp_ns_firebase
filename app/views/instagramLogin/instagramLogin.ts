@@ -69,11 +69,11 @@ export function back() {
     return frameModule.topmost().navigate(navigationEntry);
 }
 
-export function clearCookies() {
-    if (app.android) {
-        
-    } else if (app.ios) {
-
+export function clearCookies(args: WebView) {
+    if (args.android) {
+        // args.android.nativeApp.webkit.WebView;
+    } else if (args.ios) {
+        // UIWebView;
     }
 }
 

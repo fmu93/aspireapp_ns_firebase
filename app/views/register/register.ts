@@ -15,6 +15,14 @@ export function onLoaded(args) {
     page.bindingContext = user;
 }
 
+export function pageNavigatedTo(args: EventData): void {
+    const page: Page = <Page>args.object;
+    if (page.navigationContext) {
+        const userLogging = <InstagramUser>page.navigationContext.user;
+        page.bindingContext = userLogging; // TODO get user from register page when success
+    }
+}
+
 export function signUp() {
     if (BackendService.isLoggedIn()) {
         const promise1 = BackendService.logout()
@@ -43,8 +51,7 @@ export function completeRegistration() {
             BackendService.logout();
             dialogs.alert({
                 title: user.email,
-                message: "you are now registered",
-                okButtonText: "Back to login"
+                message: "You are now registered"
             })
             return navigateLogin();
         } else {

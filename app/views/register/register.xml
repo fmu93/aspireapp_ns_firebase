@@ -1,4 +1,5 @@
 <Page loaded="onLoaded"
+    navigatedTo="pageNavigatedTo"
         cssFile="~/views/login/login.css"
         xmlns="http://www.nativescript.org/tns.xsd"
         tap="onPageTapped">

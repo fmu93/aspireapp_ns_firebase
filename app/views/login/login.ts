@@ -7,24 +7,21 @@ import { Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
 import { InstagramUser } from "./../../shared/user.model";
 import * as utils from "utils/utils";
-import * as webViewModule from "tns-core-modules/ui/web-view";
 import view = require("ui/core/view");
 
 const user = new InstagramUser();
-// let webView = new webViewModule.WebView();
 
 export function onLoaded(args) {
-
     const page = <Page>args.object;
     page.bindingContext = user;
-
-    // webView = <webViewModule.WebView>view.getViewById(page, "webView");
 }
 
 export function pageNavigatedTo(args: EventData): void {
     const page: Page = <Page>args.object;
-    const userRegistered = page.navigationContext;
-    // page.bindingContext = userRegistered; // TODO get user from register page when success
+    if (page.navigationContext) {
+        const userRegistered = <InstagramUser>page.navigationContext.user;
+        page.bindingContext = userRegistered; // TODO get user from register page when success
+    }
 }
 
 export function signIn(args) {
@@ -35,7 +32,7 @@ export function signIn(args) {
         const promise2 = BackendService.login(user)
         .then(() => {
             if (BackendService.isLoggedIn()) {
-                frameModule.topmost().navigate("views/home/home-page");
+                navigateHome();
             } else {
                 dialogs.alert("user not logged in: " + user.username);
             }
@@ -61,5 +58,15 @@ export function onPageTapped(args: EventData) {
 
 export function onReturnPress(args) {
     signIn(args);
+}
+
+export function navigateHome() {
+    const navigationEntry = {
+        moduleName: "views/home/home-page",
+        context: {"user": user},
+        animated: false,
+        clearHistory: true
+    };
+    return frameModule.topmost().navigate(navigationEntry);
 }
 

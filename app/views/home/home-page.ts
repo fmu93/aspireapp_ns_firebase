@@ -18,12 +18,12 @@ export function onNavigatingTo(args: NavigatedData) {
         return;
     }
 
-    const page = <Page>args.object;
-    page.bindingContext = new HomeViewModel();
     if (!BackendService.isLoggedIn()) {
         console.log(BackendService.isLoggedIn());
         return topmost().navigate("views/login/login");
     }
+    const page = <Page>args.object;
+    page.bindingContext = new HomeViewModel();
 
     utils.ad.dismissSoftInput();
     
