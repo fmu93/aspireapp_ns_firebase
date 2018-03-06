@@ -3,7 +3,7 @@ import { ObservableProperty } from "../../shared/observable-property-decorator";
 import { BackendService } from "../../shared/services/backend.service";
 import { Image } from "tns-core-modules/ui/image/image";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
-import { User, ImageCustom } from "./../../shared/user.model";
+import { InstagramUser, ImageCustom } from "./../../shared/user.model";
 import * as Toast from "nativescript-toast";
 
 
@@ -22,7 +22,7 @@ export class SearchViewModel extends Observable {
     }
 
     public loadGuest() {
-        BackendService.getUsersCollection().then((users: User[]) => {
+        BackendService.getUsersCollection().then(users => {
             this.userSize = users.length;
             const guest = users[this.userIndex];
             this.guestName = guest.username;

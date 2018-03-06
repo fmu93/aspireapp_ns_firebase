@@ -10,7 +10,7 @@ import view = require("ui/core/view");
 import * as frameModule from "ui/frame";
 import { StackLayout } from "ui/layouts/stack-layout";
 import { BackendService } from "../../shared/services/backend.service";
-import { User, ImageCustom } from "./../../shared/user.model";
+import { InstagramUser, ImageCustom } from "./../../shared/user.model";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { InstagramService, InstaMediaList, InstaImage } from "../../shared/services/instagram.service";
 import * as dialogs from "ui/dialogs";
@@ -22,7 +22,7 @@ export class HomeViewModel extends Observable {
     public birthYear: string;
     public bio: string;
     public loadedImgList = new ObservableArray<InstaImage>();
-    public user: User;
+    public user: InstagramUser;
     // instagram counts TODO
     @ObservableProperty() follows: string;
     @ObservableProperty() followed_by: string;
@@ -36,7 +36,7 @@ export class HomeViewModel extends Observable {
         }
 
     public loadThisUser() {
-        BackendService.getThisUserCollection().then((user: User) => {
+        BackendService.getThisUserCollection().then(user => {
             this.user = user;
             // empty current loadedImageList
             for (var i = 1; i < this.loadedImgList.length; i++) {

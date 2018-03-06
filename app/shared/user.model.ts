@@ -6,31 +6,18 @@ import { InstagramService, InstaMediaList, InstaImage } from "./services/instagr
 require("nativescript-localstorage");
 const validator = require("email-validator");
 
-export class User extends Observable {
+export class BaseUser extends Observable {
   public username: string;
   public uid: string;
-  public instagramToken: string;
   public email: string;
   public password: string;
   public gender: string;
   public birthYear: number;
-  public bio: string;
+  public birthDate: string;
   public type: string;
   public imageList: Array<ImageCustom> = new Array<ImageCustom>();
   public instaImageList: Array<InstaImage> = new Array<InstaImage>();
   
-  // instagram model
-  public id: string;
-  public full_name: string;
-  public profile_picture: string;
-  public website: string;
-  public is_business: boolean;
-  public counts: {
-    "media": number, 
-    "follows": number, 
-    "followed_by": number
-  }
-
   constructor() {
     super();
   }
@@ -65,4 +52,25 @@ export class ImageCustom extends Observable {
     this.remoteLocation = remoteLocation;
     this.url = url;
   };
+}
+
+export class InstagramUser extends BaseUser {
+  // instagram model
+  public username: string;
+  public instagramToken: string;
+  public bio: string;
+  public id: string;
+  public full_name: string;
+  public profile_picture: string;
+  public website: string;
+  public is_business: boolean;
+  public counts: {
+    "media": number, 
+    "follows": number, 
+    "followed_by": number
+  }
+
+  constructor() {
+    super();
+  }
 }

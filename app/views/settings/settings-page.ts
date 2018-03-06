@@ -3,8 +3,8 @@ import { RadSideDrawer } from "nativescript-pro-ui/sidedrawer";
 import { topmost } from "ui/frame";
 import { NavigatedData, Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
-
 import { SettingsViewModel } from "./settings-view-model";
+import * as dialogs from "ui/dialogs";
 
 /* ***********************************************************
 * Use the "onNavigatingTo" handler to initialize the page binding context.
@@ -34,16 +34,35 @@ export function onDrawerButtonTap(args: EventData) {
 }
 
 export function logOut() {
-    BackendService.logout()
-    .then(() => {
-        topmost().navigate("views/login/login");
+    dialogs.confirm({
+        title: "Log out",
+        message: "Are you sure?",
+        okButtonText: "Log out",
+        cancelButtonText: "Cancel"
+    }).then(result => {
+        if (result) {
+            BackendService.logout()
+            .then(() => {
+                topmost().navigate("views/login/login");
+            });
+        }
     });
 }
 
 export function deleteUser() {
-    BackendService.doDeleteUser().then((deleted: boolean) => {
-        if (deleted) {topmost().navigate("views/login/login");}
+    dialogs.confirm({
+        title: "Delete user",
+        message: "Are you sure?",
+        okButtonText: "Delete",
+        cancelButtonText: "Cancel"
+    }).then(result => {
+        if (result) {
+            BackendService.doDeleteUser().then(deleted => {
+                if (deleted) {topmost().navigate("views/login/login");}
+            });
+        }
     });
+    
 }
 
 export function bindInstagram() {

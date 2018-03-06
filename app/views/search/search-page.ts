@@ -2,6 +2,8 @@ import { EventData } from "data/observable";
 import { RadSideDrawer } from "nativescript-pro-ui/sidedrawer";
 import { topmost } from "ui/frame";
 import { NavigatedData, Page } from "ui/page";
+import view = require("ui/core/view");
+import { ListViewEventData, RadListView } from 'nativescript-pro-ui/listview';
 
 import { SearchViewModel } from "./search-view-model";
 
@@ -20,6 +22,10 @@ export function onNavigatingTo(args: NavigatedData) {
 
     const page = <Page>args.object;
     page.bindingContext = new SearchViewModel();
+    const radListView = <RadListView>view.getViewById(page, "imageList");
+    radListView.addEventListener(RadListView.itemLoadingEvent, () => {
+        radListView.scrollToIndex(0); // TODO
+    });
 }
 
 /* ***********************************************************

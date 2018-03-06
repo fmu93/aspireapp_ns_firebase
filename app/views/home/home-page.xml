@@ -1,5 +1,6 @@
 <Page
     class="page"
+    cssFile="~/views/home/home-page.css"
     navigatingTo="onNavigatingTo"  
     xmlns:nsDrawer="nativescript-pro-ui/sidedrawer"
     xmlns:drawer="shared/drawer"
@@ -57,10 +58,10 @@
         Always wrap content in a layout component.
         -->
         <nsDrawer:RadSideDrawer.mainContent>
-            <StackLayout class="page-content" loaded="onLoaded" xmlns:lv="nativescript-pro-ui/listview" xmlns:f="nativescript-fresco">
-                <GridLayout id="form-content" class="form-content" rows="auto, *" loaded="onContentLoaded">
-                    <ScrollView row="0" class="fields-section">
-                        <StackLayout>
+            <ScrollView>
+                <StackLayout class="page-content" loaded="onLoaded" xmlns:lv="nativescript-pro-ui/listview" xmlns:f="nativescript-fresco">
+                    <GridLayout id="form-content" class="form-content" rows="auto, *" loaded="onContentLoaded">
+                        <StackLayout row="0" class="fields-section">
                             <GridLayout columns="auto, *" verticalAlignment="top">                    
                                 <Image col="0" src="{{ profile_picture }}" id="image" class="logo-picture" horizontalAlignment="center" tap="onProfilePictureTapped"/>
                                 <Label col="1" text="{{ username }}" class="username" id="lblUsername"/>
@@ -92,31 +93,31 @@
                             </GridLayout>
                             <StackLayout class="line"/>
                         </StackLayout>
-                    </ScrollView>
 
-                    <lv:RadListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ imgTap }}" marginBottom="4" class="list-group"> 
-                        <lv:RadListView.listViewLayout>
-                            <lv:ListViewGridLayout scrollDirection="Vertical" spanCount="2"/>
-                        </lv:RadListView.listViewLayout>
-                        <lv:RadListView.itemTemplate>
-                            <GridLayout rows="*" backgroundColor="White">
-                                <GridLayout rows="*" columns="*" marginBottom="2" >
-                                    <f:FrescoDrawee
-                                    horizontalAlignment="stretch"
-                                    height="250"
-                                    imageUri="{{ images.low_resolution.url }}"/>
-                                    <GridLayout verticalAlignment="bottom">
-                                        <StackLayout backgroundColor="#AAFFFFFF" paddingTop="4" paddingBottom="4" paddingLeft="16" paddingRight="16">
-                                            <Label text="{{ caption.text }}"/>
-                                        </StackLayout>
+                        <lv:RadListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ imgTap }}" marginBottom="4" class="list-group"> 
+                            <lv:RadListView.listViewLayout>
+                                <lv:ListViewGridLayout scrollDirection="Vertical" spanCount="2"/>
+                            </lv:RadListView.listViewLayout>
+                            <lv:RadListView.itemTemplate>
+                                <GridLayout rows="*" backgroundColor="White">
+                                    <GridLayout rows="*" columns="*" marginBottom="2" >
+                                        <f:FrescoDrawee
+                                        horizontalAlignment="stretch"
+                                        height="250"
+                                        imageUri="{{ images.low_resolution.url }}"/>
+                                        <GridLayout verticalAlignment="bottom">
+                                            <StackLayout backgroundColor="#AAFFFFFF" paddingTop="4" paddingBottom="4" paddingLeft="16" paddingRight="16">
+                                                <Label text="{{ caption.text }}"/>
+                                            </StackLayout>
+                                        </GridLayout>
                                     </GridLayout>
                                 </GridLayout>
-                            </GridLayout>
-                        </lv:RadListView.itemTemplate>
-                    </lv:RadListView>
+                            </lv:RadListView.itemTemplate>
+                        </lv:RadListView>
 
-                </GridLayout>
-            </StackLayout>
+                    </GridLayout>
+                </StackLayout>
+            </ScrollView>
         </nsDrawer:RadSideDrawer.mainContent>
     </nsDrawer:RadSideDrawer>
 </Page>

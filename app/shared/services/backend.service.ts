@@ -2,7 +2,7 @@ import { getString, setString } from "application-settings";
 import * as fs from "tns-core-modules/file-system";
 import firebase = require("nativescript-plugin-firebase");
 import { Observable } from "tns-core-modules/ui/page/page";
-import { User, ImageCustom} from "./../../shared/user.model";
+import { BaseUser, InstagramUser, ImageCustom} from "./../../shared/user.model";
 import { AddEventListenerResult } from "nativescript-plugin-firebase";
 
 const token = "";
@@ -44,7 +44,7 @@ export class BackendService {
 		setString("token", token);
 	}
 
-	static register(user: User): Promise<any> {
+	static register(user: InstagramUser): Promise<any> {
 		return firebase.createUser({
 			email: user.email,
 			password: user.password
@@ -61,7 +61,7 @@ export class BackendService {
 		});
 	}
 
-	static updateUser(user: User) {
+	static updateUser(user: InstagramUser) {
 		firebase.updateProfile({
 			displayName: user.username
 		}).then(() => {
@@ -73,7 +73,7 @@ export class BackendService {
 		);
 	}
 
-	static login(user: User): Promise<any> {
+	static login(user: InstagramUser): Promise<any> {
 		return firebase.login({
 			type: firebase.LoginType.PASSWORD,
 			passwordOptions: {
@@ -112,7 +112,7 @@ export class BackendService {
 					message: errorMessage,
 					okButtonText: "OK, got it"
 				  });
-				  return true // TODO, check when error on deleting databse and files
+				  return false // TODO, check when error on deleting databse and files
 			}
 		);
 	  }
@@ -198,7 +198,7 @@ export class BackendService {
 
 	// database stuff
 
-	static doUserStore(user: User): Promise<any>  {
+	static doUserStore(user: InstagramUser): Promise<any>  {
 		const userDeletedPassword = Object.assign({}, user); 
 		userDeletedPassword.password = "<overwritten>";
 		return firebase.setValue(
@@ -225,10 +225,10 @@ export class BackendService {
 		);
 	}
 
-	static getUsersCollection(): Promise<User[]> {
+	static getUsersCollection(): Promise<InstagramUser[]> {
 		return firebase.getValue('/users')
 		.then(result => {
-			const users = new Array<User>();
+			const users = new Array<InstagramUser>();
 			for (var key in result.value) {
 				users.push(result.value[key]);
 			}
@@ -276,10 +276,10 @@ export class BackendService {
 		);
 	  }
 
-	static getThisUserCollection(): Promise<User> {
+	static getThisUserCollection(): Promise<InstagramUser> {
 		return firebase.getValue('/users/' + this.token)
 		.then(result => {
-			return <User> result.value
+			return <InstagramUser> result.value
 		})
 		.catch(error => {
 			console.log("Error: " + error)
@@ -287,7 +287,7 @@ export class BackendService {
 		});
 	}
 
-	static addToImageList(filename: string, remoteLocation: string, url: string): Promise<User> {
+	static addToImageList(filename: string, remoteLocation: string, url: string): Promise<InstagramUser> {
 		const newImage = new ImageCustom(filename, remoteLocation, url);
 		return firebase.setValue(
 			'/users/' + this.token + "/imageList/" + filename,

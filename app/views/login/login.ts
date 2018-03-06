@@ -5,12 +5,12 @@ import { EditableTextBase } from "ui/editable-text-base";
 import * as frameModule from "ui/frame";
 import { Page } from "ui/page";
 import { BackendService } from "./../../shared/services/backend.service";
-import { User } from "./../../shared/user.model";
+import { InstagramUser } from "./../../shared/user.model";
 import * as utils from "utils/utils";
 import * as webViewModule from "tns-core-modules/ui/web-view";
 import view = require("ui/core/view");
 
-const user = new User();
+const user = new InstagramUser();
 // let webView = new webViewModule.WebView();
 
 export function onLoaded(args) {
