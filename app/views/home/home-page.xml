@@ -94,7 +94,7 @@
                             <StackLayout class="line"/>
                         </StackLayout>
 
-                        <lv:RadListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ imgTap }}" marginBottom="4" class="list-group"> 
+                        <lv:RadListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ onItemTap }}" marginBottom="4" class="list-group"> 
                             <lv:RadListView.listViewLayout>
                                 <lv:ListViewGridLayout scrollDirection="Vertical" spanCount="2"/>
                             </lv:RadListView.listViewLayout>

@@ -1,19 +1,14 @@
-import { Image } from "ui/image";
 import { ObservableProperty } from "../../shared/observable-property-decorator";
 import { EventData, Observable } from "data/observable";
-import fs = require("file-system");
-import * as imageSourceModule from "image-source";
 import imagepicker = require("nativescript-imagepicker");
 import * as Toast from "nativescript-toast";
-import { ImageSource } from "tns-core-modules/image-source/image-source";
-import view = require("ui/core/view");
-import * as frameModule from "ui/frame";
-import { StackLayout } from "ui/layouts/stack-layout";
 import { BackendService } from "../../shared/services/backend.service";
-import { InstagramUser, ImageCustom } from "./../../shared/user.model";
+import { InstagramUser } from "./../../shared/user.model";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { InstagramService, InstaMediaList, InstaImage } from "../../shared/services/instagram.service";
+import { ListViewEventData } from "nativescript-pro-ui/listview";
 import * as dialogs from "ui/dialogs";
+import { topmost } from "ui/frame";
 
 export class HomeViewModel extends Observable {
     // public username: string;
@@ -96,6 +91,21 @@ export class HomeViewModel extends Observable {
         //         });
         //     }
         // });
+    }
+
+    public onItemTap(args: ListViewEventData): void {
+        const tappedImgItem = <InstaImage>args.view.bindingContext;
+    
+        topmost().navigate({
+            moduleName: "views/image-detail/image-detail-page",
+            context: tappedImgItem,
+            animated: true,
+            transition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease"
+            }
+        });
     }
 
     public doAddChildEventListenerUser(): void {

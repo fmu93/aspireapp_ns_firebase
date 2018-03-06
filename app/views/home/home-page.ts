@@ -6,8 +6,6 @@ import { RadSideDrawer } from "nativescript-pro-ui/sidedrawer";
 import { topmost } from "ui/frame";
 import { BackendService } from "./../../shared/services/backend.service";
 import { NavigatedData, Page } from "ui/page";
-import view = require("ui/core/view");
-import { ListViewEventData, RadListView } from 'nativescript-pro-ui/listview';
 
 
 export function onNavigatingTo(args: NavigatedData) {
@@ -28,8 +26,6 @@ export function onNavigatingTo(args: NavigatedData) {
     }
 
     utils.ad.dismissSoftInput();
-    const radListView = <RadListView>view.getViewById(page, "imageList");
-    radListView.scrollToIndex(1)
     
 }
 

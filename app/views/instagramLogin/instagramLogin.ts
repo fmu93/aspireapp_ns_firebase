@@ -8,7 +8,6 @@ import { BackendService } from "./../../shared/services/backend.service";
 import { InstagramService } from "./../../shared/services/instagram.service";
 import * as http from "http";
 import app = require("application");
-declare const android;
 
 let webView = new WebView();
 let instaToken = "";
@@ -70,4 +69,11 @@ export function back() {
     return frameModule.topmost().navigate(navigationEntry);
 }
 
+export function clearCookies() {
+    if (app.android) {
+        
+    } else if (app.ios) {
+
+    }
+}
 
