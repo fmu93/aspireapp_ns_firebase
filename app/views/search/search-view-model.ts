@@ -5,6 +5,9 @@ import { Image } from "tns-core-modules/ui/image/image";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { InstagramUser, ImageCustom } from "./../../shared/user.model";
 import * as Toast from "nativescript-toast";
+import { topmost } from "ui/frame";
+import { InstaImage } from "../../shared/services/instagram.service";
+import { ListViewEventData } from "nativescript-pro-ui/listview";
 
 
 export class SearchViewModel extends Observable {
@@ -57,7 +60,18 @@ export class SearchViewModel extends Observable {
         this.loadGuest();
     }
 
-    public imgTap(args) {
-        Toast.makeText("Filename: " + this.loadedImgList.getItem(args.index).filename).show();
+    public onItemTap(args: ListViewEventData): void {
+        const tappedImgItem = <InstaImage>args.view.bindingContext;
+    
+        topmost().navigate({
+            moduleName: "views/image-detail/image-detail-page",
+            context: tappedImgItem,
+            animated: true,
+            transition: {
+                name: "slide",
+                duration: 200,
+                curve: "ease"
+            }
+        });
     }
 }
