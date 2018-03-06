@@ -94,7 +94,7 @@
                             <StackLayout class="line"/>
                         </StackLayout>
 
-                        <lv:RadListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ onItemTap }}" marginBottom="4" class="list-group"> 
+                        <lv:RadListView row="1" id="imageList" items="{{ loadedImgList }}" itemTap="{{ onItemTap }}" class="list-group"> 
                             <lv:RadListView.listViewLayout>
                                 <lv:ListViewGridLayout scrollDirection="Vertical" spanCount="2"/>
                             </lv:RadListView.listViewLayout>
@@ -103,7 +103,7 @@
                                     <GridLayout rows="*" columns="*" marginBottom="2" >
                                         <f:FrescoDrawee
                                         horizontalAlignment="stretch"
-                                        height="250"
+                                        height="220"
                                         imageUri="{{ images.low_resolution.url }}"/>
                                         <GridLayout verticalAlignment="bottom">
                                             <StackLayout backgroundColor="#AAFFFFFF" paddingTop="4" paddingBottom="4" paddingLeft="16" paddingRight="16">
