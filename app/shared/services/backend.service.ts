@@ -17,8 +17,8 @@ export class BackendService {
 		if (this.user) {
 			return this.user;
 		} else {
-			console.log("Error: User undefined");
-			return null;
+			console.log("User undefined, creating a new one");
+			return new ExtendedUser();
 		}
 	}
 
@@ -30,7 +30,7 @@ export class BackendService {
 				return this.user;
 			} else {
 				console.log("Error: User database not available")
-				return new ExtendedUser();
+				return null;
 			}
 		})
 	}
@@ -97,7 +97,7 @@ export class BackendService {
 		);
 	}
 
-	static login(user: ExtendedUser): Promise<any> {
+	static login(user: BaseUser): Promise<any> {
 		return firebase.login({
 			type: firebase.LoginType.PASSWORD,
 			passwordOptions: {
@@ -112,9 +112,11 @@ export class BackendService {
 	}
 
 	static logout() {
-	return firebase.logout().then(() => {
-		this.token = ""
-	});
+		if (!this.token) {
+			return firebase.logout().then(() => {
+				return this.token = ""
+			});
+		}
 	}
 
 	static doDeleteUser(): Promise<any> {

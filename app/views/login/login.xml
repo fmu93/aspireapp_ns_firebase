@@ -29,7 +29,7 @@
                 </StackLayout>
             </ScrollView>
             <Button text="Log in &#xf101;" class="update fa" tap="{{ signIn }}" row="2"/>
-            <Button text="Sign up for AspireApp!" tap="{{ register }}" row="3" />
+            <Button text="Sign up for AspireApp!" tap="{{ navigateRegister }}" row="3" />
         </GridLayout>
         
         <Image src="res://logo" id="image" class="logo-picture" stretch="none" horizontalAlignment="center" tap="{{ onProfilePictureTapped }}"/>

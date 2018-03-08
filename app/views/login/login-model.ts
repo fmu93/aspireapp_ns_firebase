@@ -15,12 +15,12 @@ export class LoginModel extends Observable {
         this.user = BackendService.getUser();
     }
 
-
-    public signIn(args) {
+    public signIn() {
         // Actually, the only way to be logged in at this point is after successful registration
         // or successful login. Maybe a switch user does make sense.
         const promise = BackendService.logout()
         .then(() => {
+            // TODO check binding of email and password fields are updated
             const promise2 = BackendService.login(this.user)
             .then(() => {
                 if (BackendService.isLoggedIn()) {
@@ -40,8 +40,8 @@ export class LoginModel extends Observable {
         });
     }
 
-    public register(args) {
-        frameModule.topmost().navigate("views/register/register");
+    public navigateRegister(args) {
+        return frameModule.topmost().navigate("views/register/register");
     }
 
     public onPageTapped(args: EventData) {
@@ -49,17 +49,11 @@ export class LoginModel extends Observable {
     }
 
     public onReturnPress(args) {
-        this.signIn(args);
+        this.signIn();
     }
 
     public navigateHome() {
-        const navigationEntry = {
-            moduleName: "views/home/home-page",
-            context: {"user": this.user},
-            animated: false,
-            clearHistory: true
-        };
-        return frameModule.topmost().navigate(navigationEntry);
+        return frameModule.topmost().navigate("views/home/home-page");
     }
 
 }

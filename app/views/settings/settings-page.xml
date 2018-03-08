@@ -66,13 +66,13 @@
                 <!-- <ListPicker row="4" items="{{ genders }}" selectedIndex="{{ gender }}" /> -->
 
                 <df:RadDataForm row="4" id="myDataForm" source="{{ user }}">
-                    <df:RadDataForm.properties>
-                        <!-- <df:EntityProperty name="type" displayName="User category" index="0" valuesProvider="Photo, Model, Business">
+                    <!-- <df:RadDataForm.properties>
+                        <df:EntityProperty name="type" displayName="User category" index="0" valuesProvider="Photo, Model, Business">
                             <df:EntityProperty.editor>
                                 <df:PropertyEditor type="Picker" />
                             </df:EntityProperty.editor>
-                        </df:EntityProperty> -->
-                    </df:RadDataForm.properties>
+                        </df:EntityProperty>
+                    </df:RadDataForm.properties> -->
                 </df:RadDataForm>
 
             </GridLayout>

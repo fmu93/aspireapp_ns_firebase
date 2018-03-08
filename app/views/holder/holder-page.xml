@@ -1,4 +1,4 @@
-<Page navigatedTo="pageNavigatedTo"
+<Page loaded="onLoaded"
     tap="{{ onPageTapped }}">
     <Label class="page-icon fa" text="&#xf0f4;" horizontalAlignment="center" verticalAlignment="center" fontSize="200" color="#AAAAAA"></Label>
 </Page>

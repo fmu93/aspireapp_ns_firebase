@@ -60,6 +60,7 @@ export class InstagramUser extends BaseUser {
     "follows": number, 
     "followed_by": number
   }
+  public instaImageList: Array<InstaImage>;
 
   constructor() {
     super();
@@ -68,7 +69,6 @@ export class InstagramUser extends BaseUser {
 
 export class ExtendedUser extends InstagramUser {
   public imageList: Array<ImageCustom>;
-  public instaImageList: Array<InstaImage>;
 
   constructor() {
     super();
