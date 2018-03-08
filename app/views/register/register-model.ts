@@ -2,13 +2,13 @@ import { Observable, EventData } from "tns-core-modules/ui/page/page";
 import * as dialogs from "ui/dialogs";
 import * as frameModule from "ui/frame";
 import { BackendService } from "./../../shared/services/backend.service";
-import { InstagramUser } from "./../../shared/user.model";
+import { ExtendedUser } from "./../../shared/user.model";
 import * as utils from "utils/utils";
 import { ObservableProperty } from "../../shared/observable-property-decorator";
 
 
 export class RegisterModel extends Observable {
-    @ObservableProperty() user: InstagramUser;
+    @ObservableProperty() user: ExtendedUser;
 
     constructor() {
         super();

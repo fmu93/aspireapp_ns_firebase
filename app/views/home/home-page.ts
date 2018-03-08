@@ -20,17 +20,12 @@ export function onNavigatingTo(args: NavigatedData) {
     }
 
     if (!BackendService.isLoggedIn()) {
-        console.log(BackendService.isLoggedIn());
         return topmost().navigate("views/login/login");
     }
     
     const page = <Page>args.object;
-    BackendService.setUser().then(user => {
-        // TODO add loading animation
-        if (user) {
-            page.bindingContext = new HomeViewModel();
-        }
-    })
+    page.bindingContext = new HomeViewModel();
+
 }
 
 export function onDrawerButtonTap(args: EventData) {

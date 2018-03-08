@@ -14,17 +14,9 @@ export class BaseUser extends Observable {
   public birthYear: number;
   public birthDate: string;
   public type: string;
-  public imageList: Array<ImageCustom>;
-  public instaImageList: Array<InstaImage>;
 
   constructor() {
     super();
-  }
-
-  public loadFirebaseUser(fu: firebase.User) {
-    this.username = fu.name;
-    this.email = fu.email;
-    this.uid = fu.uid;
   }
 
   public isValidEmail() {
@@ -68,6 +60,15 @@ export class InstagramUser extends BaseUser {
     "follows": number, 
     "followed_by": number
   }
+
+  constructor() {
+    super();
+  }
+}
+
+export class ExtendedUser extends InstagramUser {
+  public imageList: Array<ImageCustom>;
+  public instaImageList: Array<InstaImage>;
 
   constructor() {
     super();

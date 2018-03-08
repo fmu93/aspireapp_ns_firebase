@@ -2,13 +2,13 @@ import { Observable } from "data/observable";
 import { ObservableProperty } from "../../shared/observable-property-decorator";
 import { EventData } from "data/observable";
 import { BackendService } from "./../../shared/services/backend.service";
-import { InstagramUser } from "../../shared/user.model";
+import { ExtendedUser } from "../../shared/user.model";
 import * as dialogs from "ui/dialogs";
 import * as frameModule from "ui/frame";
 import * as utils from "utils/utils";
 
 export class LoginModel extends Observable {
-    @ObservableProperty() user: InstagramUser;
+    @ObservableProperty() user: ExtendedUser;
 
     constructor() {
         super();

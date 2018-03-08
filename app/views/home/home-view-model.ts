@@ -3,7 +3,7 @@ import { EventData, Observable } from "data/observable";
 import imagepicker = require("nativescript-imagepicker");
 import * as Toast from "nativescript-toast";
 import { BackendService } from "../../shared/services/backend.service";
-import { InstagramUser } from "./../../shared/user.model";
+import { ExtendedUser } from "./../../shared/user.model";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { InstagramService, InstaMediaList, InstaImage } from "../../shared/services/instagram.service";
 import { ListViewEventData } from "nativescript-pro-ui/listview";
@@ -14,7 +14,7 @@ import * as utils from "utils/utils";
 export class HomeViewModel extends Observable {
     // public username: string;
     @ObservableProperty() loadedImgList = new ObservableArray<InstaImage>();
-    @ObservableProperty() user: InstagramUser;
+    @ObservableProperty() user: ExtendedUser;
 
     constructor() {
         super();

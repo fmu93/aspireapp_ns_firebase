@@ -2,18 +2,18 @@ import { getString, setString } from "application-settings";
 import * as fs from "tns-core-modules/file-system";
 import firebase = require("nativescript-plugin-firebase");
 import { Observable } from "tns-core-modules/ui/page/page";
-import { BaseUser, InstagramUser, ImageCustom} from "./../../shared/user.model";
+import { BaseUser, ExtendedUser, ImageCustom} from "./../../shared/user.model";
 import { AddEventListenerResult } from "nativescript-plugin-firebase";
 
 const token = "";
 
 export class BackendService {
 	private static userListenerWrapper: AddEventListenerResult;
-	private static user: InstagramUser;
+	private static user: ExtendedUser;
 
 	// User model is stored here to be accessed throughout the app
 
-	static getUser(): InstagramUser {
+	static getUser(): ExtendedUser {
 		if (this.user) {
 			return this.user;
 		} else {
@@ -22,7 +22,7 @@ export class BackendService {
 		}
 	}
 
-	static setUser(): Promise<InstagramUser> {
+	static setUser(): Promise<ExtendedUser> {
 		return this.getThisUserCollection().then(user => {
 			if (user) {
 				this.user = user;
@@ -30,7 +30,7 @@ export class BackendService {
 				return this.user;
 			} else {
 				console.log("Error: User database not available")
-				return null
+				return new ExtendedUser();
 			}
 		})
 	}
@@ -68,7 +68,7 @@ export class BackendService {
 		setString("token", token);
 	}
 
-	static register(user: InstagramUser): Promise<any> {
+	static register(user: ExtendedUser): Promise<any> {
 		return firebase.createUser({
 			email: user.email,
 			password: user.password
@@ -85,7 +85,7 @@ export class BackendService {
 		});
 	}
 
-	static updateUser(user: InstagramUser) {
+	static updateUser(user: ExtendedUser) {
 		firebase.updateProfile({
 			displayName: user.username
 		}).then(() => {
@@ -97,7 +97,7 @@ export class BackendService {
 		);
 	}
 
-	static login(user: InstagramUser): Promise<any> {
+	static login(user: ExtendedUser): Promise<any> {
 		return firebase.login({
 			type: firebase.LoginType.PASSWORD,
 			passwordOptions: {
@@ -222,7 +222,7 @@ export class BackendService {
 
 	// database stuff
 
-	static doUserStore(user: InstagramUser): Promise<any>  {
+	static doUserStore(user: ExtendedUser): Promise<any>  {
 		const userDeletedPassword = Object.assign({}, user); 
 		userDeletedPassword.password = "<overwritten>";
 		return firebase.setValue(
@@ -249,10 +249,10 @@ export class BackendService {
 		);
 	}
 
-	static getUsersCollection(): Promise<InstagramUser[]> {
+	static getUsersCollection(): Promise<ExtendedUser[]> {
 		return firebase.getValue('/users')
 		.then(result => {
-			const users = new Array<InstagramUser>();
+			const users = new Array<ExtendedUser>();
 			for (var key in result.value) {
 				users.push(result.value[key]);
 			}
@@ -300,10 +300,10 @@ export class BackendService {
 		);
 	  }
 
-	static getThisUserCollection(): Promise<InstagramUser> {
+	static getThisUserCollection(): Promise<ExtendedUser> {
 		return firebase.getValue('/users/' + this.token)
 		.then(result => {
-			return <InstagramUser> result.value
+			return <ExtendedUser> result.value
 		})
 		.catch(error => {
 			console.log("Error: " + error)
@@ -311,7 +311,7 @@ export class BackendService {
 		});
 	}
 
-	static addToImageList(filename: string, remoteLocation: string, url: string): Promise<InstagramUser> {
+	static addToImageList(filename: string, remoteLocation: string, url: string): Promise<ExtendedUser> {
 		const newImage = new ImageCustom(filename, remoteLocation, url);
 		return firebase.setValue(
 			'/users/' + this.token + "/imageList/" + filename,

@@ -1,5 +1,4 @@
-<Page loaded="onLoaded"
-    navigatedTo="pageNavigatedTo"
+<Page navigatedTo="pageNavigatedTo"
     cssFile="~/views/login/login.css"
     tap="{{ onPageTapped }}">
 

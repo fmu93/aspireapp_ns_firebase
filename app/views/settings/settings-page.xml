@@ -67,11 +67,11 @@
 
                 <df:RadDataForm row="4" id="myDataForm" source="{{ user }}">
                     <df:RadDataForm.properties>
-                        <df:EntityProperty name="type" displayName="User category" index="0" converter="{{ $value }}" valuesProvider="{{ types }}">
+                        <!-- <df:EntityProperty name="type" displayName="User category" index="0" valuesProvider="Photo, Model, Business">
                             <df:EntityProperty.editor>
                                 <df:PropertyEditor type="Picker" />
                             </df:EntityProperty.editor>
-                        </df:EntityProperty>
+                        </df:EntityProperty> -->
                     </df:RadDataForm.properties>
                 </df:RadDataForm>
 

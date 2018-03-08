@@ -7,8 +7,7 @@ import { InstagramUser } from "../../shared/user.model";
 const tmobservable = new Observable();
 
 export class BrowseViewModel extends Observable {
-    @ObservableProperty()
-    public users: Array<InstagramUser>;
+    @ObservableProperty() users: Array<InstagramUser>;
 
     constructor() {
         super();
