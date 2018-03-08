@@ -3,7 +3,7 @@ import * as fs from "tns-core-modules/file-system";
 import firebase = require("nativescript-plugin-firebase");
 import { Observable } from "tns-core-modules/ui/page/page";
 import { BaseUser, ExtendedUser, ImageCustom} from "./../../shared/user.model";
-import { AddEventListenerResult } from "nativescript-plugin-firebase";
+import { AddEventListenerResult, UploadFileResult } from "nativescript-plugin-firebase";
 
 const token = "";
 
@@ -26,6 +26,7 @@ export class BackendService {
 		return this.getThisUserCollection().then(user => {
 			if (user) {
 				this.user = user;
+				// this.setUserCollectionEventListener();
 				console.log("User set: " + this.user.username);
 				return this.user;
 			} else {
@@ -34,6 +35,13 @@ export class BackendService {
 			}
 		})
 	}
+
+	static setUserCollectionEventListener(): void {
+        const onChildEvent = result => {
+            this.user.set(result.key, result.value);
+        };
+        BackendService.addDatabseListener(onChildEvent, "/users/" + this.token);
+    }
 
 	// init
 	static init(): Promise<any> {
@@ -107,6 +115,7 @@ export class BackendService {
 		}).then((response) => {
 			// keep user uid in hand because it is needed to access the user's collection in firebase databse
 			this.token = response.uid;
+			this.setUser();
 			return response;
 		}).catch(error => console.log(error));
 	}
@@ -313,12 +322,17 @@ export class BackendService {
 		});
 	}
 
-	static addToImageList(filename: string, remoteLocation: string, url: string): Promise<ExtendedUser> {
-		const newImage = new ImageCustom(filename, remoteLocation, url);
+	static addToImageList(id: string, remoteFullPath: string, uploadResult: FileUploadedResult): Promise<any> {
+		const newImage = new ImageCustom(id, remoteFullPath, uploadResult);
+		const collectionPath = "/users/" + this.token + "/imageList/" + id;
+		console.log(collectionPath);
+		
 		return firebase.setValue(
-			'/users/' + this.token + "/imageList/" + filename,
+			collectionPath,
 			newImage
-		)
+		).then(() => {
+			console.log("Image added to collection");
+		})
 	}
 
 	static removeImageFromList(filename: string): Promise<any> {
@@ -358,24 +372,26 @@ export class BackendService {
 
 	// Storage stuff
 
-	static uploadFile(remoteFullPath: string, localPath: string): Promise<firebase.UploadFileResult> {
+	static uploadFile(localPath: string): Promise<firebase.UploadFileResult> {
 		const appPath = fs.knownFolders.currentApp();
-		// const localFullPath = fs.path.join(appPath.path, localPath); // seems like whould be localPath
 		if (!fs.File.exists(localPath)) {
 			console.log("File does not exist: " + localPath);
 			return null;
 		}
+		const createdTime = new Date();
+		const id = String(createdTime.getTime());
+		const remoteFullPath = this.makeImgRemotePath(id, localPath);
 		
 		return firebase.uploadFile({
 			remoteFullPath,
 			localFullPath: localPath,
 			onProgress: status => {
-				console.log("Uploaded fraction: " + status.fractionCompleted);
-				console.log("Percentage complete: " + status.percentageCompleted);
+				console.log("Uploaded percentage complete: " + status.percentageCompleted);
 			}	
-		}).then((uploadFileResult) => {
-				console.log("File uploaded: " + JSON.stringify(uploadFileResult));
-				return uploadFileResult;
+		}).then((uploadFileResult: FileUploadedResult) => {
+			this.addToImageList(id, remoteFullPath, uploadFileResult);
+			console.log("File uploaded: " + JSON.stringify(uploadFileResult));
+			return uploadFileResult;
 		},
 		(error) => {
 			console.log("File upload error: " + error);
@@ -428,8 +444,19 @@ export class BackendService {
 
 	// Tools/utils
 
-	static makeImgRemotePath(fileName: string, extension: string): string {
-		return "/users/" + BackendService.token + "/public/" + fileName + "." + extension.replace(".", "");
+	static makeImgRemotePath(id: string, localPath: string): string {
+		const extension = localPath.split(".").pop();
+		return "/users/" + BackendService.token + "/" + id + "." + extension.replace(".", "");
 	}
 
+}
+
+export class FileUploadedResult {
+	public name: string;
+	public contentType: string;
+	public created: string;
+	public updated: string;
+	public bucket: string;
+	public size: number;
+	public url: string;
 }

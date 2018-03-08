@@ -3,7 +3,7 @@ import { EventData, Observable } from "data/observable";
 import imagepicker = require("nativescript-imagepicker");
 import * as Toast from "nativescript-toast";
 import { BackendService } from "../../shared/services/backend.service";
-import { ExtendedUser } from "./../../shared/user.model";
+import { ExtendedUser, BaseUser } from "./../../shared/user.model";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
 import { InstagramService, InstaMediaList, InstaImage } from "../../shared/services/instagram.service";
 import { ListViewEventData } from "nativescript-pro-ui/listview";
@@ -18,13 +18,17 @@ export class HomeViewModel extends Observable {
 
     constructor() {
         super();
-        this.user = BackendService.getUser();
+        this.loadUser();
         this.loadedImgList.push(new InstaImage());
-        this.loadThisUser();
+        this.loadImages();
         utils.ad.dismissSoftInput();
     }
 
-    public loadThisUser() {
+    public loadUser() {
+        this.user = BackendService.getUser();
+    }
+
+    public loadImages() {
             // empty current loadedImageList
             for (var i = 1; i < this.loadedImgList.length; i++) {
                 this.loadedImgList.splice(i);
@@ -41,20 +45,17 @@ export class HomeViewModel extends Observable {
     }
     
     public imgAdd() {
-        const filename = String((new Date()).getTime());
         const context = imagepicker.create({
-            mode: "single"
+            mode: "multiple"
         });
         context.authorize().then(() => {
             return context.present();
-        }).then((selection) => {
-            selection.forEach((element) => {    
-                const remotePath = BackendService.makeImgRemotePath(filename, element.fileUri.split(".").pop());
-                BackendService.uploadFile(remotePath, element.fileUri).then((uploadFileResult) => {
-                    BackendService.addToImageList(filename, remotePath, uploadFileResult.url).then(() => {
-                        Toast.makeText("Added: " + filename).show();
-                        this.loadThisUser();
-                    });
+        }).then(selection => {
+            selection.forEach(element => {
+                const localPath =  element.fileUri;   
+                BackendService.uploadFile(localPath).then(uploadFileResult => {
+                    Toast.makeText("Added: " + uploadFileResult.name).show();
+                    this.loadImages();
                 });
             });
         });
@@ -95,20 +96,8 @@ export class HomeViewModel extends Observable {
         });
     }
 
-    public doAddChildEventListenerUser(): void {
-        const onChildEvent = result => {
-            this.set(result.key,  result.value);
-        };
-        BackendService.addDatabseListener(onChildEvent, "/users/" + BackendService.token);
-    }
-
     public updateProperties() {
-        const properties = {
-            // "type": this.type,
-            // "gender": this.gender,
-            // "birthYear": Number.parseInt(this.birthYear),
-            // "bio": this.bio
-        }
+        const properties = <BaseUser> this.user;
         BackendService.updateUserProperties(properties).then(() => {
             Toast.makeText("Updated user properties").show();
         });

@@ -17,7 +17,7 @@ export function onLoaded(args: NavigatedData): void {
 export function navigateLogin() {
     const navigationEntry = {
         moduleName: "views/login/login",
-        backstackVisible: false
+        clearHistory: true
     };
     return topmost().navigate(navigationEntry);  
 }
@@ -25,7 +25,7 @@ export function navigateLogin() {
 export function navigateHome() {
     const navigationEntry = {
         moduleName: "views/home/home-page",
-        backstackVisible: false
+        clearHistory: true
     };
     return topmost().navigate(navigationEntry);  
 }

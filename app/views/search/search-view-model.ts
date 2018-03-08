@@ -20,7 +20,6 @@ export class SearchViewModel extends Observable {
 
     constructor() {
         super();
-        this.loadedImgList.push(new ImageCustom("", "", ""));
         this.loadGuest();
     }
 
@@ -43,7 +42,7 @@ export class SearchViewModel extends Observable {
             this.loadedImgList.shift();
             // sort assuming all images are milliseconds as filename
             this.loadedImgList.sort(function(a, b) {
-                return parseFloat(b.filename) - parseFloat(a.filename);
+                return parseFloat(b.id) - parseFloat(a.id);
             });          
         }).catch((error) => {
             console.log(error);

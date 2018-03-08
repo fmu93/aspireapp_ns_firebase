@@ -25,7 +25,7 @@ export function onNavigatingTo(args: NavigatedData): void {
 * The back button is essential for a master-detail feature.
 *************************************************************/
 export function onBackButtonTap(): void {
-    return topmost().navigate("views/home/home-page");
+    return topmost().goBack();
 }
 
 /* ***********************************************************
