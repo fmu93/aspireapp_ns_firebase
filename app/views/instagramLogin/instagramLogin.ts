@@ -23,7 +23,7 @@ export function onLoaded(args) {
 
 export function loadUrl() {
     // Open the Auth flow in a popup.
-    const url = "https://api.instagram.com/oauth/authorize/?client_id=ada6cfdfd31547eba0c005834067b9c4&redirect_uri=https://aspireapp-2dff5.appspot.com/instagram-callback&response_type=token";
+    const url = "https://api.instagram.com/oauth/authorize/?client_id=ada6cfdfd31547eba0c005834067b9c4&scope=basic+public_content+relationships+follower_list+likes+comments&redirect_uri=https://aspireapp-2dff5.appspot.com/instagram-callback&response_type=token";
     
     webView.src = url;
     webView.on(WebView.loadFinishedEvent, function (args: LoadEventData) {

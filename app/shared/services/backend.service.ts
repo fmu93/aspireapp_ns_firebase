@@ -9,6 +9,31 @@ const token = "";
 
 export class BackendService {
 	private static userListenerWrapper: AddEventListenerResult;
+	private static user: InstagramUser;
+
+	// User model is stored here to be accessed throughout the app
+
+	static getUser(): InstagramUser {
+		if (this.user) {
+			return this.user;
+		} else {
+			console.log("Error: User undefined");
+			return null;
+		}
+	}
+
+	static setUser(): Promise<InstagramUser> {
+		return this.getThisUserCollection().then(user => {
+			if (user) {
+				this.user = user;
+				console.log("User set: " + this.user.username);
+				return this.user;
+			} else {
+				console.log("Error: User database not available")
+				return null
+			}
+		})
+	}
 
 	// init
 	static init(): Promise<any> {
@@ -19,7 +44,6 @@ export class BackendService {
 				console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
 				if (data.loggedIn) {
 					this.token = data.user.uid;
-					BackendService.getThisUserCollection();
 					console.log("user's email address: " + (data.user.email ? data.user.email : "N/A"));
 				} else {
 					this.token = "";
@@ -81,8 +105,8 @@ export class BackendService {
 			password: user.password
 			}
 		}).then((response) => {
+			// keep user uid in hand because it is needed to access the user's collection in firebase databse
 			this.token = response.uid;
-			BackendService.getThisUserCollection();
 			return response;
 		}).catch(error => console.log(error));
 	}

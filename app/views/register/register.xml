@@ -2,11 +2,11 @@
     navigatedTo="pageNavigatedTo"
         cssFile="~/views/login/login.css"
         xmlns="http://www.nativescript.org/tns.xsd"
-        tap="onPageTapped">
+        tap="{{ onPageTapped }}">
 
     <Page.actionBar>
         <ActionBar title="Register new user" automationText="ActionBar">
-            <NavigationButton text="&#xf104;" class="action-bar-title fa" tap="goBack" automationText="GoBack" />
+            <NavigationButton text="&#xf104;" class="action-bar-title fa" tap="{{ goBack }}" automationText="GoBack" />
         </ActionBar>
     </Page.actionBar>
 
@@ -18,25 +18,25 @@
                     
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Username" class="field-title" />
-                        <TextField id="username" text="{{ username }}" class="field" ios:col="1" android:row="1" tap="onTextInputTapped" />
+                        <TextField id="username" text="{{ user.username }}" class="field" ios:col="1" android:row="1" tap="{{ onTextInputTapped }}" />
                     </GridLayout>
                     <StackLayout class="line"/>
                     
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Email" class="field-title" />
-                        <TextField id="email" text="{{ email }}" keyboardType="email" class="field" ios:col="1" android:row="1" tap="onTextInputTapped" />
+                        <TextField id="email" text="{{ user.email }}" keyboardType="email" class="field" ios:col="1" android:row="1" tap="{{ onTextInputTapped }}" />
                     </GridLayout>
                     <StackLayout class="line"/>
                     
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Password" class="field-title" />
-                        <TextField id="password" text="{{ password }}" secure="true" class="field"  ios:col="1" android:row="1" tap="onTextInputTapped" />
+                        <TextField id="password" text="{{ user.password }}" secure="true" class="field"  ios:col="1" android:row="1" tap="{{ onTextInputTapped }}" />
                     </GridLayout>
                     <StackLayout class="line"/>
                     
                     <StackLayout>
                         <Label text="Bio" class="field-title" ios:visibility="collapse"/>
-                        <TextView id="bio" text="{{ bio }}" hint="Add bio" class="field-multiline" tap="onTextInputTapped"/>
+                        <TextView id="bio" text="{{ user.bio }}" hint="Add bio" class="field-multiline" tap="{{ onTextInputTapped }}"/>
                     </StackLayout>
                     <StackLayout class="line"/>
                     
@@ -46,10 +46,10 @@
                     </GridLayout>
                 </StackLayout>
             </ScrollView>
-            <Button text="Register" class="update" tap="signUp" row="2"/>
-            <Button text="&#xf104; Back" class="fa" tap="navigateLogin" row="3" />
+            <Button text="Register" class="update" tap="{{ signUp }}" row="2"/>
+            <Button text="&#xf104; Back" class="fa" tap="{{ navigateLogin }}" row="3" />
         </GridLayout>
         
-        <Image src="res://logo" id="image" class="logo-picture" horizontalAlignment="center" stretch="none" tap="onProfilePictureTapped"/>
+        <Image src="res://logo" id="image" class="logo-picture" horizontalAlignment="center" stretch="none" tap="{{ onProfilePictureTapped }}"/>
     </GridLayout>
 </Page>

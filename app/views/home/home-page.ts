@@ -6,6 +6,7 @@ import { RadSideDrawer } from "nativescript-pro-ui/sidedrawer";
 import { topmost } from "ui/frame";
 import { BackendService } from "./../../shared/services/backend.service";
 import { NavigatedData, Page } from "ui/page";
+var timer = require("timer");
 
 
 export function onNavigatingTo(args: NavigatedData) {
@@ -22,11 +23,14 @@ export function onNavigatingTo(args: NavigatedData) {
         console.log(BackendService.isLoggedIn());
         return topmost().navigate("views/login/login");
     }
-    const page = <Page>args.object;
-    page.bindingContext = new HomeViewModel();
-
-    utils.ad.dismissSoftInput();
     
+    const page = <Page>args.object;
+    BackendService.setUser().then(user => {
+        // TODO add loading animation
+        if (user) {
+            page.bindingContext = new HomeViewModel();
+        }
+    })
 }
 
 export function onDrawerButtonTap(args: EventData) {

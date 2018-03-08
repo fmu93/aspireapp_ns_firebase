@@ -58,22 +58,22 @@
         Always wrap content in a layout component.
         -->
         <nsDrawer:RadSideDrawer.mainContent>
-            <GridLayout class="page-content" rows="auto, auto, auto, auto, 100, *">
+            <GridLayout class="page-content" rows="auto, auto, auto, auto, *">
                 <Label row="0" class="page-icon fa" text="&#xf013;"></Label>
                 <Button row="1" tap="bindInstagram" text="Bind Instagram" /> 
                 <Button row="2" tap="logOut" text="Log out" />
                 <Button row="3" tap="deleteUser" text="Delete user" />
-                <ListPicker row="4" items="{{ genders }}" selectedIndex="{{ gender }}" />
+                <!-- <ListPicker row="4" items="{{ genders }}" selectedIndex="{{ gender }}" /> -->
 
-                <!-- <df:RadDataForm row="4" id="myDataForm" source="{{ person }}"> -->
-                    <!-- <df:RadDataForm.properties>
-                        <df:EntityProperty name="type" displayName="User category" index="0" valuesProvider="{{ types }}">
+                <df:RadDataForm row="4" id="myDataForm" source="{{ user }}">
+                    <df:RadDataForm.properties>
+                        <df:EntityProperty name="type" displayName="User category" index="0" converter="{{ $value }}" valuesProvider="{{ types }}">
                             <df:EntityProperty.editor>
                                 <df:PropertyEditor type="Picker" />
                             </df:EntityProperty.editor>
                         </df:EntityProperty>
-                    </df:RadDataForm.properties> -->
-                <!-- </df:RadDataForm> -->
+                    </df:RadDataForm.properties>
+                </df:RadDataForm>
 
             </GridLayout>
         </nsDrawer:RadSideDrawer.mainContent>
