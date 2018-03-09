@@ -47,14 +47,14 @@ export class InstagramUser extends BaseUser {
 }
 
 export class ExtendedUser extends InstagramUser {
-    public imageList: Array<ImageCustom> = new Array<ImageCustom>();
+    public imageList: Array<CustomImage> = new Array<CustomImage>();
 
     constructor() {
         super();
     }
 }
 
-export class ImageCustom extends Observable {
+export class CustomImage extends Observable {
     public comments: {count: number};
     public caption: {
         created_time: string,
@@ -72,11 +72,7 @@ export class ImageCustom extends Observable {
     };
     public user_has_liked: boolean;
     public link: string;
-    public user: {
-        username: string,
-        profile_picture: string,
-        id: string
-    };
+    public user = new ImageUser();
     public created_time: string;
     public images = new Images();
     public type: string;
@@ -84,21 +80,28 @@ export class ImageCustom extends Observable {
     public tags: [string];
     public id: string;
     public location = new ImageLocation();
-    public public: boolean = false;
-    public remoteLocation: string;
-    public contentType: string; //image/jpeg
-    public updated_time: string; //2018-02-27T12:08:43.752Z
-    public size: number; // 22393
+    public public?: boolean = false;
+    public remoteLocation?: string;
+    public contentType?: string; //image/jpeg
+    public updated_time?: string; //seconds
+    public size?: number; // 22393
 
-    constructor (id: string, remoteFullPath: string, uploadResult: FileUploadedResult) {
+    constructor () {
         super();
+    }
+
+    public toUpload(id: string, remoteFullPath: string, uploadResult: FileUploadedResult, user: ExtendedUser) {
         this.id = id;
         this.remoteLocation = remoteFullPath;
-        this.created_time = uploadResult.created;
+        this.user.username = user.username;
+        this.user.profile_picture = user.profile_picture;
+        this.user.id = user.uid;
+        this.created_time = String(Math.floor(new Date(uploadResult.created).getTime()/1000)); // date in seconds
+        this.updated_time = this.created_time;
         this.contentType = uploadResult.contentType;
-        this.updated_time = uploadResult.updated;
         this.size = uploadResult.size;
         this.images.standard_resolution.url = uploadResult.url;
+        this.images.low_resolution.url = uploadResult.url;
     }
 }
 
@@ -120,6 +123,12 @@ export class ImageLocation {
     public id: string;
     public street_address: string;
     public name: string;
+}
+
+export class ImageUser {
+    public username: string;
+    public profile_picture: string;
+    public id: string;
 }
 
 export class Album {

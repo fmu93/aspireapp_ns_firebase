@@ -3,7 +3,7 @@ import { ObservableProperty } from "../../shared/observable-property-decorator";
 import { BackendService } from "../../shared/services/backend.service";
 import { Image } from "tns-core-modules/ui/image/image";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
-import { InstagramUser, ImageCustom, ExtendedUser } from "./../../shared/user.model";
+import { InstagramUser, CustomImage, ExtendedUser } from "./../../shared/user.model";
 import * as Toast from "nativescript-toast";
 import { topmost } from "ui/frame";
 import { InstaImage } from "../../shared/services/instagram.service";
@@ -11,7 +11,7 @@ import { ListViewEventData } from "nativescript-pro-ui/listview";
 
 
 export class SearchViewModel extends Observable {
-    @ObservableProperty() loadedImgList = new ObservableArray<ImageCustom>();
+    @ObservableProperty() loadedImgList = new ObservableArray<CustomImage>();
     @ObservableProperty() user: ExtendedUser;
     @ObservableProperty() guest: ExtendedUser;
     public guests = new ObservableArray<ExtendedUser>();
@@ -32,9 +32,7 @@ export class SearchViewModel extends Observable {
         // TODO check that all users are being loaded
         BackendService.getUsersCollection().then(guests => {
             // empty current guests
-            for (var i = 0; i < this.guests.length; i++) {
-                this.loadedImgList.splice(i);
-            };
+            this.loadedImgList = new ObservableArray<CustomImage>();
             // load with users 
             for (var guest in guests) {
                 this.guests.push(guests[guest]);

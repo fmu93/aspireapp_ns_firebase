@@ -2,7 +2,7 @@ import { getString, setString } from "application-settings";
 import * as fs from "tns-core-modules/file-system";
 import firebase = require("nativescript-plugin-firebase");
 import { Observable } from "tns-core-modules/ui/page/page";
-import { BaseUser, ExtendedUser, ImageCustom} from "./../../shared/user.model";
+import { BaseUser, ExtendedUser, CustomImage} from "./../../shared/user.model";
 import { AddEventListenerResult, UploadFileResult } from "nativescript-plugin-firebase";
 
 const token = "";
@@ -26,7 +26,8 @@ export class BackendService {
 		return this.getThisUserCollection().then(user => {
 			if (user) {
 				this.user = user;
-				// this.setUserCollectionEventListener();
+				this.setUserCollectionEventListener();
+				// this.userSync();
 				console.log("User set: " + this.user.username);
 				return this.user;
 			} else {
@@ -38,10 +39,24 @@ export class BackendService {
 
 	static setUserCollectionEventListener(): void {
         const onChildEvent = result => {
-            this.user.set(result.key, result.value);
+			this.user[result.key] = result.value;
         };
         BackendService.addDatabseListener(onChildEvent, "/users/" + this.token);
-    }
+	}
+	
+	static userSync() {
+		firebase.keepInSync(
+			"/users/" + this.token, // which path in your Firebase needs to be kept in sync?
+			true      // set to false to disable this feature again
+		  ).then( user => {
+			  console.log(JSON.stringify(user));
+			  console.log("firebase.keepInSync is ON for user");
+			},
+			function (error) {
+			  console.log("firebase.keepInSync error: " + error);
+			}
+		  );
+	}
 
 	// init
 	static init(): Promise<any> {
@@ -324,7 +339,8 @@ export class BackendService {
 	}
 
 	static addToImageList(id: string, remoteFullPath: string, uploadResult: FileUploadedResult): Promise<any> {
-		const newImage = new ImageCustom(id, remoteFullPath, uploadResult);
+		const newImage = new CustomImage();
+		newImage.toUpload(id, remoteFullPath, uploadResult, this.user);
 		const collectionPath = "/users/" + this.token + "/imageList/" + id;
 		
 		return firebase.setValue(
