@@ -53,11 +53,10 @@ export class HomeViewModel extends Observable {
             selection.forEach(element => {
                 const localPath =  element.fileUri;   
                 BackendService.uploadFile(localPath).then(uploadFileResult => {
+                    Toast.makeText("Uploaded!").show();
+                    setTimeout(() => this.loadImages(), 1000);
                 });
             });
-        }).then(() => {
-            Toast.makeText("Uploaded!").show();
-            setTimeout(() => { this.loadUser; this.loadImages()}, 200);
         });
     }
 
