@@ -3,7 +3,7 @@ import { ObservableProperty } from "../../shared/observable-property-decorator";
 import { BackendService } from "../../shared/services/backend.service";
 import { Image } from "tns-core-modules/ui/image/image";
 import { ObservableArray } from "tns-core-modules/data/observable-array";
-import { InstagramUser, ImageCustom } from "./../../shared/user.model";
+import { InstagramUser, ImageCustom, ExtendedUser } from "./../../shared/user.model";
 import * as Toast from "nativescript-toast";
 import { topmost } from "ui/frame";
 import { InstaImage } from "../../shared/services/instagram.service";
@@ -11,42 +11,52 @@ import { ListViewEventData } from "nativescript-pro-ui/listview";
 
 
 export class SearchViewModel extends Observable {
-    @ObservableProperty() public guestName: string;
-    @ObservableProperty() public guestType: string;
-    @ObservableProperty() public guestBio: string;
+    @ObservableProperty() loadedImgList = new ObservableArray<ImageCustom>();
+    @ObservableProperty() user: ExtendedUser;
+    @ObservableProperty() guest: ExtendedUser;
+    public guests = new ObservableArray<ExtendedUser>();
     private userIndex = 0;
     private userSize = 1;
-    public loadedImgList = new ObservableArray<ImageCustom>();
 
     constructor() {
         super();
-        this.loadGuest();
+        this.loadUser();
+        this.loadGuests();
+    }
+
+    public loadUser() {
+        this.user = BackendService.getUser();
+    }
+
+    public loadGuests() {
+        // TODO check that all users are being loaded
+        BackendService.getUsersCollection().then(guests => {
+            // empty current guests
+            for (var i = 0; i < this.guests.length; i++) {
+                this.loadedImgList.splice(i);
+            };
+            // load with users 
+            for (var guest in guests) {
+                this.guests.push(guests[guest]);
+            }
+            this.userSize = this.guests.length;
+        });
     }
 
     public loadGuest() {
-        BackendService.getUsersCollection().then(users => {
-            this.userSize = users.length;
-            const guest = users[this.userIndex];
-            this.guestName = guest.username;
-            this.guestType = guest.type;
-            this.guestBio = guest.bio;
-
+            this.guest = this.guests[this.userIndex];
             // empty current loadedImageList
-            for (var i = 1; i < this.loadedImgList.length; i++) {
+            for (var i = 0; i < this.loadedImgList.length; i++) {
                 this.loadedImgList.splice(i);
             };
             // load with images from current user
-            for (var key in guest.imageList) {
-                this.loadedImgList.push(guest.imageList[key]);
+            for (var key in this.guest.imageList) {
+                this.loadedImgList.push(this.guest.imageList[key]);
             }
-            this.loadedImgList.shift();
             // sort assuming all images are milliseconds as filename
             this.loadedImgList.sort(function(a, b) {
                 return parseFloat(b.id) - parseFloat(a.id);
             });          
-        }).catch((error) => {
-            console.log(error);
-        });
     }
 
     public nextUser() {

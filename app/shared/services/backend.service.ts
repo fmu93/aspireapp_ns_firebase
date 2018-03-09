@@ -267,6 +267,7 @@ export class BackendService {
 			for (var key in result.value) {
 				users.push(result.value[key]);
 			}
+			console.log("All users collection retrieved");
 			return users
 		})
 		.catch(error => {
@@ -325,13 +326,12 @@ export class BackendService {
 	static addToImageList(id: string, remoteFullPath: string, uploadResult: FileUploadedResult): Promise<any> {
 		const newImage = new ImageCustom(id, remoteFullPath, uploadResult);
 		const collectionPath = "/users/" + this.token + "/imageList/" + id;
-		console.log(collectionPath);
 		
 		return firebase.setValue(
 			collectionPath,
 			newImage
 		).then(() => {
-			console.log("Image added to collection");
+			console.log("Image added to collection at: " + collectionPath);
 		})
 	}
 
@@ -372,7 +372,7 @@ export class BackendService {
 
 	// Storage stuff
 
-	static uploadFile(localPath: string): Promise<firebase.UploadFileResult> {
+	static uploadFile(localPath: string): Promise<FileUploadedResult> {
 		const appPath = fs.knownFolders.currentApp();
 		if (!fs.File.exists(localPath)) {
 			console.log("File does not exist: " + localPath);

@@ -19,7 +19,6 @@ export class HomeViewModel extends Observable {
     constructor() {
         super();
         this.loadUser();
-        this.loadedImgList.push(new InstaImage());
         this.loadImages();
         utils.ad.dismissSoftInput();
     }
@@ -30,14 +29,13 @@ export class HomeViewModel extends Observable {
 
     public loadImages() {
             // empty current loadedImageList
-            for (var i = 1; i < this.loadedImgList.length; i++) {
+            for (var i = 0; i < this.loadedImgList.length; i++) {
                 this.loadedImgList.splice(i);
             };
             // load with images from current user
             for (var key in this.user.instaImageList) {
                 this.loadedImgList.push(this.user.instaImageList[key]);
             }
-            this.loadedImgList.shift();
             // sort assuming all images are milliseconds as filename
             this.loadedImgList.sort(function(a, b) {
                 return parseFloat(b.created_time) - parseFloat(a.created_time);
@@ -54,10 +52,11 @@ export class HomeViewModel extends Observable {
             selection.forEach(element => {
                 const localPath =  element.fileUri;   
                 BackendService.uploadFile(localPath).then(uploadFileResult => {
-                    Toast.makeText("Added: " + uploadFileResult.name).show();
-                    this.loadImages();
                 });
             });
+        }).then(() => {
+            Toast.makeText("Uploaded!").show();
+            this.loadImages();
         });
     }
 
