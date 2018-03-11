@@ -1,8 +1,11 @@
 import { Observable } from "data/observable";
 import { BaseUser } from "../../shared/user.model";
 import { BackendService } from "../../shared/services/backend.service";
+import { ObservableProperty } from "../../shared/observable-property-decorator";
+import * as Toast from "nativescript-toast";
 
 export class SettingsViewModel extends Observable {
+    @ObservableProperty() user: BaseUser;
     public genders = ["Female", "Male", "Other"];
     public types = ["Photographer", "Model", "Business"];
 
@@ -11,12 +14,16 @@ export class SettingsViewModel extends Observable {
         this.user = <BaseUser>BackendService.getUser();
     }
 
-    set user(value: BaseUser) {
-        this.set("_user", value);
+    public updateProperties() {
+        const properties = <BaseUser> this.user;
+        BackendService.updateUserProperties(properties).then(() => {
+            Toast.makeText("Updated user properties").show();
+        });
     }
 
-    get user(): BaseUser {
-        return this.get("_user");
+    public onProfilePictureTapped() {
+        Toast.makeText("It's me, " + this.user.username).show();
     }
+
 }
 

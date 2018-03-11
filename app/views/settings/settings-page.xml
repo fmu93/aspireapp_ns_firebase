@@ -1,6 +1,7 @@
 <Page
     class="page"
     navigatingTo="onNavigatingTo"  
+    cssFile="~/views/home/home-page.css"
     xmlns:nsDrawer="nativescript-pro-ui/sidedrawer"
     xmlns:drawer="shared/drawer"
     xmlns:df="nativescript-pro-ui/dataform"
@@ -58,24 +59,56 @@
         Always wrap content in a layout component.
         -->
         <nsDrawer:RadSideDrawer.mainContent>
-            <GridLayout class="page-content" rows="auto, auto, auto, auto, *">
-                <Label row="0" class="page-icon fa" text="&#xf013;"></Label>
-                <Button row="1" tap="bindInstagram" text="Bind Instagram" /> 
-                <Button row="2" tap="logOut" text="Log out" />
-                <Button row="3" tap="deleteUser" text="Delete user" />
-                <!-- <ListPicker row="4" items="{{ genders }}" selectedIndex="{{ gender }}" /> -->
+            <ScrollView>
+                <StackLayout class="page-content" loaded="onLoaded" >
+                    <GridLayout id="form-content" class="form-content" rows="auto, *" loaded="onContentLoaded">
+                        <StackLayout row="0" class="fields-section">
+                            <GridLayout columns="auto, *" verticalAlignment="top">                    
+                                <Image col="0" src="{{ user.profile_picture }}" id="image" class="logo-picture" horizontalAlignment="center" tap="{{ onProfilePictureTapped }}"/>
+                                <StackLayout col="1">
+                                    <Label text="{{ user.username }}" class="username" id="lblUsername"/>
+                                    <GridLayout columns="auto, *, auto, *" rows="auto" verticalAlignment="top">
+                                        <Label text="Followed: " class="field-title"  col="0" />
+                                        <Label text="{{ user.counts.followed_by }}" class="field-title" col="1" horizontalAlignment="left"/>
+                                        <Label text="Following: " class="field-title" col="2" />
+                                        <Label text="{{ user.counts.follows }}" class="field-title" col="3" horizontalAlignment="left"/>
+                                    </GridLayout>     
+                                    <StackLayout class="line"/>
+                                </StackLayout>
+                            </GridLayout>
+                            <GridLayout columns="*, *, 2*" rows="auto, auto, auto" verticalAlignment="top">
+                                <Label text="Type:" class="field-switch-title" row="0" col="0" />
+                                <Label text="Gender:" class="field-switch-title" row="1" col="0" />
+                                <Label text="Birth year:" class="field-switch-title" row="2" col="0" />
+                                <TextField id="txtType" text="{{ user.type }}" hint="type" class="field" row="0" col="1" />
+                                <TextField id="txtGender" text="{{ user.gender }}" hint="gender" class="field" row="1" col="1" />
+                                <TextField id="txtYear" text="{{ user.birthYear }}" hint="birthYear" class="field" row="2" col="1" />
+                            </GridLayout>      
+                            <StackLayout class="line"/>        
+                            <GridLayout rows="auto, auto" verticalAlignment="top">
+                                <Label text="Bio:" class="field-switch-title" row="0" />
+                                <TextField id="txtBio" text="{{ user.bio }}" textWrap="true" class="field-multiline" row="1" />
+                            </GridLayout>
+                            <GridLayout columns="auto, auto, *" verticalAlignment="top">
+                                <Label col="0" text="Instagram enabled" class="field-switch-title" />
+                                <Switch col="1" checked="{{ user.instagramEnabled }}" class="field-switch" />
+                            </GridLayout>
+                            <StackLayout class="line"/>
+                            <GridLayout columns="auto,*, auto" verticalAlignment="top">
+                                <Button text="Update &#xf044;" class="update fa" tap="{{ updateProperties }}" col="0"/>
+                                <Button text="ADD &#xf03e;" class="update fa" tap="{{ imgAdd }}" col="2"/>
+                            </GridLayout>
+                            <StackLayout class="line"/>
+                            <GridLayout columns="*, *, *" rows="auto" verticalAlignment="top" marginTop="20" marginBottom="20">
+                                <Button col="0" tap="bindInstagram" text="Bind Instagram" class="update fa"/> 
+                                <Button col="1" tap="logOut" text="Log out" class="update fa"/>
+                                <Button col="2" tap="deleteUser" text="Delete user" class="update fa" />
+                            </GridLayout>
+                        </StackLayout>
+                    </GridLayout>
+                </StackLayout>
+            </ScrollView>
 
-                <df:RadDataForm row="4" id="myDataForm" source="{{ user }}">
-                    <!-- <df:RadDataForm.properties>
-                        <df:EntityProperty name="type" displayName="User category" index="0" valuesProvider="Photo, Model, Business">
-                            <df:EntityProperty.editor>
-                                <df:PropertyEditor type="Picker" />
-                            </df:EntityProperty.editor>
-                        </df:EntityProperty>
-                    </df:RadDataForm.properties> -->
-                </df:RadDataForm>
-
-            </GridLayout>
         </nsDrawer:RadSideDrawer.mainContent>
     </nsDrawer:RadSideDrawer>
 </Page>

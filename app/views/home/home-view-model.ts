@@ -45,7 +45,7 @@ export class HomeViewModel extends Observable {
     
     public imgAdd() {
         const context = imagepicker.create({
-            mode: "multiple"
+            mode: "single"
         });
         context.authorize().then(() => {
             return context.present();
@@ -58,26 +58,6 @@ export class HomeViewModel extends Observable {
                 });
             });
         });
-    }
-
-    public imgDelete(args) {
-        dialogs.confirm({
-            title: "Delete this pic?",
-            message: this.loadedImgList.getItem(args.index).caption.text,
-            okButtonText: "Delete",
-            cancelButtonText: "Cancel"
-        })
-        // .then(result => {
-        //     if (result) {
-        //         BackendService.deleteFile(this.loadedImgList.getItem(args.index).remoteLocation)
-        //         .then((result) => {
-        //             BackendService.removeImageFromList(this.loadedImgList.getItem(args.index).filename).then(() => {
-        //                 Toast.makeText("Deleted: " + this.loadedImgList.getItem(args.index).filename).show();
-        //                 this.loadThisUser();
-        //             });
-        //         });
-        //     }
-        // });
     }
 
     public onItemTap(args: ListViewEventData): void {
@@ -94,13 +74,11 @@ export class HomeViewModel extends Observable {
             }
         });
     }
-
-    public updateProperties() {
-        const properties = <BaseUser> this.user;
-        BackendService.updateUserProperties(properties).then(() => {
-            Toast.makeText("Updated user properties").show();
-        });
+    
+    public onProfilePictureTapped() {
+        Toast.makeText("It's me, " + this.user.username).show();
     }
-  
+
+ 
 }
 

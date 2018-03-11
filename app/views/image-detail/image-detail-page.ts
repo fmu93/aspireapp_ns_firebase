@@ -1,4 +1,3 @@
-import { topmost } from "ui/frame";
 import { NavigatedData, Page } from "ui/page";
 
 import { ImageDetailViewModel } from "./image-detail-view-model";
@@ -21,12 +20,6 @@ export function onNavigatingTo(args: NavigatedData): void {
     page.bindingContext = new ImageDetailViewModel(page.navigationContext);
 }
 
-/* ***********************************************************
-* The back button is essential for a master-detail feature.
-*************************************************************/
-export function onBackButtonTap(): void {
-    return topmost().goBack();
-}
 
 /* ***********************************************************
 * The master-detail template comes with an example of an item edit page.

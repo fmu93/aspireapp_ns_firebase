@@ -14,6 +14,7 @@ export class BaseUser extends Observable {
     public birthYear: number;
     public birthDate: string;
     public type: string;
+    public instagramEnabled: boolean;
 
     constructor() {
         super();

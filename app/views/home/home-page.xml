@@ -64,32 +64,31 @@
                         <StackLayout row="0" class="fields-section">
                             <GridLayout columns="auto, *" verticalAlignment="top">                    
                                 <Image col="0" src="{{ user.profile_picture }}" id="image" class="logo-picture" horizontalAlignment="center" tap="{{ onProfilePictureTapped }}"/>
-                                <Label col="1" text="{{ user.username }}" class="username" id="lblUsername"/>
+                                <StackLayout col="1">
+                                    <Label text="{{ user.username }}" class="username" id="lblUsername"/>
+                                    <GridLayout columns="auto, *, auto, *" rows="auto" verticalAlignment="top">
+                                        <Label text="Followed: " class="field-title"  col="0" />
+                                        <Label text="{{ user.counts.followed_by }}" class="field-title" col="1" horizontalAlignment="left"/>
+                                        <Label text="Following: " class="field-title" col="2" />
+                                        <Label text="{{ user.counts.follows }}" class="field-title" col="3" horizontalAlignment="left"/>
+                                    </GridLayout>     
+                                    <StackLayout class="line"/>
+                                </StackLayout>
                             </GridLayout>
-                            <GridLayout columns="*, *, *, *, *, *" rows="auto" verticalAlignment="top">
-                                <Label text="Followed: " class="field-title"  col="0" />
-                                <Label text="{{ user.counts.followed_by }}" class="field-title" col="1" horizontalAlignment="left"/>
-                                <Label text="Following: " class="field-title" col="2" />
-                                <Label text="{{ user.counts.follows }}" class="field-title" col="3" horizontalAlignment="left"/>
-                                <Label text="Media: " class="field-title" col="4" />
-                                <Label text="{{ user.counts.media }}" class="field-title" col="5" horizontalAlignment="left"/>
+                            <GridLayout columns="auto, *, auto, *, auto, *" rows="auto" verticalAlignment="top">
+                                <Label text="Type: " class="field-title"  col="0" />
+                                <Label text="{{ user.type }}" class="field-title" col="1" horizontalAlignment="left"/>
+                                <Label text="Gender: " class="field-title" col="2" />
+                                <Label text="{{ user.gender }}" class="field-title" col="3" horizontalAlignment="left"/>
+                                <Label text="Birth year: " class="field-title" col="4" />
+                                <Label text="{{ user.birthYear }}" class="field-title" col="5" horizontalAlignment="left"/>
                             </GridLayout>
-                            <StackLayout class="line"/>
-                            <GridLayout columns="*, *, *" rows="auto, auto" verticalAlignment="top">
-                                <Label text="Type:" class="field-title" row="0" col="0" />
-                                <Label text="Gender:" class="field-title" row="0" col="1" />
-                                <Label text="Birth year:" class="field-title" row="0" col="2" />
-                                <TextField id="txtType" text="{{ user.type }}" hint="type" class="field" row="1" col="0" />
-                                <TextField id="txtGender" text="{{ user.gender }}" hint="gender" class="field" row="1" col="1" />
-                                <TextField id="txtYear" text="{{ user.birthYear }}" hint="birthYear" class="field" row="1" col="2" />
-                            </GridLayout>              
+          
                             <GridLayout rows="auto, auto" verticalAlignment="top">
-                                <Label text="Bio:" class="field-title" row="0" />
-                                <TextField id="txtBio" text="{{ user.bio }}" textWrap="true" class="field-multiline" row="1" />
+                                <Label id="txtBio" text="{{ user.bio }}" textWrap="true" class="field-multiline" row="1" />
                             </GridLayout>
                             <GridLayout columns="auto,*, auto" verticalAlignment="top">
-                                <Button text="Update &#xf044;" class="update fa" tap="{{ updateProperties }}" col="0"/>
-                                <Button text="ADD &#xf03e;" class="update fa" tap="{{ imgAdd }}" col="2"/>
+                                <Button text="ADD &#xf03e;" class="update fa" tap="{{ imgAdd }}" col="0"/>
                             </GridLayout>
                             <StackLayout class="line"/>
                         </StackLayout>
@@ -105,11 +104,6 @@
                                         horizontalAlignment="stretch"
                                         height="130"
                                         imageUri="{{ images.low_resolution.url }}"/>
-                                        <!-- <GridLayout verticalAlignment="bottom">
-                                            <StackLayout backgroundColor="#AAFFFFFF" paddingTop="4" paddingBottom="4" paddingLeft="16" paddingRight="16">
-                                                <Label text="{{ caption.text }}"/>
-                                            </StackLayout>
-                                        </GridLayout> -->
                                     </GridLayout>
                                 </GridLayout>
                             </lv:RadListView.itemTemplate>

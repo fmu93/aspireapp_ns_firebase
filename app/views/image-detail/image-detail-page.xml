@@ -1,7 +1,7 @@
 <Page class="page" xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" >
     
     <ActionBar class="action-bar">
-        <NavigationButton tap="onBackButtonTap" android.systemIcon="ic_menu_back" />
+        <NavigationButton tap="{{ onBackButtonTap }}" android.systemIcon="ic_menu_back" />
         <Label class="action-bar-title" text="{{ instaImage.caption.text }}" horizontalAlignment="center" />
         <!-- <ActionItem tap="onEditButtonTap" ios.position="right" android.position="right">
             <Label text="Edit" verticalAlignment="center" class="action-item" />
@@ -10,13 +10,12 @@
 
     <GridLayout class="page-content">
         <ScrollView>
-            <GridLayout rows="auto, auto, auto">
+            <GridLayout rows="auto, auto, *, auto">
                 <Image src="{{ instaImage.images.standard_resolution.url }}" stretch="aspectFill" class="m-b-15" decodeHeight="120" />
 
                 <StackLayout row="1" class="hr-light m-t-15 m-b-15"></StackLayout>
 
                 <GridLayout row="2" rows="* , *, *, *, *, *" columns="auto,auto">
-
                     <Label text="created_time" row="1" class="p-l-15 p-b-10 m-r-20 text-secondary" />
                     <Label text="{{ instaImage.created_time }}" row="1" col="1" class="text p-b-10" />
                     
@@ -28,8 +27,9 @@
 
                     <Label text="likes" row="4" class="p-l-15 p-b-10 m-r-20 text-secondary" />
                     <Label text="{{ instaImage.likes.count }}" row="4" col="1" class="text p-b-10" />
-
                 </GridLayout>
+
+                <Button row="3" text="Delete" class="update fa" tap="{{ deleteImg }}"/>
             </GridLayout>
         </ScrollView>
     </GridLayout>

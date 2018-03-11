@@ -18,13 +18,13 @@ export class LoginModel extends Observable {
     public signIn() {
         // Actually, the only way to be logged in at this point is after successful registration
         // or successful login. Maybe a switch user does make sense.
-        const promise = BackendService.logout()
+        BackendService.logout()
         .then(() => {
             // TODO check binding of email and password fields are updated
             const promise2 = BackendService.login(this.user)
             .then(() => {
                 if (BackendService.isLoggedIn()) {
-                    this.navigateHome();
+                    this.navigateHolder();
                 } else {
                     dialogs.alert("user not logged in: " + this.user.username);
                 }
@@ -54,6 +54,10 @@ export class LoginModel extends Observable {
 
     public navigateHome() {
         return frameModule.topmost().navigate("views/home/home-page");
+    }
+
+    public navigateHolder() {
+        return frameModule.topmost().navigate("views/holder/holder-page");
     }
 
 }

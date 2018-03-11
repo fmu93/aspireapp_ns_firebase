@@ -4,6 +4,7 @@ import firebase = require("nativescript-plugin-firebase");
 import { Observable } from "tns-core-modules/ui/page/page";
 import { BaseUser, ExtendedUser, CustomImage} from "./../../shared/user.model";
 import { AddEventListenerResult, UploadFileResult } from "nativescript-plugin-firebase";
+import * as _ from 'underscore';
 
 const token = "";
 
@@ -37,7 +38,7 @@ export class BackendService {
 		})
 	}
 
-	static setUserCollectionEventListener(): void {
+	static setUserCollectionEventListener(): void { // TODO manage deletions!
         const onChildEvent = result => {
 			this.user[result.key] = result.value;
         };
@@ -135,12 +136,10 @@ export class BackendService {
 		}).catch(error => console.log(error));
 	}
 
-	static logout() {
-		if (!this.token) {
-			return firebase.logout().then(() => {
-				return this.token = ""
-			});
-		}
+	static logout(): Promise<string> {
+		return firebase.logout().then(() => {
+			return this.token = ""
+		});
 	}
 
 	static doDeleteUser(): Promise<any> {
@@ -351,9 +350,13 @@ export class BackendService {
 		})
 	}
 
-	static removeImageFromList(filename: string): Promise<any> {
-		filename = filename.split(".").shift();
-		return firebase.remove('/users/' + this.token + "/imageList/" + filename);
+	static removeImageFromList(id: string): Promise<any> {
+		id = id.split(".").shift(); // checking there is no extension in the string
+		return firebase.remove('/users/' + this.token + "/imageList/" + id)
+		.then(() => {
+			// delete from current user model on client
+			this.user.imageList.splice(_.indexOf(this.user.imageList, _.find(this.user.imageList, function (item) { return item.id === id; })), 1);
+		});
 	}
 
 	static addDatabseListener(onChildEvent: any, path: string) {
@@ -445,15 +448,16 @@ export class BackendService {
 		});
 	}
 
-	static deleteFile(remoteFullPath: string): Promise<any> {
+	static deleteFile(remoteFullPath: string): Promise<boolean> {
 		return firebase.deleteFile({
 			remoteFullPath
 		}).then(result => {
 				console.log("File deleted.");
-				return result
+				return true
 			},
 			error => {
 				console.log("File deletion Error: " + error);
+				return false
 			}
 		);
 	}  
